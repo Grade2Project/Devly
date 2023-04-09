@@ -1,8 +1,10 @@
 using Devly.Database.Basics.Context;
 using Devly.Database.Basics.Context.ContextProvider;
 using Devly.Database.Basics.Repository;
+using Devly.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Devly.Database.Extensions.DI;
 
@@ -26,6 +28,9 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddDatabase(this IServiceCollection services)
     {
+        services.TryAddSingleton<IUserRepository, UserRepository>();
+        services.TryAddSingleton<IUserPasswordRepository, UserPasswordRepository>();
+        
         return services;
     }
 

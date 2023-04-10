@@ -22,6 +22,13 @@ create schema devly
         info text
     )
 
+    create table programming_languages
+    (
+        id            serial
+            primary key,
+        language_name varchar(10) not null
+    )
+
     create table vacancies
     (
         id                      serial primary key,
@@ -44,13 +51,6 @@ create schema devly
         hashed_pass varchar(512) not null
     )
 
-    create table programming_languages
-    (
-        id            serial
-            primary key,
-        language_name varchar(10) not null
-    )
-
     create table users_favorite_languages
     (
         user_id                 integer not null
@@ -69,7 +69,8 @@ create schema devly
                 on update cascade on delete cascade,
         vacancy_id integer not null
             references vacancies (id)
-                on update cascade on delete cascade
+                on update cascade on delete cascade,
+        primary key (user_id, vacancy_id)
     )
 
     create table companies_favorite_users
@@ -79,7 +80,8 @@ create schema devly
                 on update cascade on delete cascade,
         user_id    integer not null
             references users (id)
-                on update cascade on delete cascade
+                on update cascade on delete cascade,
+        primary key (company_id, user_id)
     )
 
 

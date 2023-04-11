@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'Roboto Flex Medium', sans-serif;
+    src: url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@500&display=swap');
+}
+
+@font-face {
+    font-family: 'Roboto Flex Regular', sans-serif;
+    src: url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400&display=swap');
+}
+
+:root{
+    --color-white: rgba(255, 255, 255);
+    --color-black: #3C3C3C;
+    --color-light-black: #807D7D;
+    --color-background: #F5F5F5;
+    --color-acsent-red: #FF5A5F;
+    --color-acsent-green: #087E8B;
+
+    --font-family-roboto-med: 'Roboto Flex Medium', sans-serif;
+    --font-family-roboto-reg: 'Roboto Flex Regular', sans-serif;
+}

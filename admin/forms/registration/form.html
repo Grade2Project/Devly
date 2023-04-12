@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <title>Application form</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="form_header">
+        <h3>Ваше резюме</h3>
+    </div>
+    <form>
+        <div class="form_group">
+            <h2>Личные данные</h2>
+            <div class="row">
+                <div class="label_col">
+                    <label for="name">ФИО</label>
+                </div>
+                <div class="forms_col">
+                    <input type="text" id="name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="label_col">
+                    <label for="date_of_birth">Дата рождения</label>
+                </div>
+                <div class="forms_col">
+                    <input type="text" id="date_of_birth">
+                </div>
+            </div>
+        </div>
+        <div class="form_group">
+            <h2>Образование</h2>
+            <div class="row">
+                <div class="label_col">
+                    <label for="edu_level">Уровень образования</label>
+                </div>
+                <div class="forms_col">
+                    <select id="edu_level" name="edu_level">
+                        <option value="kek">KEK</option>
+                        <option value="lol">LOL</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label_col">
+                    <label for="edu_place">Название учебного заведения</label>
+                </div>
+                <div class="forms_col">
+                    <input type="text" id="edu_place">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Сохранить">
+        </div>
+    </form>
+</div>
+</html>

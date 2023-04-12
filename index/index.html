@@ -15,6 +15,9 @@
     </style>
 </head>
 <body>
+<div id="reg-pop-container" class="registration-popup-container"></div>
+<div id="pp-bg" class="pp-bg blur"></div>
+
 <div class="head-container">
     <div class="logo-container">
         <div class="lv"></div>
@@ -25,8 +28,8 @@
             <img src="svg/icons8-search.svg" alt="none">
         </div>
         <div class="right-menu-buttons">
-            <div class="right-menu-button">Войти</div>
-            <div class="right-menu-button">Зарегистрироваться</div>
+            <a class="right-menu-button" href="" style="text-decoration: none">Войти</a>
+            <a class="right-menu-button" href="javascript:show()" style="text-decoration: none">Зарегистрироваться</a>
         </div>
     </div>
 </div>
@@ -40,7 +43,22 @@
     <div id="bEmployee" class="c-button-outline c-button-h">Начать как работник</div>
     <div id="bCompany" class="c-button-outline c-button-h">Начать как компания</div>
 </div>
+
 <script src="scripts/init.js"></script>
+<script>
+    function show() {
+        document.getElementById('pp-bg').style.visibility = 'visible';
+        document.getElementById('reg-pop-container').style.visibility = 'visible';
+    }
+
+    function hide() {
+        const bg = document.getElementById('pp-bg');
+        const pp = document.getElementById('reg-pop-container');
+
+        bg.style.visibility = 'hidden';
+        pp.style.visibility = 'hidden';
+    }
+</script>
 
 </body>
 </html>

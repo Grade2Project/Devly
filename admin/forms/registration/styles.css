@@ -7,31 +7,35 @@
     font-family: "Roboto Flex Regular", sans-serif;
 }
 
-input[type=text], select, textarea{
+input[type=text], input[type=date], select, textarea{
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    resize: vertical;
+    font-size: medium;
+}
+
+.date_of_birth::-webkit-calendar-picker-indicator {
+    cursor: pointer;
 }
 
 /* Style the label to display next to the inputs */
 label {
-    padding: 12px 12px 12px 0;
+    padding: 16px 16px 16px 0;
     display: inline-block;
     font-family: "Roboto Flex Regular", sans-serif;
 }
 
 /* Style the submit button */
-input[type=submit] {;
+input[type=submit] {
     padding: 12px 20px;
     border-radius: 4px;
     cursor: pointer;
     font-family: "Roboto Flex Regular", sans-serif;
     font-size: 1em;
-    margin: auto;
     display: flex;
+    margin: 20px auto auto auto;
 }
 
 /* Style the container */
@@ -46,14 +50,14 @@ input[type=submit] {;
 /* Floating column for labels: 25% width */
 .label_col {
     float: left;
-    width: 25%;
+    width: 40%;
     margin-top: 6px;
 }
 
 /* Floating column for inputs: 75% width */
 .forms_col {
     float: left;
-    width: 75%;
+    width: 60%;
     margin-top: 6px;
 }
 
@@ -68,7 +72,6 @@ input[type=submit] {;
 @media screen and (max-width: 600px) {
     .label_col, .forms_col, input[type=submit] {
         width: 100%;
-        margin-top: 0;
         font-family: "Roboto Flex Regular", sans-serif;
     }
 }

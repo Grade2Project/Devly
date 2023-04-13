@@ -8,14 +8,15 @@
 
     <style>
         body {
-            background-image: url("svg/Artboard 1.svg");
-            background-size: 100%;
-            background-repeat: no-repeat;
+            background: url("svg/Artboard 1.svg") no-repeat top center;
+            background-size: 1920px 1024px;
         }
     </style>
 </head>
 <body>
-<div id="reg-pop-container" class="registration-popup-container"></div>
+<div id="reg-pop" class="registration-popup">
+    <a class="close" href="javascript:hide()">x</a>
+</div>
 <div id="pp-bg" class="pp-bg blur"></div>
 
 <div class="head-container">
@@ -47,16 +48,21 @@
 <script src="scripts/init.js"></script>
 <script>
     function show() {
-        document.getElementById('pp-bg').style.visibility = 'visible';
-        document.getElementById('reg-pop-container').style.visibility = 'visible';
+        const bg = document.getElementById('pp-bg');
+        const pp = document.getElementById('reg-pop');
+
+        bg.style.visibility = 'visible';
+        pp.style.visibility = 'visible';
+        pp.style.opacity = '1';
     }
 
     function hide() {
         const bg = document.getElementById('pp-bg');
-        const pp = document.getElementById('reg-pop-container');
+        const pp = document.getElementById('reg-pop');
 
         bg.style.visibility = 'hidden';
         pp.style.visibility = 'hidden';
+        pp.style.opacity = '0';
     }
 </script>
 

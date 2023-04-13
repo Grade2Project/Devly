@@ -16,6 +16,14 @@
 <body>
 <div id="reg-pop" class="registration-popup">
     <a class="close" href="javascript:hide()">x</a>
+    <div class="h">Регистрация</div>
+    <div class="input-line">
+        <label for="user_email" class="l">Почта</label><input class="text-input" type="email" id="user_email" placeholder="example@mail.com" required>
+    </div>
+    <div class="input-line">
+        <label for="user_password" class="l">Пароль</label><input class="text-input" type="password" id="user_password" required>
+    </div>
+    <button class="confirm c-button-h" onclick="hide()">Зарегистрироваться</button>
 </div>
 <div id="pp-bg" class="pp-bg blur"></div>
 
@@ -41,8 +49,8 @@
 </div>
 
 <div class="b-container">
-    <div id="bEmployee" class="c-button-outline c-button-h">Начать как работник</div>
-    <div id="bCompany" class="c-button-outline c-button-h">Начать как компания</div>
+    <button id="bEmployee" class="c-button-outline c-button-h">Начать как работник</button>
+    <button id="bCompany" class="c-button-outline c-button-h">Начать как компания</button>
 </div>
 
 <script src="scripts/init.js"></script>
@@ -59,10 +67,14 @@
     function hide() {
         const bg = document.getElementById('pp-bg');
         const pp = document.getElementById('reg-pop');
+        const emailInput = document.getElementById('user_email');
+        const passInput = document.getElementById('user_password');
 
         bg.style.visibility = 'hidden';
         pp.style.visibility = 'hidden';
         pp.style.opacity = '0';
+        emailInput.value = '';
+        passInput.value = '';
     }
 </script>
 

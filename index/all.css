@@ -293,13 +293,13 @@
 }
 
 .input-line .l {
-    width: 40%;
+    width: 50%;
     height: fit-content;
 
     font-family: var(--font-family-roboto);
     font-style: normal;
     font-weight: 300;
-    font-size: 24px;
+    font-size: 22px;
     line-height: 36px;
 
     color: var(--color-black);

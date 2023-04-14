@@ -299,7 +299,7 @@
     font-family: var(--font-family-roboto);
     font-style: normal;
     font-weight: 300;
-    font-size: 30px;
+    font-size: 24px;
     line-height: 36px;
 
     color: var(--color-black);
@@ -374,4 +374,53 @@ input[type="text"] {
 .text-input:focus {
     border-color: #087E8B;
     outline: 0;
+}
+
+.additions {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+
+    width: 100%;
+    height: fit-content;
+}
+
+.additions .l {
+    width: fit-content;
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 36px;
+
+    color: var(--color-light-black);
+    text-align: center;
+    margin: auto 0;
+}
+
+.additions .i {
+    width: fit-content;
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 36px;
+
+    color: var(--color-black);
+    text-align: center;
+    margin: auto 0;
+    border: 0;
+
+    text-decoration: none;
+}
+
+.additions .i:hover {
+    color: var(--color-acsent-green);
 }

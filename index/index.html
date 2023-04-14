@@ -15,17 +15,44 @@
 </head>
 <body>
 <div id="reg-pop" class="registration-popup">
-    <a class="close" href="javascript:hide()">x</a>
-    <div class="h">Регистрация</div>
+    <a class="close" onclick="ppHide('reg-pop')" href="#">x</a>
+    <span class="h">Регистрация</span>
     <div class="input-line">
-        <label for="user_email" class="l">Почта</label><input class="text-input" type="email" id="user_email" placeholder="example@mail.com" required>
+        <label for="reg_user_email" class="l">Почта</label><input class="text-input" type="email" id="reg_user_email"
+                                                                  placeholder="example@mail.com" required>
     </div>
     <div class="input-line">
-        <label for="user_password" class="l">Пароль</label><input class="text-input" type="password" id="user_password" required>
+        <label for="reg_user_password" class="l">Пароль</label><input class="text-input"
+                                                                      type="password"
+                                                                      id="reg_user_password"
+                                                                      required>
     </div>
-    <button class="confirm c-button-h" onclick="hide()">Зарегистрироваться</button>
+    <div class="input-line">
+        <label for="reg_user_password_repeat" class="l">Повторите пароль</label><input class="text-input" type="password" id="reg_user_password_repeat"
+                                                                      required>
+    </div>
+
+    <button class="confirm c-button-h" onclick="ppHide('reg-pop')">Зарегистрироваться</button>
 </div>
 <div id="pp-bg" class="pp-bg blur"></div>
+
+<div id="auth-pop" class="registration-popup">
+    <a class="close" onclick="ppHide('auth-pop')" href="#">x</a>
+    <span class="h">Вход</span>
+    <div class="input-line">
+        <label for="auth_user_email" class="l">Почта</label><input class="text-input" type="email" id="auth_user_email" required>
+    </div>
+    <div class="input-line">
+        <label for="auth_user_password" class="l">Пароль</label><input class="text-input" type="password" id="auth_user_password"
+                                                       required>
+    </div>
+    <button class="confirm c-button-h" onclick="ppHide('auth-pop')">Войти</button>
+
+    <div class="additions">
+        <span class="l">Еще не создали аккаунт?</span>
+        <a class="i" href="#registration" onclick="ppHide('auth-pop'); ppShow('reg-pop')">Зарегистрироваться ></a>
+    </div>
+</div>
 
 <div class="head-container">
     <div class="logo-container">
@@ -37,8 +64,8 @@
             <img src="svg/icons8-search.svg" alt="none">
         </div>
         <div class="right-menu-buttons">
-            <a class="right-menu-button" href="" style="text-decoration: none">Войти</a>
-            <a class="right-menu-button" href="javascript:show()" style="text-decoration: none">Зарегистрироваться</a>
+            <a class="right-menu-button" onclick="ppShow('auth-pop')" href="#authorization" style="text-decoration: none">Войти</a>
+            <a class="right-menu-button" onclick="ppShow('reg-pop')" href="#registration" style="text-decoration: none">Зарегистрироваться</a>
         </div>
     </div>
 </div>
@@ -54,29 +81,6 @@
 </div>
 
 <script src="scripts/init.js"></script>
-<script>
-    function show() {
-        const bg = document.getElementById('pp-bg');
-        const pp = document.getElementById('reg-pop');
-
-        bg.style.visibility = 'visible';
-        pp.style.visibility = 'visible';
-        pp.style.opacity = '1';
-    }
-
-    function hide() {
-        const bg = document.getElementById('pp-bg');
-        const pp = document.getElementById('reg-pop');
-        const emailInput = document.getElementById('user_email');
-        const passInput = document.getElementById('user_password');
-
-        bg.style.visibility = 'hidden';
-        pp.style.visibility = 'hidden';
-        pp.style.opacity = '0';
-        emailInput.value = '';
-        passInput.value = '';
-    }
-</script>
 
 </body>
 </html>

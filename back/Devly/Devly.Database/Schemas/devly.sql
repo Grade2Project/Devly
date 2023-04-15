@@ -11,21 +11,22 @@ create schema if not exists devly
         info       text,
         resume_path text,
         grade_id int references grades(id),
+        contact_id int references contacts(id),
         image_path text default '/images/default.jpg'::text
     )
     create index if not exists user_login_index on users(login)
     
     create table if not exists contacts
     (
-        user_contact_id int primary key references users(id),
+        id serial primary key, 
         phone varchar(13),
         email varchar(32)
     )
         
     create table if not exists grades
     (
-            id serial primary key,
-            grade text 
+        id serial primary key,
+        grade text 
     )
 
     create table if not exists users_passwords

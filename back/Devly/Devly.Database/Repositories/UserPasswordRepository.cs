@@ -13,11 +13,11 @@ internal class UserPasswordRepository : IUserPasswordRepository
         _repository = repository;
     }
 
-    public async Task InsertAsync(int userId, string hashedPassword)
+    public async Task InsertAsync(string userLogin, string hashedPassword)
     {
-        await _repository.InsertAsync(new UserPassword()
+        await _repository.InsertAsync(new UserPassword
         {
-            UserId = userId,
+            UserLogin = userLogin,
             HashedPass = hashedPassword
         }).ConfigureAwait(false);
     }

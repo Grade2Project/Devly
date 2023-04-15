@@ -4,6 +4,6 @@ namespace Devly.Database.Repositories;
 
 public interface IUserPasswordRepository
 {
-    Task InsertAsync(int userId, string hashedPassword);
+    Task InsertAsync(string userLogin, string hashedPassword);
     Task<UserPassword> FindByUserLoginAsync(string login);
 }

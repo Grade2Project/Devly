@@ -35,12 +35,11 @@ public class RegController : Controller
 
     private async Task RegisterInternalAsync(LoginDto userDto)
     {
-        var user = new User()
+        var user = new User
         {
             Login = userDto.Login
         };
         await _userRepository.InsertAsync(user);
-        user = await _userRepository.FindUserByLoginAsync(userDto.Login);
-        await _passwordRepository.InsertAsync(user!.Id, _hasher.HashPassword(userDto.Password));
+        await _passwordRepository.InsertAsync(user!.Login, _hasher.HashPassword(userDto.Password));
     }
 }

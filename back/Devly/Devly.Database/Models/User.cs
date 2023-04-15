@@ -4,7 +4,6 @@ namespace Devly.Database.Models;
 
 public class User
 {
-    public int Id { get; set; }
     public string Login { get; set; }
     public DateTime BirthDate { get; set; }
     public int Age { get; set; }

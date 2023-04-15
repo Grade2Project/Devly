@@ -18,6 +18,11 @@ internal class UserRepository : IUserRepository
         await _repository.InsertAsync(user).ConfigureAwait(false);
     }
 
+    public async Task UpdateAsync(User user)
+    {
+        await _repository.UpdateAsync(user);
+    }
+
     public async Task<User> FindUserByLoginAsync(string login)
     {
         return await _repository.FindAsync<User>(u => u.Login == login).ConfigureAwait(false);

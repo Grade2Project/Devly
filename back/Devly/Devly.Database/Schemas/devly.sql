@@ -4,15 +4,16 @@ create schema if not exists devly
     (
         id         serial
             primary key,
-        login      varchar(32) unique,
-        age        integer                                  not null
+        login      varchar(32) unique not null,
+        age        integer 
             constraint positive_age
                 check (age > 0),
-        name       text                                     not null,
-        city       text                                     not null,
+        name       text,
+        city       text,
         info       text,
-        image_path text default '/images/default.jpg'::text not null
+        image_path text default '/images/default.jpg'::text
     )
+    create index if not exists user_login_index on users(login)
 
     create table if not exists users_passwords
     (

@@ -6,5 +6,5 @@ namespace Devly.Database.Repositories;
 public interface IUserRepository
 {
     Task InsertAsync(User user);
-    Task<User> FindUserByLoginAsync(string login);
+    Task<User?> FindUserByLoginAsync(string login);
 }

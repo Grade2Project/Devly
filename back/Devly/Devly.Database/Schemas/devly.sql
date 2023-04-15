@@ -1,21 +1,20 @@
-create
-database devly;
+create schema if not exists devly
 
-create schema devly
-
-    create table users
+    create table if not exists users
     (
-        id         serial primary key,
+        id         serial
+            primary key,
         login      varchar(32) unique,
-        age        integer     not null
-            constraint positive_age check (age > 0),
-        name       varchar(64) not null,
-        city       varchar(64) not null,
+        age        integer                                  not null
+            constraint positive_age
+                check (age > 0),
+        name       text                                     not null,
+        city       text                                     not null,
         info       text,
         image_path text default '/images/default.jpg'::text not null
     )
 
-    create table users_passwords
+    create table if not exists users_passwords
     (
         user_id     integer      not null
             primary key
@@ -24,13 +23,34 @@ create schema devly
         hashed_pass varchar(512) not null
     )
 
-    create table programming_languages
+    create table if not exists companies
     (
-        id            serial primary key,
+        id           serial primary key,
+        company_name text not null,
+        info         text
+    )
+
+    create table if not exists programming_languages
+    (
+        id            serial
+            primary key,
         language_name varchar(10) not null
     )
 
-    create table users_favorite_languages
+    create table if not exists vacancies
+    (
+        id                      serial primary key,
+        company_id              integer not null
+            references companies (id)
+                on update cascade on delete cascade,
+        programming_language_id integer not null
+            references programming_languages (id)
+                on update cascade on delete cascade,
+        salary                  int     not null,
+        info                    text    not null
+    )
+
+    create table if not exists users_favorite_languages
     (
         user_id                 integer not null
             references users (id)
@@ -41,14 +61,28 @@ create schema devly
         primary key (user_id, programming_language_id)
     )
 
-    create table likes
+    create table if not exists users_favorite_vacancies
     (
-        who_liked_user_id integer not null
+        user_id    integer not null
             references users (id)
                 on update cascade on delete cascade,
-        was_liked_user_id integer not null
+        vacancy_id integer not null
+            references vacancies (id)
+                on update cascade on delete cascade,
+        primary key (user_id, vacancy_id)
+    )
+
+    create table if not exists companies_favorite_users
+    (
+        company_id integer not null
+            references companies (id)
+                on update cascade on delete cascade,
+        user_id    integer not null
             references users (id)
                 on update cascade on delete cascade,
-        primary key (who_liked_user_id, was_liked_user_id)
-    );
+        primary key (company_id, user_id)
+    )
+
+
+
 

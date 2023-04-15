@@ -8,7 +8,7 @@ namespace Devly.Database.Context
     public class DevlyDbContext : EfDbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<UserPassword> UserPasswords { get; set; }
+        public DbSet<UsersPassword> UsersPasswords { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Contact> Contacts { get; set; }
 

@@ -15,15 +15,15 @@ internal class UserPasswordRepository : IUserPasswordRepository
 
     public async Task InsertAsync(string userLogin, string hashedPassword)
     {
-        await _repository.InsertAsync(new UserPassword
+        await _repository.InsertAsync(new UsersPassword
         {
             UserLogin = userLogin,
             HashedPass = hashedPassword
         }).ConfigureAwait(false);
     }
 
-    public async Task<UserPassword> FindByUserLoginAsync(string login)
+    public async Task<UsersPassword> FindByUserLoginAsync(string login)
     {
-        return await _repository.FindAsync<UserPassword>(u => u.User.Login == login).ConfigureAwait(false);
+        return await _repository.FindAsync<UsersPassword>(u => u.UserLogin == login).ConfigureAwait(false);
     }
 }

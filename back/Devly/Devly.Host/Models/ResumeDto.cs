@@ -12,4 +12,5 @@ public class ResumeDto
     public byte[] Photo { get; init; }
     public string Email { get; init; }
     public string Phone { get; init; }
+    public string ImagePath { get; init; }
 }

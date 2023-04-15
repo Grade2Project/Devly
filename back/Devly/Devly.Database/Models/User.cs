@@ -6,7 +6,6 @@ public class User
 {
     public string Login { get; set; }
     public DateTime BirthDate { get; set; }
-    public int Age { get; set; }
     public int GradeId { get; set; }
     [ForeignKey("GradeId")]
     public Grade Grade { get; set; }

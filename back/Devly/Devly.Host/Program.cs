@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Devly.Configs;
 using Devly.Database.Context;
 using Devly.Database.Extensions.DI;
 using Microsoft.OpenApi.Models;
@@ -19,6 +20,7 @@ services.AddSwaggerGen(s => s.SwaggerDoc("v1", new OpenApiInfo()
 services
     .AddNpgsqlDbContext<DevlyDbContext>(config.GetConnectionString("Postgres"))
     .AddDatabase();
+services.Configure<AuthConfig>(config.GetRequiredSection("Auth"));
 
 var app = builder.Build();
 

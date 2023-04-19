@@ -19,7 +19,11 @@ public class ResumeController : Controller
     {
         try
         {
-            await _userRepository.UpdateAsync(resumeDto.MapToUser());
+            var resumeToUser = resumeDto.MapToUser();
+            if (await _userRepository.FindUserByLoginAsync(resumeDto.Login) != null)
+                await _userRepository.UpdateAsync(resumeToUser);
+            else
+                await _userRepository.InsertAsync(resumeToUser);
         }
         catch (Exception e)
         {

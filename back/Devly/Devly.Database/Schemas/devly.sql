@@ -1,11 +1,10 @@
 
-
 create schema devly;
 
 create table if not exists devly.grades
 (
     id    serial primary key,
-    grade text
+    value text
 );
 
 create table if not exists devly.contacts

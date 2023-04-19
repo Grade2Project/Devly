@@ -27,4 +27,10 @@ internal class UserRepository : IUserRepository
     {
         return await _repository.FindAsync<User>(u => u.Login == login).ConfigureAwait(false);
     }
+
+    public async Task<User> GetRandomUser()
+    {
+        return await _repository.FindAsync<User>(u => u.Name != null, CancellationToken.None,
+            x => x.Contact).ConfigureAwait(false);
+    }
 }

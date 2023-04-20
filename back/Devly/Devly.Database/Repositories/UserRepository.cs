@@ -7,10 +7,12 @@ namespace Devly.Database.Repositories;
 internal class UserRepository : IUserRepository
 {
     private readonly IDbRepository<DevlyDbContext> _repository;
+    private readonly Random _random;
 
-    public UserRepository(IDbRepository<DevlyDbContext> repository)
+    public UserRepository(IDbRepository<DevlyDbContext> repository, Random random)
     {
         _repository = repository;
+        _random = random;
     }
 
     public async Task InsertAsync(User user)
@@ -30,7 +32,11 @@ internal class UserRepository : IUserRepository
 
     public async Task<User> GetRandomUser()
     {
-        return await _repository.FindAsync<User>(u => u.Name != null, CancellationToken.None,
-            x => x.Contact).ConfigureAwait(false);
+        var users = await _repository.FindAllAsync<User>
+            (x => x.Login != null, CancellationToken.None).ConfigureAwait(false);
+        var maxId = users.Max(x => x.ContactId);
+        var randomId = _random.Next(1, maxId + 1);
+        return await _repository.FindAsync<User>(x => x.ContactId == randomId, CancellationToken.None,
+            user => user.Contact, user => user.Grade).ConfigureAwait(false);
     }
 }

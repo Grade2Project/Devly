@@ -11,10 +11,11 @@ public static class UserExtensions
         {
             BirthDate = user.BirthDate,
             City = user.City,
-            Email = user.Contact.Email,
             Info = user.Info,
             Name = user.Name,
-            Phone = user.Contact.Phone
+            Email = user.Contact.Email,
+            Phone = user.Contact.Phone,
+            Grade = user.Grade.Value
         };
     }
 }

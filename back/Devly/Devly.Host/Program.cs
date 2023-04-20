@@ -21,6 +21,7 @@ services.AddCors(options =>
         });
 });
 
+services.AddSingleton<Random, Random>();
 services.AddControllers().AddJsonOptions(o =>
 {
     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());

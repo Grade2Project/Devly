@@ -4,8 +4,16 @@ create schema devly;
 create table if not exists devly.grades
 (
     id    serial primary key,
-    value text
+    value text unique 
 );
+
+insert into devly.grades(value) values 
+                                    ('Junior'),
+                                    ('Junior+'),
+                                    ('Middle'),
+                                    ('Middle+'),
+                                    ('Senior'),
+                                    ('Lead');
 
 create table if not exists devly.contacts
 (

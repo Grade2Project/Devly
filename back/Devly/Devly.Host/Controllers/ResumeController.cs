@@ -8,10 +8,12 @@ namespace Devly.Controllers;
 public class ResumeController : Controller
 {
     private readonly IUserRepository _userRepository;
+    private readonly IGradesRepository _gradesRepository;
 
-    public ResumeController(IUserRepository userRepository)
+    public ResumeController(IUserRepository userRepository, IGradesRepository gradesRepository)
     {
         _userRepository = userRepository;
+        _gradesRepository = gradesRepository;
     }
     
     [HttpPost, Route("resume/update")]
@@ -19,7 +21,10 @@ public class ResumeController : Controller
     {
         try
         {
-            var resumeToUser = resumeDto.MapToUser();
+            var grade = await _gradesRepository.FindGrade(resumeDto.Grade);
+            if (grade == null)
+                throw new ArgumentException();
+            var resumeToUser = resumeDto.MapToUser(grade);
             if (await _userRepository.FindUserByLoginAsync(resumeDto.Login) != null)
                 await _userRepository.UpdateAsync(resumeToUser);
             else

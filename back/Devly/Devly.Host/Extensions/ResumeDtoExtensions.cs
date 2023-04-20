@@ -13,7 +13,7 @@ public static class ResumeDtoExtensions
             BirthDate = resumeDto.BirthDate,
             City = resumeDto.City,
             Contact = new Contact { Email = resumeDto.Email, Phone = resumeDto.Phone },
-            Grade = grade,
+            GradeId = grade.Id,
             ImagePath = resumeDto.ImagePath,
             Info = resumeDto.Info,
             Name = resumeDto.Name

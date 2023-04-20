@@ -18,4 +18,9 @@ internal class GradesRepository : IGradesRepository
         return _repository.FindAllAsync<User>(user => user.Grade.Value == grade, default, 
             u => u.Grade);
     }
+
+    public Task<Grade> FindGrade(string gradeName)
+    {
+        return _repository.FindAsync<Grade>(grade => grade.Value == gradeName);
+    }
 }

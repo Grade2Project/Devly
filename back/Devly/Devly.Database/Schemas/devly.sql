@@ -4,8 +4,16 @@ create schema devly;
 create table if not exists devly.grades
 (
     id    serial primary key,
-    value text
+    value text unique 
 );
+
+insert into devly.grades(value) values 
+                                    ('Junior'),
+                                    ('Junior+'),
+                                    ('Middle'),
+                                    ('Middle+'),
+                                    ('Senior'),
+                                    ('Lead');
 
 create table if not exists devly.contacts
 (
@@ -23,14 +31,14 @@ create table if not exists devly.users_passwords
 
 create table if not exists devly.users
 (
-    login       varchar(32) references users_passwords (user_login) primary key,
+    login       varchar(32) references devly.users_passwords (user_login) primary key,
     birth_date  date,
     name        text,
     city        text,
     info        text,
     resume_path text,
-    grade_id    int references grades (id),
-    contact_id  int references contacts (id),
+    grade_id    int references devly.grades (id),
+    contact_id  int references devly.contacts (id),
     image_path  text default '/images/default.jpg'::text
     );
 
@@ -51,9 +59,9 @@ create table if not exists devly.vacancies
 (
     id                      serial primary key,
     company_id              integer not null
-    references companies (id),
+    references devly.companies (id),
     programming_language_id integer not null
-    references programming_languages (id),
+    references devly.programming_languages (id),
     salary                  int     not null,
     info                    text    not null
     );
@@ -61,27 +69,27 @@ create table if not exists devly.vacancies
 create table if not exists devly.users_favorite_languages
 (
     user_login              varchar(32) not null
-    references users (login),
+    references devly.users (login),
     programming_language_id integer     not null
-    references programming_languages (id),
+    references devly.programming_languages (id),
     primary key (user_login, programming_language_id)
     );
 
 create table if not exists devly.users_favorite_vacancies
 (
     user_login varchar(32) not null
-    references users (login),
+    references devly.users (login),
     vacancy_id integer     not null
-    references vacancies (id),
+    references devly.vacancies (id),
     primary key (user_login, vacancy_id)
     );
 
 create table if not exists devly.companies_favorite_users
 (
     company_id integer     not null
-    references companies (id),
+    references devly.companies (id),
     user_login varchar(32) not null
-    references users (login),
+    references devly.users (login),
     primary key (company_id, user_login)
     );
 

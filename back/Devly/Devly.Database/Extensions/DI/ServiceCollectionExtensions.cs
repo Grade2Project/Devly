@@ -30,6 +30,7 @@ public static class ServiceCollectionExtensions
     {
         services.TryAddSingleton<IUserRepository, UserRepository>();
         services.TryAddSingleton<IUserPasswordRepository, UserPasswordRepository>();
+        services.TryAddSingleton<IGradesRepository, GradesRepository>();
         
         return services;
     }

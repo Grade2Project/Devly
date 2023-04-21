@@ -12,8 +12,8 @@ const HTTPMethods = {
 
 const HOME = 'http://localhost:5003';
 
-const submit = document.getElementById('reg_submit');
-submit.addEventListener('click', (e) => {
+const regSubmit = document.getElementById('reg_submit');
+regSubmit.addEventListener('click', (e) => {
     const userEmail = document.getElementById('reg_user_email');
     const userPass = document.getElementById('reg_user_password');
 
@@ -25,10 +25,21 @@ submit.addEventListener('click', (e) => {
     sendData({
         login: userEmail.value,
         password: userPass.value
-    });
+    }, Controllers.REG);
 });
 
-function sendData (data) {
+const authSubmit = document.getElementById('auth_submit');
+authSubmit.addEventListener('click', (e) => {
+    const userEmail = document.getElementById('auth_user_email');
+    const userPass = document.getElementById('auth_user_password');
+
+    sendData({
+        login: userEmail.value,
+        password: userPass.value
+    }, Controllers.AUTH);
+})
+
+function sendData (data, controller) {
     const XHR = new XMLHttpRequest();
     const json = JSON.stringify(data);
 
@@ -36,7 +47,7 @@ function sendData (data) {
         alert('Oops! Something went wrong.');
     });
 
-    let url = `${HOME}${Controllers.REG}`;
+    let url = `${HOME}${controller}`;
 
     XHR.open(HTTPMethods.POST, url);
     XHR.setRequestHeader('Content-Type', 'application/json');

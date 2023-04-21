@@ -316,7 +316,7 @@ button {
     appearance: none;
 }
 
-.registration-popup .confirm {
+.confirm {
     padding: 18px 45px;
 
     width: fit-content;
@@ -330,7 +330,7 @@ button {
     transition: box-shadow 100ms linear;
 }
 
-.registration-popup .confirm:hover {
+.confirm:hover {
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
@@ -424,3 +424,79 @@ input[type="text"] {
 .additions .i:hover {
     color: var(--color-acsent-green);
 }
+
+.c-form  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 60px 60px;
+    gap: 65px;
+    margin: 150px auto;
+
+    min-width: 1000px;
+    width: fit-content;
+
+    min-height: fit-content;
+    height: fit-content;
+
+    background: #FFFFFF;
+    box-shadow: 0 4px 20px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 40px;
+}
+
+.c-form .cfl {
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 64px;
+    line-height: 77px;
+
+
+    color: var(--color-black);
+
+    width: 100%;
+    height: fit-content;
+}
+
+.c-form-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    gap: 20px;
+
+    font-size: 24px;
+
+    width: 100%;
+    height: fit-content;
+}
+
+.c-form-block .fbl {
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 42px;
+    line-height: 51px;
+
+    color: var(--color-black);
+}
+
+.rb-group {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0.375rem 0;
+    margin-left: -12px;
+    gap: 10px;
+
+    width: 100%;
+    height: fit-content;
+}
+
+input[type=radio] {
+    border: 0;
+    width: 30px;
+    height: 2em;
+}
+

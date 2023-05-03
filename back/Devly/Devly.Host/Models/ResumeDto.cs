@@ -14,3 +14,8 @@ public class ResumeDto
     public string Phone { get; init; }
     public string ImagePath { get; init; }
 }
+
+// Info - json.
+// Photo
+// Nginx
+// Grades с сервера 

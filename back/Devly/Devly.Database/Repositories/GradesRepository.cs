@@ -13,14 +13,19 @@ internal class GradesRepository : IGradesRepository
         _repository = repository;
     }
 
-    public Task<IReadOnlyList<User>> FindAllUsersByGrade(string grade)
+    public async Task<IReadOnlyList<User>> FindAllUsersByGrade(string grade)
     {
-        return _repository.FindAllAsync<User>(user => user.Grade.Value == grade, default, 
+        return await _repository.FindAllAsync<User>(user => user.Grade.Value == grade, default, 
             u => u.Grade);
     }
 
-    public Task<Grade> FindGrade(string gradeName)
+    public async Task<Grade> FindGrade(string gradeName)
     {
-        return _repository.FindAsync<Grade>(grade => grade.Value == gradeName);
+        return await _repository.FindAsync<Grade>(grade => grade.Value == gradeName);
+    }
+
+    public async Task<IReadOnlyList<Grade>> GetAllGrades()
+    {
+        return await _repository.FindAllAsync<Grade>(grade => grade.Value != null).ConfigureAwait(false);
     }
 }

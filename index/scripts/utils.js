@@ -25,21 +25,24 @@ function getInputValueById(id) {
     return candidate.value;
 }
 
-async function sendJSON (controller, data, responseFunc) {
+async function sendJSON (data, controller, processResponse) {
     const json = JSON.stringify(data);
 
-    XHR.onload = () => responseFunc(XHR.response);
     XHR.open(HTTPMethods.POST, controller, true);
     XHR.setRequestHeader('Content-Type', 'application/json');
+
+    XHR.responseType = 'json';
+    XHR.onload = () => processResponse(XHR.status, XHR.response);
 
     XHR.send(json);
 }
 
-async function fetchJSON (controller, func) {
+async function fetchJSON (controller, processResponse) {
     XHR.open(HTTPMethods.GET, controller, true);
-    XHR.responseType = 'json';
 
-    XHR.onload = () => func(XHR.response);
+    XHR.responseType = 'json';
+    XHR.onload = () => processResponse(XHR.response);
+
     XHR.send();
 }
 

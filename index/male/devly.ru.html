@@ -92,8 +92,8 @@
         <span class="c-button-h">Начать как компания</span></button>
 </div>
 
-<script src="../scripts/init.js"></script>
-<script src="../scripts/authorization.js"></script>
+<script src="../scripts/popup.js"></script>
+<script src="../scripts/utils.js"></script>
 <script>
     const inputs = document.querySelectorAll('input');
     for (let i of inputs) {
@@ -106,6 +106,37 @@
             }
         });
     }
+
+    const regSubmit = document.getElementById('reg_submit');
+    regSubmit.addEventListener('click', (e) => {
+        const userEmail = document.getElementById('reg_user_email');
+        const userPass = document.getElementById('reg_user_password');
+
+        if (!userEmail.checkValidity()){
+            alert('Invalid');
+            return;
+        }
+
+        sendJSON({
+            login: userEmail.value,
+            password: userPass.value
+        }, Controllers.REG, (response) => {
+            console.log(response);
+        });
+    });
+
+    const authSubmit = document.getElementById('auth_submit');
+    authSubmit.addEventListener('click', (e) => {
+        const userEmail = document.getElementById('auth_user_email');
+        const userPass = document.getElementById('auth_user_password');
+
+        sendJSON({
+            login: userEmail.value,
+            password: userPass.value
+        }, Controllers.AUTH, (response) => {
+            console.log(response);
+        });
+    });
 </script>
 
 </body>

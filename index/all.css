@@ -1,3 +1,6 @@
+/** {*/
+/*    outline: red 2px dashed; !* DEBUG *!*/
+/*}*/
 
 .head-container {
     position: fixed;
@@ -509,7 +512,5 @@ input[type=radio] {
     height: 2em;
 }
 
-.debug {
-    outline: red 3px dot-dash;
-}
+
 

@@ -113,8 +113,8 @@
     position: absolute;
     width: 1110px;
     height: fit-content;
-    top: 160px;
-    left: 80px;
+    top: 200px;
+    left: 150px;
     gap: 30px;
 }
 
@@ -137,7 +137,6 @@
     color: var(--color-acsent-green);
 }
 
-
 .cc-h2 {
     font-family: var(--font-family-roboto);
     width: 608px;
@@ -154,7 +153,7 @@
     display: flex;
     position: absolute;
     bottom: 100px;
-    left: 80px;
+    left: 150px;
     justify-content: flex-start;
     flex-direction: row;
     gap: 100px;
@@ -179,18 +178,28 @@
     text-align: center;
     letter-spacing: -0.02em;
     color: var(--color-white);
+    background: transparent;
 }
 
 .c-button-outline {
-    appearance: none;
     border: 2px solid var(--color-black);
     border-radius: 50px;
     text-align: center;
+    background: transparent;
 
     width: fit-content;
     height: fit-content;
     min-width: 250px;
     padding: 25px 65px 25px 65px;
+    cursor: pointer;
+}
+
+.color-green {
+    background-color: var(--color-acsent-green);
+}
+
+.color-red {
+    background-color: var(--color-acsent-red);
 }
 
 .registration-popup {
@@ -498,5 +507,9 @@ input[type=radio] {
     border: 0;
     width: 30px;
     height: 2em;
+}
+
+.debug {
+    outline: red 3px dot-dash;
 }
 

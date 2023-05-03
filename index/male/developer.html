@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <link rel="stylesheet" href="all.css">
-    <link rel="stylesheet" href="styleguide.css">
+    <link rel="stylesheet" href="../all.css">
+    <link rel="stylesheet" href="../styleguide.css">
 
     <style>
         body {
@@ -137,5 +137,19 @@
 
         <button class="confirm c-button-h" id="form_submit" type="submit">Отправить</button>
     </div>
+
+<script>
+    const inputs = document.querySelectorAll('input');
+    for (let i of inputs) {
+        i.addEventListener('blur', function () {
+            if (!(i.checkValidity()) && i.required) {
+                i.classList.add('invalid');
+            }
+            else {
+                i.classList.remove('invalid');
+            }
+        });
+    }
+</script>
 </body>
 </html>

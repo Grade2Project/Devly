@@ -39,18 +39,22 @@ authSubmit.addEventListener('click', (e) => {
     }, Controllers.AUTH);
 })
 
+const XHR = new XMLHttpRequest();
+XHR.onload = function (ev) {
+    console.log(`${XHR.status}: ${XHR.statusText}`);
+}
+
 function sendData (data, controller) {
-    const XHR = new XMLHttpRequest();
     const json = JSON.stringify(data);
 
     XHR.addEventListener('error', function(event) {
+        console.log(event.target);
         alert('Oops! Something went wrong.');
     });
 
     let url = `${HOME}${controller}`;
 
-    XHR.open(HTTPMethods.POST, url);
+    XHR.open(HTTPMethods.POST, url, true);
     XHR.setRequestHeader('Content-Type', 'application/json');
-    // XHR.setRequestHeader('Access-Control-Allow-Origin', 'https://localhost:7172');
     XHR.send(json);
 }

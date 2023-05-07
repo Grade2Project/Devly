@@ -54,6 +54,21 @@ create table if not exists devly.programming_languages
     id            serial primary key,
     language_name varchar(10) not null
     );
+insert into devly.programming_languages(language_name) values
+                                                           ('C++'),
+                                                           ('C#'),
+                                                           ('Java'),
+                                                           ('JavaScript'),
+                                                           ('Python'),
+                                                           ('Ruby'),
+                                                           ('Haskel'),
+                                                           ('Pascal'),
+                                                           ('Scratch'),
+                                                           ('Go'),
+                                                           ('Basic'),
+                                                           ('PHP'),
+                                                           ('HTML'),
+                                                           ('CSS');
 
 create table if not exists devly.vacancies
 (

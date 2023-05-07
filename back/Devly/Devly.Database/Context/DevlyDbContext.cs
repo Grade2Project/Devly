@@ -11,6 +11,7 @@ namespace Devly.Database.Context
         public DbSet<UsersPassword> UsersPasswords { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; }
 
         public DevlyDbContext(DbContextOptions<DevlyDbContext> options) : base(options)
         {

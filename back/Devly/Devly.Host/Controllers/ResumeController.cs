@@ -12,18 +12,33 @@ public class ResumeController : Controller
     private readonly IGradesRepository _gradesRepository;
     private readonly IProgrammingLanguagesRepository _programmingLanguagesRepository;
     private readonly IUsersFavoriteLanguagesRepository _usersFavoriteLanguagesRepository;
+    private readonly ICompaniesRepository _companiesRepository;
+    private readonly IVacancyRepository _vacancyRepository;
 
     public ResumeController(IUserRepository userRepository,
         IGradesRepository gradesRepository,
         IProgrammingLanguagesRepository programmingLanguagesRepository,
-        IUsersFavoriteLanguagesRepository usersFavoriteLanguagesRepository)
+        IUsersFavoriteLanguagesRepository usersFavoriteLanguagesRepository,
+        ICompaniesRepository companiesRepository, IVacancyRepository vacancyRepository)
     {
         _userRepository = userRepository;
         _gradesRepository = gradesRepository;
         _programmingLanguagesRepository = programmingLanguagesRepository;
         _usersFavoriteLanguagesRepository = usersFavoriteLanguagesRepository;
+        _companiesRepository = companiesRepository;
+        _vacancyRepository = vacancyRepository;
     }
-    
+
+    [HttpPost, Route("vacancy/update")]
+    public async Task<IActionResult> AddVacancy([FromBody] VacancyDto vacancyDto)
+    {
+        var vacancy = await DtoToVacancy(vacancyDto);
+        if (vacancy is null || await _vacancyRepository.FindVacancyAsync(vacancy) != null)
+            return StatusCode(400, "Bad Vacancy");
+        await _vacancyRepository.InsertAsync(vacancy);
+        return Ok();
+    }
+
     [HttpPost, Route("resume/update")]
     public async Task<IActionResult> UpdateResume([FromBody] ResumeDto resumeDto)
     {
@@ -32,7 +47,7 @@ public class ResumeController : Controller
             var resumeToUser = await ResumeToUser(resumeDto);
             if (resumeToUser is null)
                 return StatusCode(400, "Bad Grade");
-            var usersFavoriteLanguages = await GetUsersFavoriteLanguages(resumeDto.FavoriteLanguages)!;
+            var usersFavoriteLanguages = await LanguagesToDbLanguages(resumeDto.FavoriteLanguages)!;
             if (usersFavoriteLanguages is null)
                 return StatusCode(400, "Bad Languages");
             if (await _userRepository.FindUserByLoginAsync(resumeDto.Login) != null)
@@ -60,7 +75,24 @@ public class ResumeController : Controller
         return grade == null ? null : resumeDto.MapToUser(grade);
     }
 
-    private async Task<ProgrammingLanguage[]>? GetUsersFavoriteLanguages(string[] languages)
+    private async Task<Vacancy?> DtoToVacancy(VacancyDto vacancyDto)
+    {
+        var company = await _companiesRepository.GetCompanyByName(vacancyDto.CompanyName);
+        if (company is null)
+            return null;
+        var language = await LanguagesToDbLanguages(vacancyDto.ProgrammingLanguage)!;
+        if (language is null)
+            return null;
+        return new Vacancy
+        {
+            CompanyId = company.Id,
+            Info = vacancyDto.Info,
+            ProgrammingLanguageId = language.First().Id,
+            Salary = vacancyDto.Salary
+        };
+    } 
+
+    private async Task<ProgrammingLanguage[]>? LanguagesToDbLanguages(params string[] languages)
     {
         var favoriteLanguages = new List<ProgrammingLanguage>();
         foreach (var languageName in languages)

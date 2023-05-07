@@ -23,12 +23,18 @@ public class ResumeController : Controller
         {
             var grade = await _gradesRepository.FindGrade(resumeDto.Grade);
             if (grade == null)
+            {
                 throw new ArgumentException();
+            }
             var resumeToUser = resumeDto.MapToUser(grade);
             if (await _userRepository.FindUserByLoginAsync(resumeDto.Login) != null)
+            {
                 await _userRepository.UpdateAsync(resumeToUser);
+            }
             else
+            {
                 await _userRepository.InsertAsync(resumeToUser);
+            }
         }
         catch (Exception e)
         {

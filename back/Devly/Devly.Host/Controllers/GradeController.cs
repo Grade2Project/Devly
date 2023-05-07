@@ -8,17 +8,17 @@ namespace Devly.Controllers;
 public class GradeController : Controller
 {
     private readonly IGradesRepository _repository;
-    private readonly IReadOnlyList<string> grades;
+    private readonly IReadOnlyList<string> _grades;
 
     public GradeController(IGradesRepository repository)
     {
         _repository = repository;
-        grades = _repository.GetAllGrades().Result.Select(x => x.Value).ToList();
+        _grades = _repository.GetAllGrades().Result.Select(x => x.Value).ToList();
     }
 
     [HttpGet, Route("get")]
-    public async Task<ArrayDto<string>> GetGrades()
+    public Task<ArrayDto<string>> GetGrades()
     {
-        return new ArrayDto<string>(grades);
+        return Task.FromResult(new ArrayDto<string>(_grades));
     }
 }

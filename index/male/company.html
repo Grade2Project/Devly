@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../styleguide.css">
+    <link rel="stylesheet" href="../all.css">
+
+    <style>
+        body {
+            background: var(--color-background);
+        }
+    </style>
+</head>
+<body>
+    <div class="c-form">
+        <label class="cfl">О Компании</label>
+        <div class="c-form-block">
+            <div class="input-line">
+                <label for="company_name" class="l">Название компании</label>
+                <input class="text-input" type="text" id="company_name" required>
+            </div>
+
+            <div class="input-line">
+                <label for="company_inn" class="l">ИНН</label>
+                <input class="text-input" type="text" id="company_inn" maxlength="12" required>
+            </div>
+
+            <div class="input-line">
+                <label for="company_tel" class="l">Телефон</label>
+                <input class="text-input"
+                       type="tel"
+                       minlength="11"
+                       maxlength="12"
+                       id="company_tel"
+                       placeholder="+7"
+                       required>
+            </div>
+
+            <div class="input-line">
+                <label for="company_link" class="l">Сайт (если есть)</label>
+                <input class="text-input" type="text" id="company_link">
+            </div>
+        </div>
+
+        <button class="confirm c-button-h" id="form_submit" type="submit">Продолжить</button>
+    </div>
+
+<script src="../scripts/utils.js"></script>
+<script src="../scripts/inputsValidity.js"></script>
+</body>
+</html>

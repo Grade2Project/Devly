@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../styleguide.css">
+    <link rel="stylesheet" href="../all.css">
+
+    <style>
+        body {
+            background: url("../svg/Artboard 1.svg") no-repeat top center;
+            background-size: 1920px 1024px;
+        }
+    </style>
+</head>
+<body>
+<div id="reg-pop" class="registration-popup">
+    <a class="close" onclick="ppHide('reg-pop')" href="#">x</a>
+    <span class="h">Регистрация</span>
+    <div class="input-line">
+        <label for="reg_user_email" class="l">Почта</label><input class="text-input"
+                                                                  type="email"
+                                                                  id="reg_user_email"
+                                                                  placeholder="example@mail.com"
+                                                                  required>
+    </div>
+    <div class="input-line">
+        <label for="reg_user_password" class="l">Пароль</label><input class="text-input"
+                                                                      type="password"
+                                                                      id="reg_user_password"
+                                                                      required>
+    </div>
+    <div class="input-line">
+        <label for="reg_user_password_repeat" class="l">Повторите пароль</label><input class="text-input"
+                                                                                       type="password"
+                                                                                       id="reg_user_password_repeat"
+                                                                                       required>
+    </div>
+
+    <button id="reg_submit" type="submit" class="confirm c-button-h">Зарегистрироваться</button>
+</div>
+<div id="pp-bg" class="pp-bg blur"></div>
+
+<div id="auth-pop" class="registration-popup">
+    <a class="close" onclick="ppHide('auth-pop')" href="#">x</a>
+    <span class="h">Вход</span>
+    <div class="input-line">
+        <label for="auth_user_email" class="l">Почта</label><input class="text-input"
+                                                                   type="email"
+                                                                   id="auth_user_email"
+                                                                   required>
+    </div>
+    <div class="input-line">
+        <label for="auth_user_password" class="l">Пароль</label><input class="text-input"
+                                                                       type="password"
+                                                                       id="auth_user_password"
+                                                                       required>
+    </div>
+    <button id="auth_submit" type="submit" class="confirm c-button-h">Войти</button>
+
+    <div class="additions">
+        <span class="l">Еще не создали аккаунт?</span>
+        <a class="i" href="#regestration" onclick="ppHide('auth-pop'); ppShow('reg-pop')">Зарегистрироваться ></a>
+    </div>
+</div>
+
+<div class="head-container">
+    <div class="logo-container">
+        <div class="lv"></div>
+        <div class="lt">Devly</div>
+    </div>
+    <div class="right-menu-container">
+        <div class="search search-img">
+            <img src="../svg/icons8-search.svg" alt="none">
+        </div>
+        <div class="right-menu-buttons">
+            <a class="right-menu-button" onclick="ppShow('auth-pop')" href="#authorization" style="text-decoration: none">Войти</a>
+            <a class="right-menu-button" onclick="ppShow('reg-pop')" href="#registration" style="text-decoration: none">Зарегистрироваться</a>
+        </div>
+    </div>
+</div>
+
+<div class="central-container">
+    <span class="cc-h1">#Работа найдется для каждого</span>
+    <span class="cc-h2">Платформа для поиска вакансий и работников</span>
+</div>
+
+<div class="b-container">
+    <button id="bEmployee" class="c-button-outline color-red" onclick="location.href = 'developer.html'">
+        <span class="c-button-h">Начать как работник</span></button>
+    <button id="bCompany" class="c-button-outline color-green" onclick="location.href = 'company.html'">
+        <span class="c-button-h">Начать как компания</span></button>
+</div>
+
+<script src="../scripts/popup.js"></script>
+<script src="../scripts/utils.js"></script>
+<script src="../scripts/inputsValidity.js"></script>
+<script>
+    function register(login, password) {
+        if (alertOnInvalidity(login)) return;
+
+        sendJSON({
+                login: login.value,
+                password: password.value
+            }, Controllers.REG,
+            (statusCode) => {
+                if (statusCode === 200) {
+                    console.log('Успешная регистрация');
+                    auth(login, password);
+                }
+                else { console.log('Ошибка регистрации'); }
+            });
+    }
+
+    function auth(login, password) {
+        sendJSON({
+            login: login.value,
+            password: password.value
+        }, Controllers.AUTH, (statusCode, response) => {
+            console.log(statusCode === 200 ? 'Успешная авторизация' : `Ошибка авторизации: ${statusCode}`);
+            if (response) console.log(response);
+        });
+    }
+
+    const regSubmit = document.getElementById('reg_submit');
+    regSubmit.addEventListener('click', () => register(
+        document.getElementById('reg_user_email'),
+        document.getElementById('reg_user_password')));
+
+    const authSubmit = document.getElementById('auth_submit');
+    authSubmit.addEventListener('click', () => auth(
+        document.getElementById('auth_user_email'),
+        document.getElementById('auth_user_password')));
+</script>
+
+</body>
+</html>

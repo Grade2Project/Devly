@@ -88,30 +88,16 @@
 <div class="b-container">
     <button id="bEmployee" class="c-button-outline color-red" onclick="location.href = 'developer.html'">
         <span class="c-button-h">Начать как работник</span></button>
-    <button id="bCompany" class="c-button-outline color-green">
+    <button id="bCompany" class="c-button-outline color-green" onclick="location.href = 'company.html'">
         <span class="c-button-h">Начать как компания</span></button>
 </div>
 
 <script src="../scripts/popup.js"></script>
 <script src="../scripts/utils.js"></script>
+<script src="../scripts/inputsValidity.js"></script>
 <script>
-    const inputs = document.querySelectorAll('input');
-    for (let i of inputs) {
-        i.addEventListener('blur', function () {
-            if (!(i.checkValidity()) && i.required) {
-                i.classList.add('invalid');
-            }
-            else {
-                i.classList.remove('invalid');
-            }
-        });
-    }
-
     function register(login, password) {
-        if (!login.checkValidity()){
-            alert('Invalid');
-            return;
-        }
+        if (alertOnInvalidity(login)) return;
 
         sendJSON({
                 login: login.value,

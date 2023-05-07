@@ -130,24 +130,13 @@
             </div>
         </div>
 
-        <button class="confirm c-button-h" id="form_submit" type="submit">Отправить</button>
+        <button class="confirm c-button-h" id="form_submit" type="submit">Продолжить</button>
     </div>
 
 
 <script src="../scripts/utils.js"></script>
+<script src="../scripts/inputsValidity.js"></script>
 <script>
-    const inputs = document.querySelectorAll('input');
-    for (let i of inputs) {
-        i.addEventListener('blur', function () {
-            if (!(i.checkValidity()) && i.required) {
-                i.classList.add('invalid');
-            }
-            else {
-                i.classList.remove('invalid');
-            }
-        });
-    }
-
     const gradeSelect = document.getElementById('user_prog_grade');
     fetchJSON(Controllers.GRADES, (json) => {
         for (let grade of json.container) {

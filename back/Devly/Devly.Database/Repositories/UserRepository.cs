@@ -8,7 +8,7 @@ internal class UserRepository : IUserRepository
 {
     private readonly IDbRepository<DevlyDbContext> _repository;
 
-    public UserRepository(IDbRepository<DevlyDbContext> repository)
+    public UserRepository(IDbRepository<DevlyDbContext> repository, Random random)
     {
         _repository = repository;
     }
@@ -26,5 +26,15 @@ internal class UserRepository : IUserRepository
     public async Task<User> FindUserByLoginAsync(string login)
     {
         return await _repository.FindAsync<User>(u => u.Login == login).ConfigureAwait(false);
+    }
+
+    public async Task<User> GetRandomUser()
+    {
+        var users = await _repository.FindAllAsync<User>
+            (x => x.Login != null, CancellationToken.None).ConfigureAwait(false);
+        var maxId = users.Max(x => x.ContactId);
+        var randomId = Random.Shared.Next(1, maxId + 1);
+        return await _repository.FindAsync<User>(x => x.ContactId == randomId, CancellationToken.None,
+            user => user.Contact, user => user.Grade).ConfigureAwait(false);
     }
 }

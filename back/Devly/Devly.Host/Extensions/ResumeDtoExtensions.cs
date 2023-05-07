@@ -5,7 +5,7 @@ namespace Devly.Extensions;
 
 public static class ResumeDtoExtensions
 {
-    public static User MapToUser(this ResumeDto resumeDto)
+    public static User MapToUser(this ResumeDto resumeDto, Grade grade)
     {
         return new User
         {
@@ -13,7 +13,7 @@ public static class ResumeDtoExtensions
             BirthDate = resumeDto.BirthDate,
             City = resumeDto.City,
             Contact = new Contact { Email = resumeDto.Email, Phone = resumeDto.Phone },
-            Grade = new Grade { Value = resumeDto.Grade },
+            GradeId = grade.Id,
             ImagePath = resumeDto.ImagePath,
             Info = resumeDto.Info,
             Name = resumeDto.Name

@@ -17,4 +17,10 @@ internal class ProgrammingLanguagesRepository : IProgrammingLanguagesRepository
     {
         return await _repository.FindAllAsync<ProgrammingLanguage>(x => true).ConfigureAwait(false);
     }
+
+    public async Task<ProgrammingLanguage> FindLanguageAsync(string languageName)
+    {
+        return await _repository.FindAsync<ProgrammingLanguage>
+            (language => language.LanguageName == languageName).ConfigureAwait(false);
+    }
 }

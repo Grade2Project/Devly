@@ -18,6 +18,10 @@ namespace Devly.Database.Basics.Repository
         Task InsertAsync<TEntity>(TEntity entity, CancellationToken token = default) where TEntity : class;
 
         Task InsertAllAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken token = default) where TEntity : class;
+        
+        Task DeleteAsync<TEntity>(TEntity entity, CancellationToken token = default) where TEntity : class;
+
+        Task DeleteAllAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken token = default) where TEntity : class;
 
         Task UpdateAsync<TEntity>(
             TEntity entity, 

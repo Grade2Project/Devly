@@ -5,7 +5,7 @@ namespace Devly.Extensions;
 
 public static class ResumeDtoExtensions
 {
-    public static User MapToUser(this ResumeDto resumeDto, Grade grade)
+    public static User? MapToUser(this ResumeDto resumeDto, Grade grade)
     {
         return new User
         {

@@ -52,6 +52,22 @@ internal class EfDbRepository<TContext> : DbRepositoryBase<TContext>, IDbReposit
         await context.SaveChangesAsync(token).ConfigureAwait(false);
     }
 
+    public async Task DeleteAsync<TEntity>(TEntity entity, CancellationToken token = default) where TEntity : class
+    {
+        await using var context = await GetContextAsync(token).ConfigureAwait(false);
+
+        context.Set<TEntity>().Remove(entity);
+        await context.SaveChangesAsync(token).ConfigureAwait(false);
+    }
+
+    public async Task DeleteAllAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken token = default) where TEntity : class
+    {
+        await using var context = await GetContextAsync(token).ConfigureAwait(false);
+
+        context.Set<TEntity>().RemoveRange(entities);
+        await context.SaveChangesAsync(token).ConfigureAwait(false);
+    }
+
     public async Task UpdateAsync<TEntity>(TEntity entity, CancellationToken token = default,
         params Expression<Func<TEntity, object>>[] propsToUpdate) where TEntity : class
     {

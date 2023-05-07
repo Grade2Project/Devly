@@ -34,6 +34,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IGradesRepository, GradesRepository>();
         services.TryAddSingleton<IProgrammingLanguagesRepository, ProgrammingLanguagesRepository>();
         services.TryAddSingleton<IUsersFavoriteLanguagesRepository, UsersFavoriteLanguagesRepository>();
+        services.TryAddSingleton<ICompaniesRepository, CompaniesRepository>();
         
         return services;
     }

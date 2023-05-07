@@ -13,6 +13,7 @@ namespace Devly.Database.Context
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; }
         public DbSet<UsersFavoriteLanguage> UsersFavoriteLanguages { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
         public DevlyDbContext(DbContextOptions<DevlyDbContext> options) : base(options)
         {

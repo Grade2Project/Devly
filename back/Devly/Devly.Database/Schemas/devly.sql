@@ -49,6 +49,13 @@ create table if not exists devly.companies
     info         text
 );
 
+create table if not exists devly.companies_passwords
+(
+    company_id int unique not null primary key
+                references devly.companies(id),
+    hashed_pass varchar(512) not null 
+);
+
 create table if not exists devly.programming_languages
 (
     id            serial primary key,

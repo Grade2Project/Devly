@@ -18,13 +18,15 @@ internal class CompaniesRepository : ICompaniesRepository
         await _repository.UpdateAsync(company);
     }
 
-    public async Task InsertAsync(string companyName, string info)
+    public async Task<Company> InsertAsync(string companyName, string info)
     {
-        await _repository.InsertAsync(new Company()
+        var company = new Company
         {
             CompanyName = companyName,
             Info = info
-        });
+        };
+        await _repository.InsertAsync(company);
+        return company;
     }
 
     public async Task<Company> GetCompanyByName(string companyName)

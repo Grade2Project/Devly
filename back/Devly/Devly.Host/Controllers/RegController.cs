@@ -10,14 +10,16 @@ public class RegController : Controller
     private readonly IUserPasswordRepository _passwordRepository;
     private readonly ICompaniesRepository _companiesRepository;
     private readonly IPasswordHasher _hasher;
-
+    private readonly ICompaniesPasswordsRepository _companiesPasswordsRepository;
+    
     public RegController(IUserPasswordRepository passwordRepository,
         IPasswordHasher hasher,
-        ICompaniesRepository companiesRepository)
+        ICompaniesRepository companiesRepository, ICompaniesPasswordsRepository companiesPasswordsRepository)
     {
         _passwordRepository = passwordRepository;
         _hasher = hasher;
         _companiesRepository = companiesRepository;
+        _companiesPasswordsRepository = companiesPasswordsRepository;
     }
 
     [HttpPost, Route("reg")]
@@ -41,7 +43,9 @@ public class RegController : Controller
             return StatusCode(400);
         }
 
-        await _companiesRepository.InsertAsync(companyDto.CompanyName, companyDto.CompanyInfo);
+        var company = await _companiesRepository.InsertAsync(companyDto.CompanyName, companyDto.CompanyInfo).ConfigureAwait(false);
+        await _companiesPasswordsRepository.InsertAsync(
+            company.Id, _hasher.HashPassword(companyDto.Password));
         return Ok();
     }
 }

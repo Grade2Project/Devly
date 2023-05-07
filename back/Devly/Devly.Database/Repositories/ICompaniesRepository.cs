@@ -4,6 +4,6 @@ namespace Devly.Database.Repositories;
 
 public interface ICompaniesRepository
 {
-    Task InsertAsync(string companyName, string info);
+    Task<Company> InsertAsync(string companyName, string info);
     Task<Company> GetCompanyByName(string companyName);
 }

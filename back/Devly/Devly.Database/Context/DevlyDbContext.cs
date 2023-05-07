@@ -15,6 +15,7 @@ namespace Devly.Database.Context
         public DbSet<UsersFavoriteLanguage> UsersFavoriteLanguages { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Vacancy> Vacancies { get; set; }
+        public DbSet<CompanyPassword> CompaniesPasswords { get; set; }
 
         public DevlyDbContext(DbContextOptions<DevlyDbContext> options) : base(options)
         {

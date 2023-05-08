@@ -177,7 +177,7 @@
 .c-button-h {
     font-family: var(--font-family-roboto);
     font-weight: 400;
-    font-size: 24px;
+    font-size: 20px;
     text-align: center;
     letter-spacing: -0.02em;
     color: var(--color-white);
@@ -213,18 +213,17 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 30px 40px;
+    padding: 30px 20px;
     gap: 20px;
 
-    min-width: 700px;
+    min-width: 500px;
     min-height: 400px;
 
     width: fit-content;
     height: fit-content;
 
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
 
     background: #FFFFFF;
     box-shadow: 0 4px 20px 3px rgba(0, 0, 0, 0.25);
@@ -289,7 +288,7 @@
     width: 100%;
     height: fit-content;
 
-    text-align: left;
+    text-align: center;
     margin-bottom: 30px;
 
     color: var(--color-black);
@@ -297,30 +296,25 @@
 
 .input-line {
     display: flex;
-    flex-direction: row;
-    gap: 100px;
-
-    width: 100%;
+    min-width: 400px;
+    flex-direction: column;
     height: fit-content;
 }
 
 .input-line .l {
-    width: 50%;
     height: fit-content;
 
     font-family: var(--font-family-roboto);
     font-style: normal;
     font-weight: 300;
-    font-size: 22px;
-    line-height: 36px;
+    font-size: 16px;
+    line-height: 25px;
 
     color: var(--color-black);
     text-align: left;
-    margin: auto 0;
 }
 
 .input-line .i {
-    width: 100%;
     height: fit-content;
 }
 
@@ -350,16 +344,16 @@ input[type="text"] {
     font-family: var(--font-family-roboto); /* 1 */
     font-size: inherit; /* 1 */
     line-height: inherit; /* 1 */
-    margin: 0; /* 2 */
+    margin: 0 0 0 0; /* 2 */
+    padding: 0 0 0 0;
 }
 
 .text-input {
     display: block;
-    width: 100%;
-    height: calc(2.25rem + 2px);
+    height: calc(1.75rem + 2px);
     padding: 0.375rem 0.75rem;
     font-family: var(--font-family-roboto);
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
     color: var(--color-black);
@@ -512,5 +506,62 @@ input[type=radio] {
     height: 2em;
 }
 
+.tabs__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    gap: 0;
 
+    margin-bottom: 20px;
+    min-width: 400px;
+}
+
+.tabs__container .tabs__tab {
+    text-decoration: none;
+    text-align: center;
+    padding: 0 15px;
+    border-bottom: solid var(--color-light-black) 3px;
+    width: 100%;
+
+    transition: border-bottom-color 200ms linear;
+}
+
+.tabs__container .tabs__tab:focus {
+    border-bottom-color: var(--color-acsent-red);
+}
+
+.tabs__tab .tab__inner {
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+
+    color: var(--color-black);
+}
+
+.tabs__values {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.h1__central_46 {
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 42px;
+
+    width: 100%;
+    height: fit-content;
+
+    text-align: center;
+
+    color: var(--color-black);
+}
 

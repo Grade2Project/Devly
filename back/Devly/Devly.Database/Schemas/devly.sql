@@ -45,9 +45,12 @@ create table if not exists devly.users
 create table if not exists devly.companies
 (
     id           serial primary key,
+    company_email text unique not null, 
     company_name text not null,
     info         text
 );
+
+create index on devly.companies(company_email);
 
 create table if not exists devly.companies_passwords
 (

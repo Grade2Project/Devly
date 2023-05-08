@@ -62,7 +62,7 @@ public class AuthController : Controller
     private async Task<bool> AuthCompanyInternal(LoginDto dto)
     {
         var hashed = _hasher.HashPassword(dto.Password);
-        var company = await _companiesRepository.GetCompanyByName(dto.Login);
+        var company = await _companiesRepository.GetCompanyByEmail(dto.Login);
         var dbCompanyPassword = await _companiesPasswordsRepository
             .GetPasswordById(company.Id);
         return hashed == dbCompanyPassword;

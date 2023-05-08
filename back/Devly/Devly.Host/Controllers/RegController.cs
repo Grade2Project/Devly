@@ -43,7 +43,8 @@ public class RegController : Controller
             return StatusCode(400);
         }
 
-        var company = await _companiesRepository.InsertAsync(companyDto.CompanyName, companyDto.CompanyInfo).ConfigureAwait(false);
+        var company = await _companiesRepository.InsertAsync
+            (companyDto.CompanyName, companyDto.CompanyEmail, companyDto.CompanyInfo).ConfigureAwait(false);
         await _companiesPasswordsRepository.InsertAsync(
             company.Id, _hasher.HashPassword(companyDto.Password));
         return Ok();

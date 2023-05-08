@@ -5,7 +5,7 @@ namespace Devly.Extensions;
 
 public static class UserExtensions
 {
-    public static ResumeDto MapToResumeDto(this User user)
+    public static ResumeDto MapToResumeDto(this User user, IEnumerable<string> languages)
     {
         return new ResumeDto
         {
@@ -15,7 +15,8 @@ public static class UserExtensions
             Name = user.Name,
             Email = user.Contact.Email,
             Phone = user.Contact.Phone,
-            Grade = user.Grade.Value
+            Grade = user.Grade.Value,
+            FavoriteLanguages = languages.ToArray()
         };
     }
 }

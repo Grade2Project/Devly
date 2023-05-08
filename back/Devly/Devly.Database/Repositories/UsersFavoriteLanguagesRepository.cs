@@ -18,7 +18,9 @@ internal class UsersFavoriteLanguagesRepository : IUsersFavoriteLanguagesReposit
     
     public async Task<IReadOnlyList<UsersFavoriteLanguage>> GetUserFavoriteLanguages(string userLogin)
     {
-        return await _repository.FindAllAsync<UsersFavoriteLanguage>(x => x.UserLogin == userLogin)
+        return await _repository.FindAllAsync<UsersFavoriteLanguage>
+                (x => x.UserLogin == userLogin,
+                    CancellationToken.None, language => language.ProgrammingLanguage)
             .ConfigureAwait(false);
     }
 

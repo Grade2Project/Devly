@@ -43,12 +43,7 @@ internal class VacancyRepository : IVacancyRepository
 
     public async Task<Vacancy> GetRandomVacancy()
     {
-        var allVacancies = await _repository.FindAllAsync<Vacancy>(x => true);
-        if (allVacancies.Count == 0)
-            return null;
-        var maxId = allVacancies.Max(x => x.Id);
-        var randomId = Random.Shared.Next(1, maxId + 1);
-        return await _repository.FindAsync<Vacancy>(x => x.Id == randomId, CancellationToken.None,
-            vacancy => vacancy.Company, vacancy => vacancy.ProgrammingLanguage).ConfigureAwait(false);
+        return await _repository.GetNextRandom<Vacancy>
+            (CancellationToken.None, vacancy => vacancy.Company, vacancy => vacancy.ProgrammingLanguage);
     }
 }

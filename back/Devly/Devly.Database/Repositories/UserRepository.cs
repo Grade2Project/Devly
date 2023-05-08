@@ -30,11 +30,7 @@ internal class UserRepository : IUserRepository
 
     public async Task<User> GetRandomUser()
     {
-        var users = await _repository.FindAllAsync<User>
-            (x => x.Login != null, CancellationToken.None).ConfigureAwait(false);
-        var maxId = users.Max(x => x.ContactId);
-        var randomId = Random.Shared.Next(1, maxId + 1);
-        return await _repository.FindAsync<User>(x => x.ContactId == randomId, CancellationToken.None,
-            user => user.Contact, user => user.Grade).ConfigureAwait(false);
+        return await _repository.GetNextRandom<User>
+            (CancellationToken.None, user => user.Contact, user => user.Grade);
     }
 }

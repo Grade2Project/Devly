@@ -11,7 +11,18 @@ internal class EfDbRepository<TContext> : DbRepositoryBase<TContext>, IDbReposit
     public EfDbRepository(IDbContextProvider<TContext> contextProvider) : base(contextProvider)
     {
     }
-    
+
+    public async Task<TEntity?> GetNextRandom<TEntity>(CancellationToken token = default,
+        params Expression<Func<TEntity, object>>[] includes) where TEntity : class
+    {
+        await using var context = await GetContextAsync(token).ConfigureAwait(false);
+        var set = context.Set<TEntity>();
+        var tableName = set.EntityType.GetTableName();
+        return await set.FromSqlRaw($"SELECT * FROM {tableName} order by random() limit 1")
+            .IncludeMultiple(includes)
+            .FirstOrDefaultAsync(cancellationToken: token);
+    }
+
     public async Task<TEntity?> FindAsync<TEntity>(Expression<Func<TEntity, bool>> condition,
         CancellationToken token = default, params Expression<Func<TEntity, object>>[] includes) where TEntity : class
     {
@@ -72,7 +83,6 @@ internal class EfDbRepository<TContext> : DbRepositoryBase<TContext>, IDbReposit
         params Expression<Func<TEntity, object>>[] propsToUpdate) where TEntity : class
     {
         await using var context = await GetContextAsync(token).ConfigureAwait(false);
-
         context.UpdateInternal(entity, propsToUpdate);
         await context.SaveChangesAsync(token).ConfigureAwait(false);
     }

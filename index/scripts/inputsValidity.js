@@ -1,4 +1,5 @@
 const inputs = document.querySelectorAll('input');
+console.log(inputs);
 for (let i of inputs) {
     i.addEventListener('blur', function () {
         if (!(i.checkValidity()) && i.required) {

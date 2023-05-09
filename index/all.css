@@ -369,7 +369,7 @@ input[type="text"] {
 }
 
 .invalid {
-    border-color: #FF5A5F;
+    border-color: var(--color-acsent-red) !important;
 }
 
 .text-input::placeholder {
@@ -382,7 +382,7 @@ input[type="text"] {
 }
 
 .text-input:focus {
-    border-color: #087E8B;
+    border-color: #087E8B !important;
     outline: 0;
 }
 
@@ -442,7 +442,7 @@ input[type="text"] {
     align-items: center;
     padding: 60px 80px;
     gap: 65px;
-    margin: 150px auto;
+    margin: 80px auto;
 
     width: 700px;
 
@@ -700,7 +700,7 @@ input[type=radio] {
 }
 
 .form__input__wide .text__input:focus {
-    border-color: #087E8B;
+    border-color: var(--color-acsent-green) !important;
     outline: 0;
 }
 

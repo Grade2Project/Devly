@@ -5,6 +5,10 @@ namespace Devly.Database.Basics.Repository
 {
     internal interface IDbRepository<TContext> where TContext : EfDbContext
     {
+        Task<TEntity?> GetNextRandom<TEntity>(
+            CancellationToken token = default,
+            params Expression<Func<TEntity, object>>[] includes) where TEntity : class;
+        
         Task<TEntity?> FindAsync<TEntity>(
             Expression<Func<TEntity, bool>> condition, 
             CancellationToken token = default,
@@ -18,6 +22,10 @@ namespace Devly.Database.Basics.Repository
         Task InsertAsync<TEntity>(TEntity entity, CancellationToken token = default) where TEntity : class;
 
         Task InsertAllAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken token = default) where TEntity : class;
+        
+        Task DeleteAsync<TEntity>(TEntity entity, CancellationToken token = default) where TEntity : class;
+
+        Task DeleteAllAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken token = default) where TEntity : class;
 
         Task UpdateAsync<TEntity>(
             TEntity entity, 

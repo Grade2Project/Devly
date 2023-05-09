@@ -13,6 +13,7 @@ public class ResumeDto
     public string Email { get; init; }
     public string Phone { get; init; }
     public string ImagePath { get; init; }
+    public string[] FavoriteLanguages { get; init; }
 }
 
 // Info - json.

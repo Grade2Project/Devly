@@ -1,7 +1,10 @@
 using Devly.Database.Basics.Context;
 using Devly.Database.Basics.Context.ContextProvider;
 using Devly.Database.Basics.Repository;
+using Devly.Database.Models;
 using Devly.Database.Repositories;
+using Devly.Database.Repositories.Abstract;
+using Devly.Database.Repositories.Impl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -31,6 +34,11 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IUserRepository, UserRepository>();
         services.TryAddSingleton<IUserPasswordRepository, UserPasswordRepository>();
         services.TryAddSingleton<IGradesRepository, GradesRepository>();
+        services.TryAddSingleton<IProgrammingLanguagesRepository, ProgrammingLanguagesRepository>();
+        services.TryAddSingleton<IUsersFavoriteLanguagesRepository, UsersFavoriteLanguagesRepository>();
+        services.TryAddSingleton<ICompaniesRepository, CompaniesRepository>();
+        services.TryAddSingleton<IVacancyRepository, VacancyRepository>();
+        services.TryAddSingleton<ICompaniesPasswordsRepository, CompaniesPasswordsRepository>();
         
         return services;
     }

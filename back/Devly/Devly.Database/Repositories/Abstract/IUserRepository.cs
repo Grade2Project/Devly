@@ -1,7 +1,7 @@
 #nullable enable
 using Devly.Database.Models;
 
-namespace Devly.Database.Repositories;
+namespace Devly.Database.Repositories.Abstract;
 
 public interface IUserRepository
 {

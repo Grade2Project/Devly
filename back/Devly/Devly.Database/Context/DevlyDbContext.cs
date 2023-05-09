@@ -11,9 +11,21 @@ namespace Devly.Database.Context
         public DbSet<UsersPassword> UsersPasswords { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; }
+        public DbSet<UsersFavoriteLanguage> UsersFavoriteLanguages { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Vacancy> Vacancies { get; set; }
+        public DbSet<CompanyPassword> CompaniesPasswords { get; set; }
 
         public DevlyDbContext(DbContextOptions<DevlyDbContext> options) : base(options)
         {
+        }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UsersFavoriteLanguage>()
+                .HasKey(nameof(UsersFavoriteLanguage.UserLogin),
+                    nameof(UsersFavoriteLanguage.ProgrammingLanguageId));
         }
     }
 }

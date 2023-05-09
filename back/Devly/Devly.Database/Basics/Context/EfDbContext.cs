@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Devly.Database.Context;
+using Devly.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Devly.Database.Basics.Context

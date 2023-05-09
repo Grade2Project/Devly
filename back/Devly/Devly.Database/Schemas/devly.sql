@@ -45,8 +45,18 @@ create table if not exists devly.users
 create table if not exists devly.companies
 (
     id           serial primary key,
+    company_email text unique not null, 
     company_name text not null,
     info         text
+);
+
+create index on devly.companies(company_email);
+
+create table if not exists devly.companies_passwords
+(
+    company_id int unique not null primary key
+                references devly.companies(id),
+    hashed_pass varchar(512) not null 
 );
 
 create table if not exists devly.programming_languages
@@ -54,6 +64,21 @@ create table if not exists devly.programming_languages
     id            serial primary key,
     language_name varchar(10) not null
     );
+insert into devly.programming_languages(language_name) values
+                                                           ('C++'),
+                                                           ('C#'),
+                                                           ('Java'),
+                                                           ('JavaScript'),
+                                                           ('Python'),
+                                                           ('Ruby'),
+                                                           ('Haskel'),
+                                                           ('Pascal'),
+                                                           ('Scratch'),
+                                                           ('Go'),
+                                                           ('Basic'),
+                                                           ('PHP'),
+                                                           ('HTML'),
+                                                           ('CSS');
 
 create table if not exists devly.vacancies
 (

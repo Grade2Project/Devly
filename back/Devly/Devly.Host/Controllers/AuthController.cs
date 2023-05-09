@@ -1,5 +1,6 @@
 using Devly.Configs;
 using Devly.Database.Repositories;
+using Devly.Database.Repositories.Abstract;
 using Devly.Models;
 using Devly.Services;
 using Microsoft.AspNetCore.Mvc;

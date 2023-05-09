@@ -31,12 +31,5 @@ namespace Devly.Database.Basics.Context
                 Entry(entity).Property(prop).IsModified = true;
             }
         }
-        
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<UsersFavoriteLanguage>()
-                .HasKey(nameof(UsersFavoriteLanguage.UserLogin),
-                    nameof(UsersFavoriteLanguage.ProgrammingLanguageId));
-        }
     }
 }

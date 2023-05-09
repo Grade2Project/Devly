@@ -1,5 +1,6 @@
 using Devly.Database.Models;
 using Devly.Database.Repositories;
+using Devly.Database.Repositories.Abstract;
 using Devly.Extensions;
 using Devly.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +35,10 @@ public class ResumeController : Controller
     {
         var vacancy = await DtoToVacancy(vacancyDto);
         if (vacancy is null || await _vacancyRepository.FindVacancyAsync(vacancy) != null)
+        {
             return StatusCode(400, "Bad Vacancy");
+        }
+
         await _vacancyRepository.InsertAsync(vacancy);
         return Ok();
     }
@@ -46,10 +50,16 @@ public class ResumeController : Controller
         {
             var resumeToUser = await ResumeToUser(resumeDto);
             if (resumeToUser is null)
+            {
                 return StatusCode(400, "Bad Grade");
-            var usersFavoriteLanguages = await LanguagesToDbLanguages(resumeDto.FavoriteLanguages)!;
+            }
+
+            var usersFavoriteLanguages = await _programmingLanguagesRepository.FindLanguagesAsync(resumeDto.FavoriteLanguages)!;
             if (usersFavoriteLanguages is null)
+            {
                 return StatusCode(400, "Bad Languages");
+            }
+
             if (await _userRepository.FindUserByLoginAsync(resumeDto.Login) != null)
             {
                 await _userRepository.UpdateAsync(resumeToUser);
@@ -80,29 +90,18 @@ public class ResumeController : Controller
         var company = await _companiesRepository.GetCompanyByName(vacancyDto.CompanyName);
         if (company is null)
             return null;
-        var language = await LanguagesToDbLanguages(vacancyDto.ProgrammingLanguage)!;
-        if (language is null)
+        var language = await _programmingLanguagesRepository.FindLanguagesAsync(vacancyDto.ProgrammingLanguage);
+        if (language is null || language.Count == 0)
+        {
             return null;
+        }
+
         return new Vacancy
         {
             CompanyId = company.Id,
             Info = vacancyDto.Info,
-            ProgrammingLanguageId = language.First().Id,
+            ProgrammingLanguageId = language[0].Id,
             Salary = vacancyDto.Salary
         };
-    } 
-
-    private async Task<ProgrammingLanguage[]>? LanguagesToDbLanguages(params string[] languages)
-    {
-        var favoriteLanguages = new List<ProgrammingLanguage>();
-        foreach (var languageName in languages)
-        {
-            var dbLanguage = await _programmingLanguagesRepository.FindLanguageAsync(languageName);
-            if (dbLanguage is null)
-                return null;
-            favoriteLanguages.Add(dbLanguage);
-        }
-
-        return favoriteLanguages.ToArray();
     }
 }

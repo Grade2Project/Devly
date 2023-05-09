@@ -20,5 +20,12 @@ namespace Devly.Database.Context
         public DevlyDbContext(DbContextOptions<DevlyDbContext> options) : base(options)
         {
         }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UsersFavoriteLanguage>()
+                .HasKey(nameof(UsersFavoriteLanguage.UserLogin),
+                    nameof(UsersFavoriteLanguage.ProgrammingLanguageId));
+        }
     }
 }

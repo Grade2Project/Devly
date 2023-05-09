@@ -3,6 +3,8 @@ using Devly.Database.Basics.Context.ContextProvider;
 using Devly.Database.Basics.Repository;
 using Devly.Database.Models;
 using Devly.Database.Repositories;
+using Devly.Database.Repositories.Abstract;
+using Devly.Database.Repositories.Impl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

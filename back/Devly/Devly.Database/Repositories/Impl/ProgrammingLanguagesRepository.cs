@@ -1,8 +1,9 @@
 using Devly.Database.Basics.Repository;
 using Devly.Database.Context;
 using Devly.Database.Models;
+using Devly.Database.Repositories.Abstract;
 
-namespace Devly.Database.Repositories;
+namespace Devly.Database.Repositories.Impl;
 
 internal class ProgrammingLanguagesRepository : IProgrammingLanguagesRepository
 {
@@ -18,9 +19,8 @@ internal class ProgrammingLanguagesRepository : IProgrammingLanguagesRepository
         return await _repository.FindAllAsync<ProgrammingLanguage>(x => true).ConfigureAwait(false);
     }
 
-    public async Task<ProgrammingLanguage> FindLanguageAsync(string languageName)
+    public async Task<IReadOnlyList<ProgrammingLanguage>> FindLanguagesAsync(params string[] languageNames)
     {
-        return await _repository.FindAsync<ProgrammingLanguage>
-            (language => language.LanguageName == languageName).ConfigureAwait(false);
+        return await _repository.FindAllAsync<ProgrammingLanguage>(p => languageNames.Contains(p.LanguageName)).ConfigureAwait(false);
     }
 }

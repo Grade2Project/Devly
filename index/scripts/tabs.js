@@ -10,12 +10,12 @@ function showTab(n) {
     if (currentTab === n) return;
 
     if (currentTab !== -1) {
-        tabsSelector[currentTab].classList.remove('__selected');
+        tabsSelector[currentTab].style.borderBottomColor = '#807D7D';
         tabsValues[currentTab].style.display = 'none';
     }
 
-    tabsSelector[n].focus();
     tabsValues[n].style.display = 'flex';
+    tabsSelector[n].style.borderBottomColor = '#FF5A5F';
 
     currentTab = n;
 }

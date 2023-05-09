@@ -205,7 +205,7 @@
     background-color: var(--color-acsent-red);
 }
 
-.registration-popup {
+.popup__container {
     position: fixed;
     z-index: 1007;
 
@@ -253,7 +253,7 @@
     backdrop-filter: blur(3px);
 }
 
-.registration-popup .close {
+.popup__container .close {
     position: absolute;
     top: 20px;
     right: 30px;
@@ -274,11 +274,11 @@
     color: var(--color-black);
 }
 
-.registration-popup .close:hover {
+.popup__container .close:hover {
     color: var(--color-acsent-red);
 }
 
-.registration-popup .h {
+.popup__container .h {
     font-family: var(--font-family-roboto);
     font-style: normal;
     font-weight: 600;
@@ -307,7 +307,7 @@
     font-family: var(--font-family-roboto);
     font-style: normal;
     font-weight: 300;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 25px;
 
     color: var(--color-black);
@@ -350,7 +350,7 @@ input[type="text"] {
 
 .text-input {
     display: block;
-    height: calc(1.75rem + 2px);
+    height: calc(1.5rem + 2px);
     padding: 0.375rem 0.75rem;
     font-family: var(--font-family-roboto);
     font-size: 1rem;
@@ -522,21 +522,18 @@ input[type=radio] {
     text-decoration: none;
     text-align: center;
     padding: 0 15px;
-    border-bottom: solid var(--color-light-black) 3px;
     width: 100%;
 
+    border-bottom: solid var(--color-light-black) 2px;
     transition: border-bottom-color 200ms linear;
-}
-
-.tabs__container .tabs__tab:focus {
-    border-bottom-color: var(--color-acsent-red);
+    cursor: pointer;
 }
 
 .tabs__tab .tab__inner {
     font-family: var(--font-family-roboto);
     font-style: normal;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 30px;
 
     color: var(--color-black);
@@ -555,7 +552,7 @@ input[type=radio] {
     font-family: var(--font-family-roboto);
     font-style: normal;
     font-weight: 600;
-    font-size: 42px;
+    font-size: 32px;
 
     width: 100%;
     height: fit-content;
@@ -564,4 +561,98 @@ input[type=radio] {
 
     color: var(--color-black);
 }
+
+.form__container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+
+    margin: 40px auto;
+    gap: 20px;
+    padding: 0 0;
+
+    width: fit-content;
+    height: fit-content;
+}
+
+.form__body__FS {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 450px;
+    width: fit-content;
+    height: fit-content;
+
+    background: #FFFFFF;
+    box-shadow: 0 4px 5px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+
+    padding: 40px 20px;
+}
+
+.form__body__FS .button__confirm {
+    padding: 14px 0;
+
+    width: 89%;
+    height: fit-content;
+
+    background: #FF5A5F;
+    border-radius: 10px;
+    border: none;
+
+    margin-top: 20px;
+    cursor: pointer;
+
+    transition: background-color 100ms linear;
+}
+
+.form__body__FS .button__confirm:focus {
+    border: solid var(--color-acsent-green) 10px 10px;
+}
+
+.button__confirm:hover {
+    background: #CC494EFF;
+}
+
+.form__body__FS .button__confirm .button__confirm_inner {
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+
+    height: fit-content;
+    text-align: center;
+
+    color: var(--color-black);
+}
+
+.letter__17B_500 {
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+
+    height: fit-content;
+    text-align: center;
+
+    color: var(--color-black);
+    text-decoration: none;
+
+    transition: color 100ms linear;
+}
+
+.letter__17B_500:hover {
+    color: var(--color-light-black);
+}
+
+
+
+
+
+
 

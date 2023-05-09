@@ -2,6 +2,10 @@
 /*    outline: red 2px dashed; !* DEBUG *!*/
 /*}*/
 
+textarea {
+    resize: none;
+}
+
 .head-container {
     position: fixed;
     width: 100%;

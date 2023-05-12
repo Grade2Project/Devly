@@ -18,44 +18,58 @@
 <div class="form__container">
     <div class="form__body__FS">
         <span class="h1__central_46">Вход</span>
-
+        <div class="tabs__container">
+            <a class="tabs__tab" onclick="showTab(0)"><span class="tab__inner">Пользователь</span></a>
+            <a class="tabs__tab" onclick="showTab(1)"><span class="tab__inner">Компания</span></a>
+        </div>
         <div class="input-line">
-            <label for="auth_user_email" class="l">Почта</label><input class="text-input"
+            <label for="auth_email" class="l">Почта</label><input class="text-input"
                                                                       type="email"
-                                                                      id="auth_user_email"
+                                                                      id="auth_email"
                                                                       placeholder="example@mail.com"
                                                                       required>
         </div>
         <div class="input-line">
-            <label for="auth_user_password" class="l">Пароль</label><input class="text-input"
+            <label for="auth_password" class="l">Пароль</label><input class="text-input"
                                                                           type="password"
-                                                                          id="auth_user_password"
+                                                                          id="auth_password"
                                                                           required>
         </div>
 
-        <button class="button__confirm color-red" type="submit" id="auth_submit"><span class="button__confirm_inner">Войти</span></button>
+        <button class="button__confirm color-red" type="submit" id="submit_auth" onclick="auth()"><span class="button__confirm_inner">Войти</span></button>
     </div>
 
     <a class="letter__17B_500" href="register.html" style="margin: 0 auto">Зарегистрироваться ᐳ</a>
 </div>
-<script src="../scripts/popup.js"></script>
+<script src="../scripts/tabs.js"></script>
 <script src="../scripts/utils.js"></script>
 <script src="../scripts/inputsValidity.js"></script>
 <script>
-    function auth(login, password) {
-        sendJSON({
-            login: login.value,
-            password: password.value
-        }, Controllers.AUTH, (statusCode, response) => {
-            console.log(statusCode === 200 ? 'Успешная авторизация' : `Ошибка авторизации: ${statusCode}`);
-            if (response) console.log(response);
-        });
-    }
+    function auth() {
+        let controller;
 
-    const authSubmit = document.getElementById('auth_submit');
-    authSubmit.addEventListener('click', () => auth(
-        document.getElementById('auth_user_email'),
-        document.getElementById('auth_user_password')));
+        const dataRaw = getObjectFromIterable(
+            document.querySelectorAll('[id^="auth_"]'),
+            ti => [ti.id, ti.value]);
+
+        let data = {
+            login: dataRaw['auth_email'],
+            password: dataRaw['auth_password']
+        }
+
+        controller = currentTab === 0 ? Controllers.AUTH.USER : Controllers.AUTH.COMPANY;
+
+        if (!data || !controller) throw new Error('Internal error');
+        sendJSON(data, controller,
+            (statusCode, response) => {
+                console.log(statusCode);
+                if (statusCode === 200) {
+                    console.log('Успешнй вход');
+                }
+                else { console.log('Ошибка входа'); }
+                console.log(response);
+            });
+    }
 </script>
 </body>
 </html>

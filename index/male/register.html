@@ -77,33 +77,60 @@
                 </div>
             </div>
 
-            <button class="button__confirm color-red" type="submit" id="reg_submit"><span class="button__confirm_inner">Зарегистрироваться</span></button>
+            <button class="button__confirm color-red" type="submit" id="reg_submit"
+                    onclick="register()">
+                <span class="button__confirm_inner">Зарегистрироваться</span>
+            </button>
         </div>
     </div>
 <script src="../scripts/tabs.js"></script>
 <script src="../scripts/utils.js"></script>
 <script src="../scripts/inputsValidity.js"></script>
 <script>
-    function register(login, password) {
-        if (alertOnInvalidity(login)) return;
+    const userPassRepetition = document.getElementById('reg_user_password_repeat');
+    const userPass= document.getElementById('reg_user_password');
+    userPassRepetition.checkValidity = () => userPassRepetition.value === userPass.value;
+    function register() {
+        let data;
+        let controller;
 
-        sendJSON({
-                login: login.value,
-                password: password.value
-            }, Controllers.REG,
+        if (currentTab === 0) {
+            const dataRaw = getObjectFromIterable(
+                document.querySelectorAll('[id^="reg_user_"]'),
+                ti => [ti.id, ti.value]);
+
+            controller = Controllers.REG.USER;
+            data = {
+                login: dataRaw['reg_user_email'],
+                password: dataRaw['reg_user_password']
+            }
+        }
+        else {
+            const dataRaw = getObjectFromIterable(
+                document.querySelectorAll('[id^="reg_company_"]'),
+                ti => [ti.id, ti.value]);
+
+            controller = Controllers.REG.COMPANY;
+            data = {
+                companyName: dataRaw['reg_company_name'],
+                companyEmail: dataRaw['reg_company_email'],
+                companyInfo: JSON.stringify({
+                    companyInn: dataRaw['reg_company_inn'],
+                    companyTel: dataRaw['reg_company_tel']
+                }),
+                password: dataRaw['reg_company_password']
+            }
+        }
+
+        if (!data || !controller) throw new Error('Internal error');
+        sendJSON(data, controller,
             (statusCode) => {
-                if (statusCode === 200) {
-                    console.log('Успешная регистрация');
-                    auth(login, password);
-                }
-                else { console.log('Ошибка регистрации'); }
-            });
+            if (statusCode === 200) {
+                console.log('Успешная регистрация');
+            }
+            else { console.log('Ошибка регистрации'); }
+        });
     }
-
-    const regSubmit = document.getElementById('reg_submit');
-    regSubmit.addEventListener('click', () => register(
-        document.getElementById('reg_user_email'),
-        document.getElementById('reg_user_password')));
 </script>
 </body>
 </html>

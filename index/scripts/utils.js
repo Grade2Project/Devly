@@ -1,8 +1,8 @@
 const HOME = 'http://localhost:5003';
 
 const Controllers = {
-    AUTH: `${HOME}/auth/user`,
-    REG: `${HOME}/reg`,
+    AUTH: {USER: `${HOME}/auth/user`, COMPANY: `${HOME}/auth/company`},
+    REG: {USER: `${HOME}/reg`, COMPANY: `${HOME}/company/reg`},
     GRADES: `${HOME}/grades/get`
 };
 
@@ -44,6 +44,12 @@ async function fetchJSON (controller, processResponse) {
     XHR.onload = () => processResponse(XHR.response);
 
     XHR.send();
+}
+
+
+
+function getObjectFromIterable(iterable, mappingLambda) {
+    return Object.fromEntries(Array.from(iterable, item => item).map(mappingLambda));
 }
 
 

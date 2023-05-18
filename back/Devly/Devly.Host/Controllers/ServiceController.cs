@@ -47,7 +47,9 @@ public class ServiceController : Controller
             var companyVacancies = await _vacancyRepository.GetAllCompanyVacancies(companyEmail);
             foreach (var vacancy in companyVacancies)
             {
-                var usersOfVacancyGrade = _userRepository.GetUsersByGrade(vacancy.Grade.Value).Result;
+                var usersOfVacancyGrade = await _userRepository.GetUsersByGrade(vacancy.Grade.Id)!;
+                if (usersOfVacancyGrade == null)
+                    continue;
                 usersList?.AddRange(usersOfVacancyGrade.Where(user =>
                 {
                     var userFavoriteLanguages = _usersFavoriteLanguagesRepository

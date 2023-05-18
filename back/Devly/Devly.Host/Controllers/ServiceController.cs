@@ -39,12 +39,32 @@ public class ServiceController : Controller
     [HttpPost, Route("next/user")]
     public async Task<ResumeDto>? GetNextUser([FromBody] string companyEmail)
     {
-        var vacancies = await _vacancyRepository.GetAllCompanyVacancies(companyEmail);
-        foreach (var vacancy in vacancies)
+        var users = _memoryCache.Get<IReadOnlyList<User>>(companyEmail);
+        if (users == null || users.Count == 0)
         {
+            users = new List<User>();
+            var usersList = users as List<User>;
+            var companyVacancies = await _vacancyRepository.GetAllCompanyVacancies(companyEmail);
+            foreach (var vacancy in companyVacancies)
+            {
+                var usersOfVacancyGrade = _userRepository.GetUsersByGrade(vacancy.Grade.Value).Result;
+                usersList?.AddRange(usersOfVacancyGrade.Where(user =>
+                {
+                    var userFavoriteLanguages = _usersFavoriteLanguagesRepository
+                        .GetUserFavoriteLanguages(user.Login).Result.Select(x => x.ProgrammingLanguage.LanguageName);
+                    return userFavoriteLanguages.Contains(vacancy.ProgrammingLanguage.LanguageName);
+                }));
+            }
         }
 
-        return null;
+        var userToReturn = users.FirstOrDefault();
+        if (userToReturn is null)
+            return null;
+        _memoryCache.Set(companyEmail, users.Skip(1).ToList(),
+            new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
+        var languages = await _usersFavoriteLanguagesRepository
+            .GetUserFavoriteLanguages(userToReturn.Login);
+        return userToReturn.MapToResumeDto(languages.Select(x => x.ProgrammingLanguage.LanguageName));
     }
 
     [HttpPost, Route("next/vacancy/random")]
@@ -55,7 +75,7 @@ public class ServiceController : Controller
     }
     
     [HttpPost, Route("next/vacancy")]
-    public async Task<VacancyDto?> GetNextVacancy(string userLogin)
+    public async Task<VacancyDto?> GetNextVacancy([FromBody]string userLogin)
     {
         var vacancies = _memoryCache.Get<IReadOnlyList<Vacancy>>(userLogin);
         if (vacancies == null || vacancies.Count == 0)
@@ -75,7 +95,9 @@ public class ServiceController : Controller
             }
         }
         
-        var vacancyToReturn = vacancies.First();
+        var vacancyToReturn = vacancies.FirstOrDefault();
+        if (vacancyToReturn is null)
+            return null;
         _memoryCache.Set(userLogin, vacancies.Skip(1).ToList(),
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1))); 
 

@@ -56,17 +56,22 @@
             login: dataRaw['auth_email'],
             password: dataRaw['auth_password']
         }
+        console.log(data);
 
         controller = currentTab === 0 ? Controllers.AUTH.USER : Controllers.AUTH.COMPANY;
 
-        if (!data || !controller) throw new Error('Internal error');
+        if (!data || !controller)
+            throw new Error('Internal error');
+
         sendJSON(data, controller,
             (statusCode, response) => {
-                console.log(statusCode);
                 if (statusCode === 200) {
-                    console.log('Успешнй вход');
+                    localStorage['user_login'] = dataRaw['auth_email'];
+                    console.log('Успешный вход');
                 }
-                else { console.log('Ошибка входа'); }
+                else {
+                    console.log('Ошибка входа');
+                }
                 console.log(response);
             });
     }

@@ -2,6 +2,10 @@
 /*    outline: red 2px dashed; !* DEBUG *!*/
 /*}*/
 
+textarea {
+    resize: none;
+}
+
 .head-container {
     position: fixed;
     width: 100%;
@@ -177,7 +181,7 @@
 .c-button-h {
     font-family: var(--font-family-roboto);
     font-weight: 400;
-    font-size: 24px;
+    font-size: 20px;
     text-align: center;
     letter-spacing: -0.02em;
     color: var(--color-white);
@@ -205,7 +209,7 @@
     background-color: var(--color-acsent-red);
 }
 
-.registration-popup {
+.popup__container {
     position: fixed;
     z-index: 1007;
 
@@ -213,18 +217,17 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 30px 40px;
+    padding: 30px 20px;
     gap: 20px;
 
-    min-width: 700px;
+    min-width: 500px;
     min-height: 400px;
 
     width: fit-content;
     height: fit-content;
 
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
 
     background: #FFFFFF;
     box-shadow: 0 4px 20px 3px rgba(0, 0, 0, 0.25);
@@ -254,7 +257,7 @@
     backdrop-filter: blur(3px);
 }
 
-.registration-popup .close {
+.popup__container .close {
     position: absolute;
     top: 20px;
     right: 30px;
@@ -275,11 +278,11 @@
     color: var(--color-black);
 }
 
-.registration-popup .close:hover {
+.popup__container .close:hover {
     color: var(--color-acsent-red);
 }
 
-.registration-popup .h {
+.popup__container .h {
     font-family: var(--font-family-roboto);
     font-style: normal;
     font-weight: 600;
@@ -289,7 +292,7 @@
     width: 100%;
     height: fit-content;
 
-    text-align: left;
+    text-align: center;
     margin-bottom: 30px;
 
     color: var(--color-black);
@@ -297,30 +300,25 @@
 
 .input-line {
     display: flex;
-    flex-direction: row;
-    gap: 100px;
-
-    width: 100%;
+    min-width: 400px;
+    flex-direction: column;
     height: fit-content;
 }
 
 .input-line .l {
-    width: 50%;
     height: fit-content;
 
     font-family: var(--font-family-roboto);
     font-style: normal;
     font-weight: 300;
-    font-size: 22px;
-    line-height: 36px;
+    font-size: 14px;
+    line-height: 25px;
 
     color: var(--color-black);
     text-align: left;
-    margin: auto 0;
 }
 
 .input-line .i {
-    width: 100%;
     height: fit-content;
 }
 
@@ -350,16 +348,16 @@ input[type="text"] {
     font-family: var(--font-family-roboto); /* 1 */
     font-size: inherit; /* 1 */
     line-height: inherit; /* 1 */
-    margin: 0; /* 2 */
+    margin: 0 0 0 0; /* 2 */
+    padding: 0 0 0 0;
 }
 
 .text-input {
     display: block;
-    width: 100%;
-    height: calc(2.25rem + 2px);
+    height: calc(1.5rem + 2px);
     padding: 0.375rem 0.75rem;
     font-family: var(--font-family-roboto);
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
     color: var(--color-black);
@@ -371,7 +369,7 @@ input[type="text"] {
 }
 
 .invalid {
-    border-color: #FF5A5F;
+    border-color: var(--color-acsent-red) !important;
 }
 
 .text-input::placeholder {
@@ -384,7 +382,7 @@ input[type="text"] {
 }
 
 .text-input:focus {
-    border-color: #087E8B;
+    border-color: #087E8B !important;
     outline: 0;
 }
 
@@ -442,33 +440,31 @@ input[type="text"] {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 60px 60px 60px;
+    padding: 60px 80px;
     gap: 65px;
-    margin: 150px auto;
+    margin: 80px auto;
 
-    min-width: 1000px;
-    width: fit-content;
+    width: 700px;
 
     min-height: fit-content;
     height: fit-content;
 
     background: #FFFFFF;
-    box-shadow: 0 4px 20px 3px rgba(0, 0, 0, 0.25);
-    border-radius: 40px;
+    box-shadow: 2px 2px 40px 3px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
 }
 
 .c-form .cfl {
     font-family: var(--font-family-roboto);
     font-style: normal;
     font-weight: 600;
-    font-size: 64px;
-    line-height: 77px;
-
+    font-size: 56px;
 
     color: var(--color-black);
 
     width: 100%;
     height: fit-content;
+    margin-bottom: -20px;
 }
 
 .c-form-block {
@@ -488,8 +484,7 @@ input[type="text"] {
     font-family: var(--font-family-roboto);
     font-style: normal;
     font-weight: 600;
-    font-size: 42px;
-    line-height: 51px;
+    font-size: 36px;
 
     color: var(--color-black);
 }
@@ -511,6 +506,207 @@ input[type=radio] {
     width: 30px;
     height: 2em;
 }
+
+.tabs__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    gap: 0;
+
+    margin-bottom: 20px;
+    min-width: 400px;
+}
+
+.tabs__container .tabs__tab {
+    text-decoration: none;
+    text-align: center;
+    padding: 0 15px;
+    width: 100%;
+
+    border-bottom: solid var(--color-light-black) 2px;
+    transition: border-bottom-color 200ms linear;
+    cursor: pointer;
+}
+
+.tabs__tab .tab__inner {
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 30px;
+
+    color: var(--color-black);
+}
+
+.tabs__values {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.h1__central_46 {
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+
+    width: 100%;
+    height: fit-content;
+
+    text-align: center;
+
+    color: var(--color-black);
+}
+
+.form__container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+
+    margin: 40px auto;
+    gap: 20px;
+    padding: 0 0;
+
+    width: fit-content;
+    height: fit-content;
+}
+
+.form__body__FS {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 450px;
+    width: fit-content;
+    height: fit-content;
+
+    background: #FFFFFF;
+    box-shadow: 0 4px 5px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+
+    padding: 40px 20px;
+}
+
+.form__body__FS .button__confirm {
+    padding: 14px 0;
+
+    width: 89%;
+    height: fit-content;
+
+    background: #FF5A5F;
+    border-radius: 10px;
+    border: none;
+
+    margin-top: 20px;
+    cursor: pointer;
+
+    transition: background-color 100ms linear;
+}
+
+.form__body__FS .button__confirm:focus {
+    border: solid var(--color-acsent-green) 10px 10px;
+}
+
+.button__confirm:hover {
+    background: #CC494EFF;
+}
+
+.form__body__FS .button__confirm .button__confirm_inner {
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+
+    height: fit-content;
+    text-align: center;
+
+    color: var(--color-black);
+}
+
+.letter__17B_500 {
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+
+    height: fit-content;
+    text-align: center;
+
+    color: var(--color-black);
+    text-decoration: none;
+
+    transition: color 100ms linear;
+}
+
+.letter__17B_500:hover {
+    color: var(--color-light-black);
+}
+
+.form__input__wide {
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+    width: 100%;
+    gap: 40px;
+}
+
+.form__input__wide .label__18B_500 {
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+
+    color: var(--color-black);
+    text-align: left;
+    margin: auto 0;
+    width: 80%;
+}
+
+.form__input__wide .text__input {
+    display: block;
+    height: calc(1.6rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-family: var(--font-family-roboto);
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-black);
+    background: #FFFFFF;
+    border: 3px solid #DDDDDD;
+    background-clip: padding-box;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    width: 100%;
+}
+
+.form__input__wide .text__input::placeholder {
+    color: var(--color-light-black);
+    opacity: 0.4;
+}
+
+.form__input__wide .text__input:hover {
+    border-color: var(--color-light-black);
+}
+
+.form__input__wide .text__input:focus {
+    border-color: var(--color-acsent-green) !important;
+    outline: 0;
+}
+
+
+
+
 
 
 

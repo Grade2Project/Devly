@@ -12,7 +12,8 @@ public static class VacancyExtensions
             CompanyName = vacancy.Company.CompanyName,
             Info = vacancy.Info,
             ProgrammingLanguage = vacancy.ProgrammingLanguage.LanguageName,
-            Salary = vacancy.Salary
+            Salary = vacancy.Salary,
+            Grade = vacancy.Grade.Value
         };
     }
 }

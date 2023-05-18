@@ -13,6 +13,10 @@ public class Vacancy
     
     [ForeignKey(nameof(ProgrammingLanguageId))]
     public ProgrammingLanguage ProgrammingLanguage { get; set; }
+    
+    public int GradeId { get; set; }
+    [ForeignKey(nameof(GradeId))]
+    public Grade Grade { get; set; }
     public int Salary { get; set; }
     public string Info { get; set; }
 }

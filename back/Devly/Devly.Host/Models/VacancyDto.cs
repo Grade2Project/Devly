@@ -6,4 +6,5 @@ public class VacancyDto
     public string ProgrammingLanguage { get; set; }
     public int Salary { get; set; }
     public string Info { get; set; }
+    public string Grade { get; set; }
 }

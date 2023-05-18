@@ -87,6 +87,8 @@ create table if not exists devly.vacancies
     references devly.companies (id),
     programming_language_id integer not null
     references devly.programming_languages (id),
+    grade_id integer not null
+        references devly.grades(id),
     salary                  int     not null,
     info                    text    not null
     );

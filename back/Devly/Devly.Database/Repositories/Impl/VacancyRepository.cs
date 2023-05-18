@@ -16,7 +16,10 @@ internal class VacancyRepository : IVacancyRepository
     
     public async Task<IReadOnlyList<Vacancy>> GetAllCompanyVacancies(string companyEmail)
     {
-        return await _repository.FindAllAsync<Vacancy>(x => x.Company.CompanyEmail == companyEmail);
+        return await _repository.FindAllAsync<Vacancy>(x => x.Company.CompanyEmail == companyEmail,
+            CancellationToken.None, vacancy => vacancy.Company,
+            vacancy => vacancy.ProgrammingLanguage,
+            vacancy => vacancy.Grade);
     }
 
     public async Task<Vacancy> FindVacancyAsync(Vacancy vacancy)
@@ -32,7 +35,7 @@ internal class VacancyRepository : IVacancyRepository
         return await _repository.FindAllAsync<Vacancy>(v => v.ProgrammingLanguage.LanguageName == languageName,
             CancellationToken.None, vacancy => vacancy.Company,
             vacancy => vacancy.ProgrammingLanguage,
-            vacancy => vacancy.Grade);;
+            vacancy => vacancy.Grade);
     }
 
     public async Task InsertAsync(Vacancy vacancy)

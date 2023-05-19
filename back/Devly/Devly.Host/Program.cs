@@ -21,6 +21,7 @@ services.AddCors(options =>
         });
 });
 
+services.AddMemoryCache();
 services.AddSingleton<Random, Random>();
 services.AddControllers().AddJsonOptions(o =>
 {

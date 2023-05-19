@@ -34,4 +34,10 @@ internal class UserRepository : IUserRepository
         return await _repository.GetNextRandom<User>
             (CancellationToken.None, user => user.Contact, user => user.Grade);
     }
+
+    public async Task<IReadOnlyList<User>>? GetUsersByGrade(int gradeId)
+    {
+        return await _repository.FindAllAsync<User>(user => user.GradeId <= gradeId,
+            CancellationToken.None, user => user.Contact, user => user.Grade);
+    }
 }

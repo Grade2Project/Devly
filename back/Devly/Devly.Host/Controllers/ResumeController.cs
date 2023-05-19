@@ -91,7 +91,8 @@ public class ResumeController : Controller
         if (company is null)
             return null;
         var language = await _programmingLanguagesRepository.FindLanguagesAsync(vacancyDto.ProgrammingLanguage);
-        if (language is null || language.Count == 0)
+        var grade = await _gradesRepository.FindGrade(vacancyDto.Grade);
+        if (language is null || language.Count == 0 || grade == null)
         {
             return null;
         }
@@ -101,7 +102,8 @@ public class ResumeController : Controller
             CompanyId = company.Id,
             Info = vacancyDto.Info,
             ProgrammingLanguageId = language[0].Id,
-            Salary = vacancyDto.Salary
+            Salary = vacancyDto.Salary,
+            GradeId = grade.Id
         };
     }
 }

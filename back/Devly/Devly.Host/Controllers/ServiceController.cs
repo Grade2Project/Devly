@@ -61,7 +61,7 @@ public class ServiceController : Controller
 
         var userToReturn = users.FirstOrDefault();
         if (userToReturn is null)
-            return null;
+            return await GetNextUserRandom();
         _memoryCache.Set(companyEmail, users.Skip(1).ToList(),
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
         var languages = await _usersFavoriteLanguagesRepository
@@ -99,7 +99,7 @@ public class ServiceController : Controller
         
         var vacancyToReturn = vacancies.FirstOrDefault();
         if (vacancyToReturn is null)
-            return null;
+            return await GetNextVacancyRandom();
         _memoryCache.Set(userLogin, vacancies.Skip(1).ToList(),
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1))); 
 

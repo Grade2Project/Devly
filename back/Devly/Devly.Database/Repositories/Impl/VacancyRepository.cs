@@ -30,6 +30,11 @@ internal class VacancyRepository : IVacancyRepository
                                                          x.ProgrammingLanguageId == vacancy.ProgrammingLanguageId);
     }
 
+    public async Task<Vacancy> FindVacancyByIdAsync(int id)
+    {
+        return await _repository.FindAsync<Vacancy>(x => x.Id == id);
+    }
+
     public async Task<IReadOnlyList<Vacancy>>? GetAllLanguageVacancies(string languageName)
     {
         return await _repository.FindAllAsync<Vacancy>(v => v.ProgrammingLanguage.LanguageName == languageName,

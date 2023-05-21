@@ -1,5 +1,4 @@
 using Devly.Database.Models;
-using Devly.Database.Repositories;
 using Devly.Database.Repositories.Abstract;
 using Devly.Extensions;
 using Devly.Models;

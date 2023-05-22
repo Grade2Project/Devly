@@ -1,8 +1,6 @@
 using Devly.Database.Basics.Context;
 using Devly.Database.Basics.Context.ContextProvider;
 using Devly.Database.Basics.Repository;
-using Devly.Database.Models;
-using Devly.Database.Repositories;
 using Devly.Database.Repositories.Abstract;
 using Devly.Database.Repositories.Impl;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +37,8 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<ICompaniesRepository, CompaniesRepository>();
         services.TryAddSingleton<IVacancyRepository, VacancyRepository>();
         services.TryAddSingleton<ICompaniesPasswordsRepository, CompaniesPasswordsRepository>();
+        services.TryAddSingleton<IFavoriteVacanciesRepository, FavoriteVacanciesRepository>();
+        services.TryAddSingleton<IFavoriteUsersRepository, FavoriteUsersRepository>();
         
         return services;
     }

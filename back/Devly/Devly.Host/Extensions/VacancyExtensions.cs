@@ -9,6 +9,7 @@ public static class VacancyExtensions
     {
         return new VacancyDto
         {
+            Id = vacancy.Id,
             CompanyName = vacancy.Company.CompanyName,
             Info = vacancy.Info,
             ProgrammingLanguage = vacancy.ProgrammingLanguage.LanguageName,

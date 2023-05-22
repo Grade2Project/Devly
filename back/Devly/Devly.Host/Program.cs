@@ -1,9 +1,12 @@
+using System.Text;
 using System.Text.Json.Serialization;
 using Devly.Configs;
 using Devly.Database.Context;
 using Devly.Database.Extensions.DI;
 using Devly.Extensions;
 using Devly.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +23,27 @@ services.AddCors(options =>
             policy.AllowAnyHeader();
         });
 });
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = config["JwtSettings:Issuer"],
+        ValidAudience = config["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+});
+
+builder.Services.AddAuthorization();
 
 services.AddMemoryCache();
 services.AddSingleton<Random, Random>();
@@ -45,5 +69,7 @@ var app = builder.Build();
 app.UseCors();
 app.UseSwagger().UseSwaggerUI();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();

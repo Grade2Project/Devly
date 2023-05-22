@@ -61,8 +61,11 @@ public class ResumeController : Controller
 
             if (resumeDto.Photo is {Length: > 0})
             {
+                var guid = Guid.NewGuid();
+                var imagePath = $"../photos/{guid}.txt";
+                resumeToUser.ImagePath = imagePath;
                 //Не авэйтим, чтобы не было фризов
-                SavePhoto(resumeDto.Photo);
+                SavePhoto(resumeDto.Photo, imagePath);
             }
 
             var usersFavoriteLanguages = await _programmingLanguagesRepository.FindLanguagesAsync(resumeDto.FavoriteLanguages)!;
@@ -90,11 +93,9 @@ public class ResumeController : Controller
         return Ok();
     }
 
-    private async Task SavePhoto(byte[] photo)
+    private async Task SavePhoto(byte[] photo, string path)
     {
-        var guid = Guid.NewGuid();
-        var filePath = $"photos/{guid}.txt";
-        await using var writer = new BinaryWriter(_file.OpenWrite(filePath));
+        await using var writer = new BinaryWriter(_file.OpenWrite(path));
         writer.Write(photo);
     }
 

@@ -3,6 +3,7 @@ using Devly.Configs;
 using Devly.Database.Context;
 using Devly.Database.Extensions.DI;
 using Devly.Extensions;
+using Devly.Helpers;
 using Devly.Services;
 using Microsoft.OpenApi.Models;
 
@@ -39,6 +40,7 @@ services
 services.AddConfig<AuthConfig>(config.GetRequiredSection("Auth"));
 
 services.AddSingleton<IPasswordHasher, ShaPasswordHasher>();
+services.AddHelpers();
 
 var app = builder.Build();
 

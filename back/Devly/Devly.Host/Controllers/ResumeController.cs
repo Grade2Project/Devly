@@ -2,6 +2,7 @@ using Devly.Database.Models;
 using Devly.Database.Repositories;
 using Devly.Database.Repositories.Abstract;
 using Devly.Extensions;
+using Devly.Helpers;
 using Devly.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,12 +16,15 @@ public class ResumeController : Controller
     private readonly IUsersFavoriteLanguagesRepository _usersFavoriteLanguagesRepository;
     private readonly ICompaniesRepository _companiesRepository;
     private readonly IVacancyRepository _vacancyRepository;
+    private readonly IFileHelper _file;
 
     public ResumeController(IUserRepository userRepository,
         IGradesRepository gradesRepository,
         IProgrammingLanguagesRepository programmingLanguagesRepository,
         IUsersFavoriteLanguagesRepository usersFavoriteLanguagesRepository,
-        ICompaniesRepository companiesRepository, IVacancyRepository vacancyRepository)
+        ICompaniesRepository companiesRepository, 
+        IVacancyRepository vacancyRepository, 
+        IFileHelper file)
     {
         _userRepository = userRepository;
         _gradesRepository = gradesRepository;
@@ -28,6 +32,7 @@ public class ResumeController : Controller
         _usersFavoriteLanguagesRepository = usersFavoriteLanguagesRepository;
         _companiesRepository = companiesRepository;
         _vacancyRepository = vacancyRepository;
+        _file = file;
     }
 
     [HttpPost, Route("vacancy/update")]
@@ -54,6 +59,12 @@ public class ResumeController : Controller
                 return StatusCode(400, "Bad Grade");
             }
 
+            if (resumeDto.Photo is {Length: > 0})
+            {
+                //Не авэйтим, чтобы не было фризов
+                SavePhoto(resumeDto.Photo);
+            }
+
             var usersFavoriteLanguages = await _programmingLanguagesRepository.FindLanguagesAsync(resumeDto.FavoriteLanguages)!;
             if (usersFavoriteLanguages is null)
             {
@@ -77,6 +88,14 @@ public class ResumeController : Controller
         }
 
         return Ok();
+    }
+
+    private async Task SavePhoto(byte[] photo)
+    {
+        var guid = Guid.NewGuid();
+        var filePath = $"photos/{guid}.txt";
+        await using var writer = new BinaryWriter(_file.OpenWrite(filePath));
+        writer.Write(photo);
     }
 
     private async Task<User?> ResumeToUser(ResumeDto resumeDto)

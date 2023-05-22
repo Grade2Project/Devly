@@ -34,7 +34,7 @@ namespace Devly.Database.Context
 
             modelBuilder.Entity<CompaniesFavoriteUser>()
                 .HasKey(nameof(CompaniesFavoriteUser.CompanyId),
-                    nameof(CompaniesFavoriteUser.CompanyId));
+                    nameof(CompaniesFavoriteUser.UserLogin));
 
         }
     }

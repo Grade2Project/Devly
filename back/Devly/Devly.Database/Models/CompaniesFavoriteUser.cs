@@ -11,6 +11,6 @@ public class CompaniesFavoriteUser
     public Company Company { get; set; }
     public string UserLogin { get; set; }
     
-    [ForeignKey(nameof(User))]
+    [ForeignKey(nameof(UserLogin))]
     public User User { get; set; }
 }

@@ -8,13 +8,10 @@ namespace Devly.Database.Repositories.Impl;
 internal class UsersFavoriteLanguagesRepository : IUsersFavoriteLanguagesRepository
 {
     private readonly IDbRepository<DevlyDbContext> _repository;
-    private readonly IProgrammingLanguagesRepository _programmingLanguagesRepository;
 
-    public UsersFavoriteLanguagesRepository(IDbRepository<DevlyDbContext> repository,
-        IProgrammingLanguagesRepository programmingLanguagesRepository)
+    public UsersFavoriteLanguagesRepository(IDbRepository<DevlyDbContext> repository)
     {
         _repository = repository;
-        _programmingLanguagesRepository = programmingLanguagesRepository;
     }
     
     public async Task<IReadOnlyList<UsersFavoriteLanguage>> GetUserFavoriteLanguages(string userLogin)

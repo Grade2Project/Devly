@@ -13,7 +13,7 @@ internal class VacancyRepository : IVacancyRepository
     {
         _repository = repository;
     }
-    
+
     public async Task<IReadOnlyList<Vacancy>> GetAllCompanyVacancies(string companyEmail)
     {
         return await _repository.FindAllAsync<Vacancy>(x => x.Company.CompanyEmail == companyEmail,

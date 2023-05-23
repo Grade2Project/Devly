@@ -1,5 +1,3 @@
-using Devly.Configs;
-using Devly.Database.Repositories;
 using Devly.Database.Repositories.Abstract;
 using Devly.Models;
 using Devly.Services;
@@ -10,13 +8,13 @@ namespace Devly.Controllers;
 [Route("auth")]
 public class AuthController : Controller
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IUserPasswordRepository _userPasswordRepository;
-    private readonly IPasswordHasher _hasher;
     private readonly ICompaniesPasswordsRepository _companiesPasswordsRepository;
     private readonly ICompaniesRepository _companiesRepository;
-    
-    public AuthController(IUserPasswordRepository userPasswordRepository, 
+    private readonly IPasswordHasher _hasher;
+    private readonly IUserPasswordRepository _userPasswordRepository;
+    private readonly IUserRepository _userRepository;
+
+    public AuthController(IUserPasswordRepository userPasswordRepository,
         IUserRepository userRepository,
         IPasswordHasher hasher,
         ICompaniesPasswordsRepository companiesPasswordsRepository,
@@ -29,7 +27,8 @@ public class AuthController : Controller
         _companiesRepository = companiesRepository;
     }
 
-    [HttpPost, Route("user")]
+    [HttpPost]
+    [Route("user")]
     public async Task<IActionResult> AuthUser([FromBody] LoginDto dto)
     {
         if (await AuthUserInternal(dto))
@@ -40,8 +39,9 @@ public class AuthController : Controller
 
         return StatusCode(401);
     }
-    
-    [HttpPost, Route("company")]
+
+    [HttpPost]
+    [Route("company")]
     public async Task<IActionResult> AuthCompany([FromBody] LoginDto dto)
     {
         if (await AuthCompanyInternal(dto))

@@ -1,6 +1,5 @@
-﻿namespace Devly.Database.Basics.Context
+﻿namespace Devly.Database.Basics.Context;
+
+public interface IDbContext
 {
-    public interface IDbContext
-    {  
-    }
 }

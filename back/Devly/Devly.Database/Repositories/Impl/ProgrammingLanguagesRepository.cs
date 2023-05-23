@@ -21,6 +21,7 @@ internal class ProgrammingLanguagesRepository : IProgrammingLanguagesRepository
 
     public async Task<IReadOnlyList<ProgrammingLanguage>> FindLanguagesAsync(params string[] languageNames)
     {
-        return await _repository.FindAllAsync<ProgrammingLanguage>(p => languageNames.Contains(p.LanguageName)).ConfigureAwait(false);
+        return await _repository.FindAllAsync<ProgrammingLanguage>(p => languageNames.Contains(p.LanguageName))
+            .ConfigureAwait(false);
     }
 }

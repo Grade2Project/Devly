@@ -45,7 +45,7 @@ internal class VacancyRepository : IVacancyRepository
 
     public async Task<IReadOnlyList<Vacancy>> GetAllGradeVacancies(int gradeId)
     {
-        return await _repository.FindAllAsync<Vacancy>(v => v.GradeId <= gradeId,
+        return await _repository.FindAllAsync<Vacancy>(v => v.GradeId == gradeId,
             CancellationToken.None, vacancy => vacancy.Company,
             vacancy => vacancy.ProgrammingLanguage,
             vacancy => vacancy.Grade);

@@ -35,9 +35,15 @@ internal class UserRepository : IUserRepository
             (CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
     }
 
-    public async Task<IReadOnlyList<User>>? GetUsersByGrade(int gradeId)
+    public async Task<IReadOnlyList<User>>? GetUsersLeqThanGrade(int gradeId)
     {
         return await _repository.FindAllAsync<User>(user => user.GradeId <= gradeId,
+            CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
+    }
+
+    public async Task<IReadOnlyList<User>> GetUsersEqGrade(int gradeId)
+    {
+        return await _repository.FindAllAsync<User>(user => user.GradeId == gradeId,
             CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
     }
 }

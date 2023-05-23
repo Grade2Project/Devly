@@ -45,7 +45,7 @@ public class ServiceController : Controller
     [Route("user")]
     public async Task<ResumeDto>? GetNextUser([FromBody] string companyEmail)
     {
-        var users = _memoryCache.Get<IReadOnlyList<User>>(companyEmail);
+        var users = _memoryCache.Get<IReadOnlyList<User>>($"company_{companyEmail}");
         if (users == null || users.Count == 0)
         {
             users = new List<User>();
@@ -53,7 +53,7 @@ public class ServiceController : Controller
             var companyVacancies = await _vacancyRepository.GetAllCompanyVacancies(companyEmail);
             foreach (var vacancy in companyVacancies)
             {
-                var usersOfVacancyGrade = await _userRepository.GetUsersByGrade(vacancy.Grade.Id)!;
+                var usersOfVacancyGrade = await _userRepository.GetUsersLeqThanGrade(vacancy.Grade.Id)!;
                 if (usersOfVacancyGrade == null)
                     continue;
                 usersList?.AddRange(usersOfVacancyGrade.Where(user =>
@@ -87,7 +87,7 @@ public class ServiceController : Controller
     [Route("vacancy")]
     public async Task<VacancyDto?> GetNextVacancy([FromBody] string userLogin)
     {
-        var vacancies = _memoryCache.Get<IReadOnlyList<Vacancy>>(userLogin);
+        var vacancies = _memoryCache.Get<IReadOnlyList<Vacancy>>($"user_{userLogin}");
         if (vacancies == null || vacancies.Count == 0)
         {
             vacancies = new List<Vacancy>();
@@ -120,25 +120,31 @@ public class ServiceController : Controller
     [Route("user/filter")]
     public async Task<ResumeDto?> GetNextUserFilter([FromBody] UserFilterDto userFilterDto)
     {
+        if (userFilterDto is null || userFilterDto.CompanyEmail is null)
+            return null;
         var companyEmail = userFilterDto.CompanyEmail;
-        var key = $"{companyEmail}{FilterString}";
+        var key = $"company_{companyEmail}{FilterString}";
         var cachedUsers = _memoryCache.Get<MemoryCacheEntry<User>>(key);
         if (cachedUsers == null || cachedUsers.Entries.Count == 0 || cachedUsers.FilterHash != userFilterDto.GetHashCode())
         {
-            var grades = userFilterDto.Grades.Select(x => _gradesRepository.FindGrade(x).Result).ToArray();
-            var languages = await _programmingLanguagesRepository
-                .FindLanguagesAsync(userFilterDto.Languages);
+            var grades = userFilterDto.Grades is null ? _gradesRepository.GetAllGrades().Result.ToArray() :
+                userFilterDto.Grades.Select(x => _gradesRepository.FindGrade(x).Result).ToArray();
+            var languages = userFilterDto.Languages is null ?
+                _programmingLanguagesRepository.GetAllLanguages().Result.ToArray() :
+                await _programmingLanguagesRepository.FindLanguagesAsync(userFilterDto.Languages);
             if (grades.Any(x => x is null) || languages.Any(x => x is null)) return null;
             var languagesIds = languages.Select(x => x.Id).ToHashSet();
 
             List<User> filteredUsers;
             try
             {
-                filteredUsers = grades.Select(grade => _userRepository.GetUsersByGrade(grade.Id)?.Result)
+                filteredUsers = grades.Select(grade => _userRepository.GetUsersEqGrade(grade.Id)?.Result)
                     .SelectMany(x => x)
+                    .DistinctBy(x => x.Login)
                     .Where(user =>
                         user.FavoriteLanguages.Any(language => languagesIds.Contains(language.ProgrammingLanguageId)))
-                    .Take(10).ToList();
+                    .ToList();
+                // потом надо сделать Take(n)
             }
             catch(Exception e)
             {
@@ -165,17 +171,20 @@ public class ServiceController : Controller
     [Route("vacancy/filter")]
     public async Task<VacancyDto?> GetNextVacancyFilter([FromBody] VacancyFilterDto vacancyFilterDto)
     {
+        if (vacancyFilterDto is null || vacancyFilterDto.UserLogin is null)
+            return null;
         var userLogin = vacancyFilterDto.UserLogin;
-        var key = $"{userLogin}{FilterString}";
+        var key = $"user_{userLogin}{FilterString}";
         var cachedVacancies = _memoryCache.Get<MemoryCacheEntry<Vacancy>>(key);
 
         if (cachedVacancies == null || cachedVacancies.Entries.Count == 0 ||
             cachedVacancies.FilterHash != vacancyFilterDto.GetHashCode())
         {
-            var grades = vacancyFilterDto.Grades.Select(x => _gradesRepository.FindGrade(x).Result).ToArray();
-            var languages = await _programmingLanguagesRepository
-                .FindLanguagesAsync(vacancyFilterDto.Languages);
-            if (grades.Any(x => x is null) || languages.Any(x => x is null)) return null;
+            var grades = vacancyFilterDto.Grades is null ? _gradesRepository.GetAllGrades().Result.ToArray() :
+                vacancyFilterDto.Grades.Select(x => _gradesRepository.FindGrade(x).Result).ToArray();
+            var languages = vacancyFilterDto.Languages is null ?
+                _programmingLanguagesRepository.GetAllLanguages().Result.ToArray() :
+                await _programmingLanguagesRepository.FindLanguagesAsync(vacancyFilterDto.Languages);
             var languagesIds = languages.Select(x => x.Id).ToHashSet();
 
             List<Vacancy> filteredVacancies;
@@ -184,10 +193,11 @@ public class ServiceController : Controller
                 filteredVacancies = grades
                     .Select(x => _vacancyRepository.GetAllGradeVacancies(x.Id)?.Result)
                     .SelectMany(x => x)
+                    .DistinctBy(x => x.Id)
                     .Where(vacancy => languagesIds.Contains(vacancy.ProgrammingLanguageId) && 
                                       vacancy.Salary >= vacancyFilterDto.SalaryFrom &&
                                       vacancy.Salary <= (vacancyFilterDto.SalaryTo > 0 ? vacancyFilterDto.SalaryTo : int.MaxValue))
-                    .Take(10).ToList();
+                    .ToList();
             }
             catch (Exception e)
             {

@@ -9,6 +9,7 @@ public static class UserExtensions
     {
         return new ResumeDto
         {
+            Login = user.Login,
             BirthDate = user.BirthDate,
             City = user.City,
             Info = user.Info,

@@ -8,6 +8,7 @@ public interface IVacancyRepository
     public Task<Vacancy> FindVacancyAsync(Vacancy vacancy);
     public Task<Vacancy> FindVacancyByIdAsync(int id);
     public Task<IReadOnlyList<Vacancy>>? GetAllLanguageVacancies(string languageName);
+    public Task<IReadOnlyList<Vacancy>>? GetAllGradeVacancies(int gradeId);
 
     public Task InsertAsync(Vacancy vacancy);
     public Task DeleteAsync(Vacancy vacancy);

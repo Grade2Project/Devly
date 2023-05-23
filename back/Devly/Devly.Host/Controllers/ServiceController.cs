@@ -63,6 +63,8 @@ public class ServiceController : Controller
                     return userFavoriteLanguages.Contains(vacancy.ProgrammingLanguage.LanguageName);
                 }));
             }
+            
+            users = users.Take(10).ToList();
         }
 
         var userToReturn = users.FirstOrDefault();
@@ -101,6 +103,8 @@ public class ServiceController : Controller
                     continue;
                 listVacancies?.AddRange(vacanciesOfLanguage.Where(vac => vac.Grade.Id <= user.GradeId));
             }
+
+            vacancies = vacancies.Take(10).ToList();
         }
 
         var vacancyToReturn = vacancies.FirstOrDefault();
@@ -127,11 +131,20 @@ public class ServiceController : Controller
             if (grades.Any(x => x is null) || languages.Any(x => x is null)) return null;
             var languagesIds = languages.Select(x => x.Id).ToHashSet();
 
-            var filteredUsers = grades.Select(grade => _userRepository.GetUsersByGrade(grade.Id).Result)
-                .SelectMany(x => x)
-                .Where(user =>
-                    user.FavoriteLanguages.Any(language => languagesIds.Contains(language.ProgrammingLanguageId)))
-                .Take(10).ToList();
+            List<User> filteredUsers;
+            try
+            {
+                filteredUsers = grades.Select(grade => _userRepository.GetUsersByGrade(grade.Id)?.Result)
+                    .SelectMany(x => x)
+                    .Where(user =>
+                        user.FavoriteLanguages.Any(language => languagesIds.Contains(language.ProgrammingLanguageId)))
+                    .Take(10).ToList();
+            }
+            catch(Exception e)
+            {
+                return await GetNextUserRandom();
+            }
+
             cachedUsers = new MemoryCacheEntry<User>
             {
                 Entries = filteredUsers,
@@ -139,9 +152,60 @@ public class ServiceController : Controller
             };
         }
 
+        if (cachedUsers.Entries.Count == 0)
+            return null;
         var answer = cachedUsers.Entries[0].MapToResumeDto();
         cachedUsers.Entries = cachedUsers.Entries.Skip(1).ToList();
         _memoryCache.Set(key, cachedUsers,
+            new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+        return answer;
+    }
+
+    [HttpPost]
+    [Route("vacancy/filter")]
+    public async Task<VacancyDto?> GetNextVacancyFilter([FromBody] VacancyFilterDto vacancyFilterDto)
+    {
+        var userLogin = vacancyFilterDto.UserLogin;
+        var key = $"{userLogin}{FilterString}";
+        var cachedVacancies = _memoryCache.Get<MemoryCacheEntry<Vacancy>>(key);
+
+        if (cachedVacancies == null || cachedVacancies.Entries.Count == 0 ||
+            cachedVacancies.FilterHash != vacancyFilterDto.GetHashCode())
+        {
+            var grades = vacancyFilterDto.Grades.Select(x => _gradesRepository.FindGrade(x).Result).ToArray();
+            var languages = await _programmingLanguagesRepository
+                .FindLanguagesAsync(vacancyFilterDto.Languages);
+            if (grades.Any(x => x is null) || languages.Any(x => x is null)) return null;
+            var languagesIds = languages.Select(x => x.Id).ToHashSet();
+
+            List<Vacancy> filteredVacancies;
+            try
+            {
+                filteredVacancies = grades
+                    .Select(x => _vacancyRepository.GetAllGradeVacancies(x.Id)?.Result)
+                    .SelectMany(x => x)
+                    .Where(vacancy => languagesIds.Contains(vacancy.ProgrammingLanguageId) && 
+                                      vacancy.Salary >= vacancyFilterDto.SalaryFrom &&
+                                      vacancy.Salary <= (vacancyFilterDto.SalaryTo > 0 ? vacancyFilterDto.SalaryTo : int.MaxValue))
+                    .Take(10).ToList();
+            }
+            catch (Exception e)
+            {
+                return await GetNextVacancyRandom();
+            }
+
+            cachedVacancies = new MemoryCacheEntry<Vacancy>
+            {
+                Entries = filteredVacancies,
+                FilterHash = vacancyFilterDto.GetHashCode()
+            };
+        }
+
+        if (cachedVacancies.Entries.Count == 0)
+            return null;
+        var answer = cachedVacancies.Entries[0].MapToVacancyDto();
+        cachedVacancies.Entries = cachedVacancies.Entries.Skip(1).ToList();
+        _memoryCache.Set(key, cachedVacancies,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
         return answer;
     }

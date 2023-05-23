@@ -43,6 +43,14 @@ internal class VacancyRepository : IVacancyRepository
             vacancy => vacancy.Grade);
     }
 
+    public async Task<IReadOnlyList<Vacancy>> GetAllGradeVacancies(int gradeId)
+    {
+        return await _repository.FindAllAsync<Vacancy>(v => v.GradeId <= gradeId,
+            CancellationToken.None, vacancy => vacancy.Company,
+            vacancy => vacancy.ProgrammingLanguage,
+            vacancy => vacancy.Grade);
+    }
+
     public async Task InsertAsync(Vacancy vacancy)
     {
         await _repository.InsertAsync(vacancy);

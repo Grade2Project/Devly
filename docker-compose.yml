@@ -12,6 +12,17 @@ services:
     networks:
       - local-network
 
+  nginx:
+    image: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - "./front:/usr/share/nginx/app"
+      - "./nginx.conf:/etc/nginx/conf.d/default.conf"
+    networks:
+      - local-network
+
+
 networks:
   local-network:
     driver: bridge

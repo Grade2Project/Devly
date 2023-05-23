@@ -5,9 +5,12 @@ using Devly.Database.Context;
 using Devly.Database.Extensions.DI;
 using Devly.Extensions;
 using Devly.Services;
+using Devly.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -55,7 +58,7 @@ services.AddSwaggerGen(s => s.SwaggerDoc("v1", new OpenApiInfo()
 {
     Title = "Devly", Version = "v1"
 }));
-
+services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 services
     .AddNpgsqlDbContext<DevlyDbContext>(config.GetConnectionString("Postgres"))
     .AddDatabase();

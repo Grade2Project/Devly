@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Devly.Database.Repositories.Abstract;
 using Devly.Models;
 using Devly.Services;
@@ -38,7 +39,10 @@ public class AuthController : Controller
             var token = await _identityService.GenerateToken(new TokenRequestDto
             {
                 Email = dto.Login,
-                CustomClaims = new Dictionary<string, object>()
+                CustomClaims = new Dictionary<string, object>
+                {
+                    [ClaimTypes.Role] = "User"
+                }
             });
             
             return Ok(token);
@@ -51,8 +55,16 @@ public class AuthController : Controller
     {
         if (await AuthCompanyInternal(dto))
         {
-            var company = await _companiesRepository.GetCompanyByName(dto.Login);
-            return Ok(company);
+            var token = await _identityService.GenerateToken(new TokenRequestDto
+            {
+                Email = dto.Login,
+                CustomClaims = new Dictionary<string, object>
+                {
+                    [ClaimTypes.Role] = "Company"
+                }
+            });
+            
+            return Ok(token);
         }
 
         return StatusCode(401);

@@ -31,7 +31,8 @@ public class ResumeController : Controller
         _companiesRepository = companiesRepository;
         _vacancyRepository = vacancyRepository;
     }
-
+    
+    [Authorize(Policy = "CompanyPolicy")]
     [HttpPost, Route("vacancy/update")]
     public async Task<IActionResult> AddVacancy([FromBody] VacancyDto vacancyDto)
     {
@@ -45,12 +46,13 @@ public class ResumeController : Controller
         return Ok();
     }
     
-    [Authorize]
+    [Authorize(Policy = "UserPolicy")]
     [HttpPost, Route("resume/update")]
     public async Task<IActionResult> UpdateResume([FromBody] ResumeDto resumeDto)
     {
         var tokenData = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email");
         resumeDto.Login = tokenData!.Value;
+        
         try
         {
             var resumeToUser = await ResumeToUser(resumeDto);

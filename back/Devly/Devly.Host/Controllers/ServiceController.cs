@@ -3,6 +3,7 @@ using Devly.Database.Repositories;
 using Devly.Database.Repositories.Abstract;
 using Devly.Extensions;
 using Devly.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -28,6 +29,7 @@ public class ServiceController : Controller
         _memoryCache = memoryCache;
     }
     
+    [Authorize(Policy = "CompanyPolicy")]
     [HttpPost, Route("next/user/random")]
     public async Task<ResumeDto> GetNextUserRandom()
     {
@@ -35,10 +37,12 @@ public class ServiceController : Controller
         var languages = await _usersFavoriteLanguagesRepository.GetUserFavoriteLanguages(user.Login);
         return user.MapToResumeDto(languages.Select(x => x.ProgrammingLanguage.LanguageName));
     }
-
+    
+    [Authorize(Policy = "CompanyPolicy")]
     [HttpPost, Route("next/user")]
-    public async Task<ResumeDto>? GetNextUser([FromBody] string companyEmail)
+    public async Task<ResumeDto>? GetNextUser()
     {
+        var companyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         var users = _memoryCache.Get<IReadOnlyList<User>>(companyEmail);
         if (users == null || users.Count == 0)
         {
@@ -68,7 +72,8 @@ public class ServiceController : Controller
             .GetUserFavoriteLanguages(userToReturn.Login);
         return userToReturn.MapToResumeDto(languages.Select(x => x.ProgrammingLanguage.LanguageName));
     }
-
+    
+    [Authorize(Policy = "UserPolicy")]
     [HttpPost, Route("next/vacancy/random")]
     public async Task<VacancyDto?> GetNextVacancyRandom()
     {
@@ -76,9 +81,11 @@ public class ServiceController : Controller
         return vacancy?.MapToVacancyDto();
     }
     
+    [Authorize(Policy = "UserPolicy")]
     [HttpPost, Route("next/vacancy")]
-    public async Task<VacancyDto?> GetNextVacancy([FromBody]string userLogin)
+    public async Task<VacancyDto?> GetNextVacancy()
     {
+        var userLogin = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         var vacancies = _memoryCache.Get<IReadOnlyList<Vacancy>>(userLogin);
         if (vacancies == null || vacancies.Count == 0)
         {

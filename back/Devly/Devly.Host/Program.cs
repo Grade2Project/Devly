@@ -7,6 +7,8 @@ using Devly.Extensions;
 using Devly.Services;
 using Devly.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -46,7 +48,20 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(o =>
+{
+    o.AddPolicy("UserPolicy", p =>
+    {
+        p.Requirements.Add(new DenyAnonymousAuthorizationRequirement());
+        p.RequireRole("User");
+    });
+    o.AddPolicy("CompanyPolicy", p =>
+    {
+        p.Requirements.Add(new DenyAnonymousAuthorizationRequirement());
+        p.RequireRole("Company");
+    });
+});
+
 
 services.AddMemoryCache();
 services.AddSingleton<Random, Random>();

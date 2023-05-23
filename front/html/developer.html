@@ -174,6 +174,7 @@
         const dataRaw = getObjectFromIterable(
                 document.querySelectorAll('input[id^="user_"]'),
                 ti => [ti.id, ti.value]);
+        dataRaw['user_birthdate'] += 'T00:00:00Z'
         const info = {
             'user_initials': dataRaw['user_initials'],
             'user_grad_level': dataRaw['user_grad_level'],
@@ -200,7 +201,7 @@
             favoriteLanguages: [dataRaw['user_languages']]
         }
         sendJSON(data, Controllers.RESUME.UPDATE,
-            (statusCode, response) => {
+            (statusCode) => {
             if (statusCode === 200) {
                 alert('Резюме создано, вы восхитительны');
             } else {

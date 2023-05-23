@@ -4,7 +4,11 @@ const Controllers = {
     AUTH: {USER: `${HOME}/auth/user`, COMPANY: `${HOME}/auth/company`},
     REG: {USER: `${HOME}/reg`, COMPANY: `${HOME}/company/reg`},
     GRADES: `${HOME}/grades/get`,
-    RESUME: {UPDATE: `${HOME}/resume/update`}
+    RESUME: {UPDATE: `${HOME}/resume/update`},
+    SERVICE: {
+        NEXT_USER: `${HOME}/next/user`,
+        NEXT_VACANCY: `${HOME}/next/vacancy`
+    }
 };
 
 const HTTPMethods = {

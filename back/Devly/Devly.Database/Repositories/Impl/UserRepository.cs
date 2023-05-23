@@ -32,12 +32,12 @@ internal class UserRepository : IUserRepository
     public async Task<User> GetRandomUser()
     {
         return await _repository.GetNextRandom<User>
-            (CancellationToken.None, user => user.Contact, user => user.Grade);
+            (CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
     }
 
     public async Task<IReadOnlyList<User>>? GetUsersByGrade(int gradeId)
     {
         return await _repository.FindAllAsync<User>(user => user.GradeId <= gradeId,
-            CancellationToken.None, user => user.Contact, user => user.Grade);
+            CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
     }
 }

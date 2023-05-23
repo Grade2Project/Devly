@@ -20,4 +20,6 @@ public class User
     public int ContactId { get; set; }
     [ForeignKey(nameof(ContactId))]
     public Contact Contact { get; set; }
+    
+    public IReadOnlyList<UsersFavoriteLanguage> FavoriteLanguages { get; set; }
 }

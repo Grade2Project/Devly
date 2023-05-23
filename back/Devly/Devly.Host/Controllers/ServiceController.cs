@@ -10,7 +10,6 @@ namespace Devly.Controllers;
 
 public class ServiceController : Controller
 {
-    private readonly ICompaniesRepository _companiesRepository;
     private readonly IMemoryCache _memoryCache;
     private readonly IUserRepository _userRepository;
     private readonly IVacancyRepository _vacancyRepository;
@@ -19,12 +18,11 @@ public class ServiceController : Controller
     public ServiceController(IUserRepository userRepository,
         IVacancyRepository vacancyRepository,
         IUsersFavoriteLanguagesRepository usersFavoriteLanguagesRepository,
-        ICompaniesRepository companiesRepository, IMemoryCache memoryCache)
+        IMemoryCache memoryCache)
     {
         _userRepository = userRepository;
         _vacancyRepository = vacancyRepository;
         _usersFavoriteLanguagesRepository = usersFavoriteLanguagesRepository;
-        _companiesRepository = companiesRepository;
         _memoryCache = memoryCache;
     }
     
@@ -32,8 +30,7 @@ public class ServiceController : Controller
     public async Task<ResumeDto> GetNextUserRandom()
     {
         var user = await _userRepository.GetRandomUser();
-        var languages = await _usersFavoriteLanguagesRepository.GetUserFavoriteLanguages(user.Login);
-        return user.MapToResumeDto(languages.Select(x => x.ProgrammingLanguage.LanguageName));
+        return user.MapToResumeDto();
     }
 
     [HttpPost, Route("next/user")]
@@ -64,9 +61,7 @@ public class ServiceController : Controller
             return await GetNextUserRandom();
         _memoryCache.Set(companyEmail, users.Skip(1).ToList(),
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
-        var languages = await _usersFavoriteLanguagesRepository
-            .GetUserFavoriteLanguages(userToReturn.Login);
-        return userToReturn.MapToResumeDto(languages.Select(x => x.ProgrammingLanguage.LanguageName));
+        return userToReturn.MapToResumeDto();
     }
 
     [HttpPost, Route("next/vacancy/random")]

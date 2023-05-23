@@ -36,6 +36,10 @@ namespace Devly.Database.Context
                 .HasKey(nameof(CompaniesFavoriteUser.CompanyId),
                     nameof(CompaniesFavoriteUser.UserLogin));
 
+            modelBuilder.Entity<User>().HasMany(x => x.FavoriteLanguages)
+                .WithOne(x => x.User);
+
+            modelBuilder.Entity<UsersFavoriteLanguage>().Navigation(fl => fl.ProgrammingLanguage).AutoInclude();
         }
     }
 }

@@ -37,8 +37,7 @@ public class ServiceController : Controller
     public async Task<ResumeDto> GetNextUserRandom()
     {
         var user = await _userRepository.GetRandomUser();
-        var languages = await _usersFavoriteLanguagesRepository.GetUserFavoriteLanguages(user.Login);
-        return user.MapToResumeDto(languages.Select(x => x.ProgrammingLanguage.LanguageName));
+        return user.MapToResumeDto();
     }
 
     [HttpPost, Route("user")]
@@ -69,9 +68,7 @@ public class ServiceController : Controller
             return await GetNextUserRandom();
         _memoryCache.Set(companyEmail, users.Skip(1).ToList(),
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
-        var languages = await _usersFavoriteLanguagesRepository
-            .GetUserFavoriteLanguages(userToReturn.Login);
-        return userToReturn.MapToResumeDto(languages.Select(x => x.ProgrammingLanguage.LanguageName));
+        return userToReturn.MapToResumeDto();
     }
 
     [HttpPost, Route("vacancy/random")]

@@ -59,6 +59,14 @@
                                                                                   id="user_city"
                                                                                   required>
             </div>
+
+            <div class="form__input__wide">
+                <label for="user_city" class="label__18B_500">Твой кекус</label><input type="file"
+                                                                             id="user_avatar" name="avatar"
+                                                                                       accept="image/png, image/jpeg"
+                                                                                       onchange="encodeImage(this.files[0])"
+                                                                                       required>
+            </div>
         </div>
 
         <div class="c-form-block">
@@ -130,7 +138,7 @@
             </div>
         </div>
 
-        <button class="confirm c-button-h" id="form_submit" type="submit">Продолжить</button>
+        <button class="confirm c-button-h" id="form_submit" type="submit" onclick="SendResume()">Продолжить</button>
     </div>
 
 
@@ -138,8 +146,10 @@
 <script src="../scripts/inputsValidity.js"></script>
 <script>
     const gradeSelect = document.getElementById('user_prog_grade');
+    let grades;
     fetchJSON(Controllers.GRADES, (json) => {
-        for (let grade of json.container) {
+        grades = json.container;
+        for (let grade of grades) {
             let opt = document.createElement('option');
             opt.value = grade;
             opt.innerHTML = grade;
@@ -148,7 +158,56 @@
         }
     });
 
-    
+    const reader = new FileReader();
+    let avatarBytes;
+    function encodeImage(file) {
+        reader.onloadend = function() {
+            console.log(reader.result);
+            avatarBytes = reader.result.split(',')[1];
+            console.log(avatarBytes);
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function SendResume() {
+        const grade = document.querySelector('select[id="user_prog_grade"]').value;
+        const dataRaw = getObjectFromIterable(
+                document.querySelectorAll('input[id^="user_"]'),
+                ti => [ti.id, ti.value]);
+        const info = {
+            'user_initials': dataRaw['user_initials'],
+            'user_grad_level': dataRaw['user_grad_level'],
+            'user_institution': dataRaw['user_institution'],
+            'user_faculty': dataRaw['user_faculty'],
+            'user_year_of_grad': dataRaw['user_year_of_grad'],
+            'user_position': dataRaw['user_position'],
+            'user_salary': dataRaw['user_salary'],
+            'user_word_schedule': dataRaw['user_word_schedule'],
+            'user_ext_info': dataRaw['user_ext_info'],
+        }
+        const data = {
+            login: localStorage['user_login'],
+            name: dataRaw['user_initials'],
+            birthDate: dataRaw['user_birthdate'],
+            city: dataRaw['user_city'],
+            info: JSON.stringify(info),
+            resumePath: "kekus", // ubrat' nahui
+            grade: grade,
+            photo: avatarBytes,
+            email: localStorage['user_login'],
+            phone: dataRaw['user_tel'],
+            imagePath: "esheOdin", // zachem?
+            favoriteLanguages: [dataRaw['user_languages']]
+        }
+        sendJSON(data, Controllers.RESUME.UPDATE,
+            (statusCode, response) => {
+            if (statusCode === 200) {
+                alert('Резюме создано, вы восхитительны');
+            } else {
+                alert('BadKekus');
+            }
+        });
+    }
 </script>
 </body>
 </html>

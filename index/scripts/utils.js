@@ -3,7 +3,8 @@ const HOME = 'http://localhost:5003';
 const Controllers = {
     AUTH: {USER: `${HOME}/auth/user`, COMPANY: `${HOME}/auth/company`},
     REG: {USER: `${HOME}/reg`, COMPANY: `${HOME}/company/reg`},
-    GRADES: `${HOME}/grades/get`
+    GRADES: `${HOME}/grades/get`,
+    RESUME: {UPDATE: `${HOME}/resume/update`}
 };
 
 const HTTPMethods = {
@@ -26,15 +27,20 @@ function getInputValueById(id) {
 }
 
 async function sendJSON (data, controller, processResponse) {
+    console.log(data);
     const json = JSON.stringify(data);
 
-    XHR.open(HTTPMethods.POST, controller, true);
-    XHR.setRequestHeader('Content-Type', 'application/json');
+    const xhr = new XMLHttpRequest()
+    xhr.open(HTTPMethods.POST, controller, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
-    XHR.responseType = 'json';
-    XHR.onload = () => processResponse(XHR.status, XHR.response);
+    xhr.responseType = 'json';
+    xhr.onload = () => {
+        console.log(xhr.response);
+        processResponse(xhr.status, xhr.response);
+    }
 
-    XHR.send(json);
+    xhr.send(json);
 }
 
 async function fetchJSON (controller, processResponse) {
@@ -51,6 +57,3 @@ async function fetchJSON (controller, processResponse) {
 function getObjectFromIterable(iterable, mappingLambda) {
     return Object.fromEntries(Array.from(iterable, item => item).map(mappingLambda));
 }
-
-
-

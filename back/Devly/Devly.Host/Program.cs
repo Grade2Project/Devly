@@ -66,6 +66,7 @@ services
 services.AddConfig<AuthConfig>(config.GetRequiredSection("Auth"));
 
 services.AddSingleton<IPasswordHasher, ShaPasswordHasher>();
+services.AddSingleton<IIdentityService, IdentityService>();
 
 var app = builder.Build();
 

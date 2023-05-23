@@ -1,5 +1,3 @@
-using Devly.Configs;
-using Devly.Database.Repositories;
 using Devly.Database.Repositories.Abstract;
 using Devly.Models;
 using Devly.Services;
@@ -13,18 +11,21 @@ public class AuthController : Controller
     private readonly IUserRepository _userRepository;
     private readonly IUserPasswordRepository _userPasswordRepository;
     private readonly IPasswordHasher _hasher;
+    private readonly IIdentityService _identityService;
     private readonly ICompaniesPasswordsRepository _companiesPasswordsRepository;
     private readonly ICompaniesRepository _companiesRepository;
     
     public AuthController(IUserPasswordRepository userPasswordRepository, 
         IUserRepository userRepository,
         IPasswordHasher hasher,
+        IIdentityService identityService,
         ICompaniesPasswordsRepository companiesPasswordsRepository,
         ICompaniesRepository companiesRepository)
     {
         _userPasswordRepository = userPasswordRepository;
         _userRepository = userRepository;
         _hasher = hasher;
+        _identityService = identityService;
         _companiesPasswordsRepository = companiesPasswordsRepository;
         _companiesRepository = companiesRepository;
     }
@@ -34,10 +35,14 @@ public class AuthController : Controller
     {
         if (await AuthUserInternal(dto))
         {
-            var user = await _userRepository.FindUserByLoginAsync(dto.Login);
-            return Ok(user);
+            var token = await _identityService.GenerateToken(new TokenRequestDto
+            {
+                Email = dto.Login,
+                CustomClaims = new Dictionary<string, object>()
+            });
+            
+            return Ok(token);
         }
-
         return StatusCode(401);
     }
     

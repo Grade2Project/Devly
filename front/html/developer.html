@@ -131,7 +131,10 @@
 
 <script src="../scripts/utils.js"></script>
 <script src="../scripts/inputsValidity.js"></script>
+<script src="../scripts/common.js"></script>
 <script>
+    redirectIfNotAuthorized(); // Закомментить для дебага!!!!!!
+
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
     fetchJSON(Controllers.GRADES, (json) => {

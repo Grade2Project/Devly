@@ -11,6 +11,18 @@ services:
       - "5432:5432"
     networks:
       - local-network
+  
+  back:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: back
+    networks: 
+      - local-network
+    ports:
+      - "80:80"
+    depends_on: 
+      - postgres
 
 networks:
   local-network:

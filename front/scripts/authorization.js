@@ -11,7 +11,7 @@ function auth() {
     }
     console.log(data);
 
-    controller = currentTab === 0 ? Controllers.AUTH.USER : Controllers.AUTH.COMPANY;
+    controller = Controllers.AUTH.USER;
 
     if (!data || !controller)
         throw new Error('Internal error');
@@ -19,8 +19,8 @@ function auth() {
     sendJSON(data, controller,
         (statusCode, response) => {
             if (statusCode === 200) {
-                localStorage['user_login'] = dataRaw['auth_email'];
-                window.location.href = 'index.html' // Показывать на индексе как-то, что я войден
+                localStorage['token'] = response;
+                // window.location.href = 'index.html' // Показывать на индексе как-то, что я войден
             }
             else {
                 console.log('Ошибка входа'); // Сделать чо нибудь прикольное

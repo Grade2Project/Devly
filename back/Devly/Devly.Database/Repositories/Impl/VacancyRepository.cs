@@ -1,4 +1,4 @@
-using Devly.Database.Basics.Repository;
+ using Devly.Database.Basics.Repository;
 using Devly.Database.Context;
 using Devly.Database.Models;
 using Devly.Database.Repositories.Abstract;
@@ -69,6 +69,8 @@ internal class VacancyRepository : IVacancyRepository
     public async Task<Vacancy> GetRandomVacancy()
     {
         return await _repository.GetNextRandom<Vacancy>
-            (CancellationToken.None, vacancy => vacancy.Company, vacancy => vacancy.ProgrammingLanguage);
+            ( CancellationToken.None, vacancy => vacancy.Company,
+                vacancy => vacancy.ProgrammingLanguage,
+                vacancy => vacancy.Grade);
     }
 }

@@ -2,7 +2,9 @@ using Devly.Database.Models;
 using Devly.Database.Repositories.Abstract;
 using Devly.Extensions;
 using Devly.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Devly.Controllers;
 
@@ -28,9 +30,9 @@ public class ResumeController : Controller
         _companiesRepository = companiesRepository;
         _vacancyRepository = vacancyRepository;
     }
-
-    [HttpPost]
-    [Route("vacancy/update")]
+    
+    [Authorize(Policy = "CompanyPolicy")]
+    [HttpPost, Route("vacancy/update")]
     public async Task<IActionResult> AddVacancy([FromBody] VacancyDto vacancyDto)
     {
         var vacancy = await DtoToVacancy(vacancyDto);
@@ -40,11 +42,14 @@ public class ResumeController : Controller
         await _vacancyRepository.InsertAsync(vacancy);
         return Ok();
     }
-
-    [HttpPost]
-    [Route("resume/update")]
+    
+    [Authorize(Policy = "UserPolicy")]
+    [HttpPost, Route("resume/update")]
     public async Task<IActionResult> UpdateResume([FromBody] ResumeDto resumeDto)
     {
+        var tokenData = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email");
+        resumeDto.Login = tokenData!.Value;
+        
         try
         {
             var resumeToUser = await ResumeToUser(resumeDto);

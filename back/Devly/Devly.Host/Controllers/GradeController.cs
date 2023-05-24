@@ -1,5 +1,6 @@
 using Devly.Database.Repositories.Abstract;
 using Devly.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Devly.Controllers;
@@ -15,11 +16,12 @@ public class GradeController : Controller
         _repository = repository;
         _grades = _repository.GetAllGrades().Result.Select(x => x.Value).ToList();
     }
-
-    [HttpGet]
-    [Route("get")]
+    
+    [Authorize]
+    [HttpGet, Route("get")]
     public Task<ArrayDto<string>> GetGrades()
     {
+        var a = HttpContext.User.Claims.ToList();
         return Task.FromResult(new ArrayDto<string>(_grades));
     }
 }

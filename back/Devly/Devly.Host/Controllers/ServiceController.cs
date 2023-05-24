@@ -42,40 +42,6 @@ public class ServiceController : Controller
         return user.MapToResumeDto();
     }
     
-    [Authorize(Policy = "CompanyPolicy")]
-    [HttpGet, Route("user")]
-    public async Task<ResumeDto>? GetNextUser()
-    {
-        var companyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
-        var users = _memoryCache.Get<IReadOnlyList<User>>(companyEmail);
-        if (users == null || users.Count == 0)
-        {
-            users = new List<User>();
-            var usersList = users as List<User>;
-            var companyVacancies = await _vacancyRepository.GetAllCompanyVacancies(companyEmail);
-            foreach (var vacancy in companyVacancies)
-            {
-                var usersOfVacancyGrade = await _userRepository.GetUsersLeqThanGrade(vacancy.Grade.Id)!;
-                if (usersOfVacancyGrade == null)
-                    continue;
-                usersList?.AddRange(usersOfVacancyGrade.Where(user =>
-                {
-                    var userFavoriteLanguages = _usersFavoriteLanguagesRepository
-                        .GetUserFavoriteLanguages(user.Login).Result.Select(x => x.ProgrammingLanguage.LanguageName);
-                    return userFavoriteLanguages.Contains(vacancy.ProgrammingLanguage.LanguageName);
-                }));
-            }
-            
-            users = users.Take(10).ToList();
-        }
-
-        var userToReturn = users.FirstOrDefault();
-        if (userToReturn is null)
-            return await GetNextUserRandom();
-        _memoryCache.Set(companyEmail, users.Skip(1).ToList(),
-            new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
-        return userToReturn.MapToResumeDto();
-    }
     
     [Authorize(Policy = "UserPolicy")]
     [HttpGet, Route("vacancy/random")]
@@ -84,49 +50,16 @@ public class ServiceController : Controller
         var vacancy = await _vacancyRepository.GetRandomVacancy();
         return vacancy?.MapToVacancyDto();
     }
-    
-    [Authorize(Policy = "UserPolicy")]
-    [HttpGet, Route("vacancy")]
-    public async Task<VacancyDto?> GetNextVacancy()
-    {
-        var userLogin = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
-        var vacancies = _memoryCache.Get<IReadOnlyList<Vacancy>>(userLogin);
-        if (vacancies == null || vacancies.Count == 0)
-        {
-            vacancies = new List<Vacancy>();
-            var listVacancies = vacancies as List<Vacancy>;
-            var user = await _userRepository.FindUserByLoginAsync(userLogin);
-            var userLanguages = await _usersFavoriteLanguagesRepository
-                .GetUserFavoriteLanguages(userLogin);
-            foreach (var language in userLanguages)
-            {
-                var vacanciesOfLanguage =
-                    await _vacancyRepository.GetAllLanguageVacancies(language.ProgrammingLanguage.LanguageName)!;
-                if (vacanciesOfLanguage == null)
-                    continue;
-                listVacancies?.AddRange(vacanciesOfLanguage.Where(vac => vac.Grade.Id <= user.GradeId));
-            }
-
-            vacancies = vacancies.Take(10).ToList();
-        }
-
-        var vacancyToReturn = vacancies.FirstOrDefault();
-        if (vacancyToReturn is null)
-            return await GetNextVacancyRandom();
-        _memoryCache.Set(userLogin, vacancies.Skip(1).ToList(),
-            new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
-
-        return vacancyToReturn.MapToVacancyDto();
-    }
 
     [HttpPost]
     [Authorize(Policy = "CompanyPolicy")]
     [Route("user/filter")]
     public async Task<ResumeDto?> GetNextUserFilter([FromBody] UserFilterDto userFilterDto)
     {
-        userFilterDto.CompanyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
-        if (userFilterDto is null || userFilterDto.CompanyEmail is null)
-            return null;
+        var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
+        if (userFilterDto is null)
+            return await GetNextUser(email);
+        userFilterDto.CompanyEmail = email;
         var companyEmail = userFilterDto.CompanyEmail;
         var key = $"company_{companyEmail}{FilterString}";
         var cachedUsers = _memoryCache.Get<MemoryCacheEntry<User>>(key);
@@ -174,13 +107,14 @@ public class ServiceController : Controller
 
     [HttpPost]
     [Authorize(Policy = "UserPolicy")]
-    [Route("vacancy/filter")]
+    [Route("vacancy")]
     public async Task<VacancyDto?> GetNextVacancyFilter([FromBody] VacancyFilterDto vacancyFilterDto)
     {
-        vacancyFilterDto.UserLogin = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
-        if (vacancyFilterDto is null || vacancyFilterDto.UserLogin is null)
-            return null;
-        var userLogin = vacancyFilterDto.UserLogin;
+        var login = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
+        if (vacancyFilterDto is null)
+            return await GetNextVacancy(login);
+        vacancyFilterDto.UserLogin = login;
+        var userLogin = login;
         var key = $"user_{userLogin}{FilterString}";
         var cachedVacancies = _memoryCache.Get<MemoryCacheEntry<Vacancy>>(key);
 
@@ -225,5 +159,68 @@ public class ServiceController : Controller
         _memoryCache.Set(key, cachedVacancies,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
         return answer;
+    }
+    
+    private async Task<ResumeDto>? GetNextUser(string companyEmail)
+    {
+        var users = _memoryCache.Get<IReadOnlyList<User>>(companyEmail);
+        if (users == null || users.Count == 0)
+        {
+            users = new List<User>();
+            var usersList = users as List<User>;
+            var companyVacancies = await _vacancyRepository.GetAllCompanyVacancies(companyEmail);
+            foreach (var vacancy in companyVacancies)
+            {
+                var usersOfVacancyGrade = await _userRepository.GetUsersLeqThanGrade(vacancy.Grade.Id)!;
+                if (usersOfVacancyGrade == null)
+                    continue;
+                usersList?.AddRange(usersOfVacancyGrade.Where(user =>
+                {
+                    var userFavoriteLanguages = _usersFavoriteLanguagesRepository
+                        .GetUserFavoriteLanguages(user.Login).Result.Select(x => x.ProgrammingLanguage.LanguageName);
+                    return userFavoriteLanguages.Contains(vacancy.ProgrammingLanguage.LanguageName);
+                }));
+            }
+            
+            users = users.Take(10).ToList();
+        }
+
+        var userToReturn = users.FirstOrDefault();
+        if (userToReturn is null)
+            return await GetNextUserRandom();
+        _memoryCache.Set(companyEmail, users.Skip(1).ToList(),
+            new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
+        return userToReturn.MapToResumeDto();
+    }
+    
+    private async Task<VacancyDto?> GetNextVacancy(string userLogin)
+    {
+        var vacancies = _memoryCache.Get<IReadOnlyList<Vacancy>>(userLogin);
+        if (vacancies == null || vacancies.Count == 0)
+        {
+            vacancies = new List<Vacancy>();
+            var listVacancies = vacancies as List<Vacancy>;
+            var user = await _userRepository.FindUserByLoginAsync(userLogin);
+            var userLanguages = await _usersFavoriteLanguagesRepository
+                .GetUserFavoriteLanguages(userLogin);
+            foreach (var language in userLanguages)
+            {
+                var vacanciesOfLanguage =
+                    await _vacancyRepository.GetAllLanguageVacancies(language.ProgrammingLanguage.LanguageName)!;
+                if (vacanciesOfLanguage == null)
+                    continue;
+                listVacancies?.AddRange(vacanciesOfLanguage.Where(vac => vac.Grade.Id <= user.GradeId));
+            }
+
+            vacancies = vacancies.Take(10).ToList();
+        }
+
+        var vacancyToReturn = vacancies.FirstOrDefault();
+        if (vacancyToReturn is null)
+            return await GetNextVacancyRandom();
+        _memoryCache.Set(userLogin, vacancies.Skip(1).ToList(),
+            new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
+
+        return vacancyToReturn.MapToVacancyDto();
     }
 }

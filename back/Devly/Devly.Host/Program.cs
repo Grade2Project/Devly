@@ -17,6 +17,8 @@ services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins("http://localhost:63343");
+            policy.WithOrigins("http://localhost:63342");
+            policy.WithOrigins("http://127.0.0.1:8080");
             policy.AllowAnyHeader();
         });
 });
@@ -42,7 +44,7 @@ services.AddSingleton<IPasswordHasher, ShaPasswordHasher>();
 
 var app = builder.Build();
 
-app.UseCors();
+app.UseCors(myAllowSpecificOrigins);
 app.UseSwagger().UseSwaggerUI();
 app.UseRouting();
 app.MapControllers();

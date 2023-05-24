@@ -35,18 +35,34 @@
 <div class="central-container">
     <span class="cc-h1">#Работа найдется для каждого</span>
     <span class="cc-h2">Платформа для поиска вакансий и работников</span>
-</div>
-
-<div class="b-container">
-    <button id="bEmployee" class="c-button-outline color-red" onclick="location.href = 'developer.html'">
-        <span class="c-button-h">Начать как работник</span></button>
-    <button id="bCompany" class="c-button-outline color-green" onclick="location.href = 'company.html'">
-        <span class="c-button-h">Начать как компания</span></button>
+    <div class="b-container">
+        <button id="bEmployee" class="c-button-outline color-red" onclick="location.href = 'developer.html'">
+            <span class="c-button-h">Начать как работник</span></button>
+        <button id="bCompany" class="c-button-outline color-green" onclick="location.href = 'company.html'">
+            <span class="c-button-h">Начать как компания</span></button>
+    </div>
 </div>
 
 <script src="../scripts/popup.js"></script>
 <script src="../scripts/utils.js"></script>
 <script src="../scripts/inputsValidity.js"></script>
 <script src="../scripts/tabs.js"></script>
+<script>
+    function putLogOutButton() {
+        let buttonsContainer = document.querySelector('.right-menu-buttons');
+        let logOutButton = document.createElement('a');
+        logOutButton.classList.add('right-menu-button');
+        logOutButton.style.textDecoration = 'none';
+        logOutButton.href = 'index.html';
+        logOutButton.onclick = () => {
+            localStorage.removeItem('user_login');
+        }
+        logOutButton.innerText = 'Выйти';
+        buttonsContainer.replaceChildren(logOutButton);
+    }
+    if (localStorage['user_login'] !== undefined) {
+        putLogOutButton();
+    }
+</script>
 </body>
 </html>

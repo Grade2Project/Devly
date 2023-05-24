@@ -53,7 +53,7 @@ public class ServiceController : Controller
 
     [HttpPost]
     [Authorize(Policy = "CompanyPolicy")]
-    [Route("user/filter")]
+    [Route("user")]
     public async Task<ResumeDto?> GetNextUserFilter([FromBody] UserFilterDto userFilterDto)
     {
         var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;

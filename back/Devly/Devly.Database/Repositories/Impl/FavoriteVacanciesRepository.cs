@@ -13,7 +13,7 @@ internal class FavoriteVacanciesRepository : IFavoriteVacanciesRepository
     {
         _repository = repository;
     }
-    
+
     public async Task<IReadOnlyList<int>> GetAllVacanciesUserLiked(string userLogin)
     {
         var result = await _repository.FindAllAsync<UsersFavoriteVacancy>
@@ -30,7 +30,7 @@ internal class FavoriteVacanciesRepository : IFavoriteVacanciesRepository
 
     public async Task InsertLikePair(string userLogin, int vacancyId)
     {
-        await _repository.InsertAsync(new UsersFavoriteVacancy()
+        await _repository.InsertAsync(new UsersFavoriteVacancy
         {
             UserLogin = userLogin,
             VacancyId = vacancyId

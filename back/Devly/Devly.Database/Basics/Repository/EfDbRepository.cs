@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Devly.Database.Basics.Repository;
 
-internal class EfDbRepository<TContext> : DbRepositoryBase<TContext>, IDbRepository<TContext> where TContext : EfDbContext
+internal class EfDbRepository<TContext> : DbRepositoryBase<TContext>, IDbRepository<TContext>
+    where TContext : EfDbContext
 {
     public EfDbRepository(IDbContextProvider<TContext> contextProvider) : base(contextProvider)
     {
@@ -20,7 +21,7 @@ internal class EfDbRepository<TContext> : DbRepositoryBase<TContext>, IDbReposit
         var tableName = set.EntityType.GetTableName();
         return await set.FromSqlRaw($"SELECT * FROM {tableName} order by random() limit 1")
             .IncludeMultiple(includes)
-            .FirstOrDefaultAsync(cancellationToken: token);
+            .FirstOrDefaultAsync(token);
     }
 
     public async Task<TEntity?> FindAsync<TEntity>(Expression<Func<TEntity, bool>> condition,
@@ -58,7 +59,7 @@ internal class EfDbRepository<TContext> : DbRepositoryBase<TContext>, IDbReposit
         where TEntity : class
     {
         await using var context = await GetContextAsync(token).ConfigureAwait(false);
-        
+
         context.Set<TEntity>().AddRange(entities);
         await context.SaveChangesAsync(token).ConfigureAwait(false);
     }
@@ -71,7 +72,8 @@ internal class EfDbRepository<TContext> : DbRepositoryBase<TContext>, IDbReposit
         await context.SaveChangesAsync(token).ConfigureAwait(false);
     }
 
-    public async Task DeleteAllAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken token = default) where TEntity : class
+    public async Task DeleteAllAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken token = default)
+        where TEntity : class
     {
         await using var context = await GetContextAsync(token).ConfigureAwait(false);
 

@@ -14,11 +14,6 @@ internal class CompaniesRepository : ICompaniesRepository
         _repository = repository;
     }
 
-    public async Task UpdateAsync(Company company)
-    {
-        await _repository.UpdateAsync(company);
-    }
-
     public async Task<Company> InsertAsync(string companyName, string companyEmail, string info)
     {
         var company = new Company
@@ -38,6 +33,12 @@ internal class CompaniesRepository : ICompaniesRepository
 
     public async Task<Company> GetCompanyByEmail(string companyEmail)
     {
-        return await _repository.FindAsync<Company>(x => x.CompanyEmail == companyEmail).ConfigureAwait(false);
+        return await _repository.FindAsync<Company>(x => x.CompanyEmail == companyEmail,
+            CancellationToken.None, company => company.Vacancies).ConfigureAwait(false);
+    }
+
+    public async Task UpdateAsync(Company company)
+    {
+        await _repository.UpdateAsync(company);
     }
 }

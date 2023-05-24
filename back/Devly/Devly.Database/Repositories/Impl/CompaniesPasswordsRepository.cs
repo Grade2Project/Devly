@@ -8,7 +8,7 @@ namespace Devly.Database.Repositories.Impl;
 internal class CompaniesPasswordsRepository : ICompaniesPasswordsRepository
 {
     private readonly IDbRepository<DevlyDbContext> _repository;
-    
+
     public CompaniesPasswordsRepository(IDbRepository<DevlyDbContext> repository)
     {
         _repository = repository;

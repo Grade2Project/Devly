@@ -12,15 +12,15 @@ namespace Devly.Database.Extensions.DI;
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddNpgsqlDbContext<T>(
-        this IServiceCollection services, 
+        this IServiceCollection services,
         string connectionString,
         int poolSize = 1024) where T : EfDbContext
     {
         services.AddPooledDbContextFactory<T>(
-            (opt => opt.UseNpgsql(connectionString).UseSnakeCaseNamingConvention()),
+            opt => opt.UseNpgsql(connectionString).UseSnakeCaseNamingConvention(),
             poolSize);
-        
-        
+
+
         services.AddEfDatabaseInternal<T>();
         services.AddDbContextFactory<T>();
 
@@ -39,7 +39,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<ICompaniesPasswordsRepository, CompaniesPasswordsRepository>();
         services.TryAddSingleton<IFavoriteVacanciesRepository, FavoriteVacanciesRepository>();
         services.TryAddSingleton<IFavoriteUsersRepository, FavoriteUsersRepository>();
-        
+
         return services;
     }
 

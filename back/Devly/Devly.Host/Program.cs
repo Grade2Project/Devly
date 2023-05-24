@@ -13,7 +13,7 @@ const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 services.AddCors(options =>
 {
-    options.AddPolicy(name: myAllowSpecificOrigins,
+    options.AddPolicy(myAllowSpecificOrigins,
         policy =>
         {
             policy.WithOrigins("http://localhost:63343");
@@ -23,11 +23,9 @@ services.AddCors(options =>
 
 services.AddMemoryCache();
 services.AddSingleton<Random, Random>();
-services.AddControllers().AddJsonOptions(o =>
-{
-    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
-services.AddSwaggerGen(s => s.SwaggerDoc("v1", new OpenApiInfo()
+services.AddControllers()
+    .AddJsonOptions(o => { o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
+services.AddSwaggerGen(s => s.SwaggerDoc("v1", new OpenApiInfo
 {
     Title = "Devly", Version = "v1"
 }));

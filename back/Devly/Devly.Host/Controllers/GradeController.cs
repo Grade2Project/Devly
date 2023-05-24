@@ -1,4 +1,3 @@
-using Devly.Database.Repositories;
 using Devly.Database.Repositories.Abstract;
 using Devly.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +7,8 @@ namespace Devly.Controllers;
 [Route("grades")]
 public class GradeController : Controller
 {
-    private readonly IGradesRepository _repository;
     private readonly IReadOnlyList<string> _grades;
+    private readonly IGradesRepository _repository;
 
     public GradeController(IGradesRepository repository)
     {
@@ -17,7 +16,8 @@ public class GradeController : Controller
         _grades = _repository.GetAllGrades().Result.Select(x => x.Value).ToList();
     }
 
-    [HttpGet, Route("get")]
+    [HttpGet]
+    [Route("get")]
     public Task<ArrayDto<string>> GetGrades()
     {
         return Task.FromResult(new ArrayDto<string>(_grades));

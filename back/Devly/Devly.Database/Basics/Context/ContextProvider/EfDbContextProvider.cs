@@ -2,7 +2,7 @@
 
 namespace Devly.Database.Basics.Context.ContextProvider;
 
-internal class EfDbContextProvider<TContext> : IDbContextProvider<TContext> where TContext :EfDbContext
+internal class EfDbContextProvider<TContext> : IDbContextProvider<TContext> where TContext : EfDbContext
 {
     private readonly IDbContextFactory<TContext> _factory;
 

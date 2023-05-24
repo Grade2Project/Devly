@@ -1,5 +1,6 @@
 using Devly.Database.Repositories.Abstract;
 using Devly.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Devly.Controllers;
@@ -13,9 +14,9 @@ public class LanguageController : Controller
     {
         _repository = repository;
     }
-
-    [HttpGet]
-    [Route("get")]
+    
+    [Authorize]
+    [HttpGet, Route("get")]
     public Task<ArrayDto<string>> GetAllLanguages()
     {
         var languagesDto = new ArrayDto<string>(_repository.GetAllLanguages().Result

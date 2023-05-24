@@ -2,6 +2,7 @@ using Devly.Database.Models;
 using Devly.Database.Repositories.Abstract;
 using Devly.Extensions;
 using Devly.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -32,20 +33,21 @@ public class ServiceController : Controller
         _gradesRepository = gradesRepository;
         _programmingLanguagesRepository = programmingLanguagesRepository;
     }
-
-    [HttpPost]
-    [Route("user/random")]
+    
+    [Authorize(Policy = "CompanyPolicy")]
+    [HttpGet, Route("user/random")]
     public async Task<ResumeDto> GetNextUserRandom()
     {
         var user = await _userRepository.GetRandomUser();
         return user.MapToResumeDto();
     }
-
-    [HttpPost]
-    [Route("user")]
-    public async Task<ResumeDto>? GetNextUser([FromBody] string companyEmail)
+    
+    [Authorize(Policy = "CompanyPolicy")]
+    [HttpGet, Route("user")]
+    public async Task<ResumeDto>? GetNextUser()
     {
-        var users = _memoryCache.Get<IReadOnlyList<User>>($"company_{companyEmail}");
+        var companyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
+        var users = _memoryCache.Get<IReadOnlyList<User>>(companyEmail);
         if (users == null || users.Count == 0)
         {
             users = new List<User>();
@@ -74,20 +76,21 @@ public class ServiceController : Controller
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
         return userToReturn.MapToResumeDto();
     }
-
-    [HttpPost]
-    [Route("vacancy/random")]
+    
+    [Authorize(Policy = "UserPolicy")]
+    [HttpGet, Route("vacancy/random")]
     public async Task<VacancyDto?> GetNextVacancyRandom()
     {
         var vacancy = await _vacancyRepository.GetRandomVacancy();
         return vacancy?.MapToVacancyDto();
     }
-
-    [HttpPost]
-    [Route("vacancy")]
-    public async Task<VacancyDto?> GetNextVacancy([FromBody] string userLogin)
+    
+    [Authorize(Policy = "UserPolicy")]
+    [HttpGet, Route("vacancy")]
+    public async Task<VacancyDto?> GetNextVacancy()
     {
-        var vacancies = _memoryCache.Get<IReadOnlyList<Vacancy>>($"user_{userLogin}");
+        var userLogin = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
+        var vacancies = _memoryCache.Get<IReadOnlyList<Vacancy>>(userLogin);
         if (vacancies == null || vacancies.Count == 0)
         {
             vacancies = new List<Vacancy>();
@@ -117,9 +120,11 @@ public class ServiceController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "CompanyPolicy")]
     [Route("user/filter")]
     public async Task<ResumeDto?> GetNextUserFilter([FromBody] UserFilterDto userFilterDto)
     {
+        userFilterDto.CompanyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         if (userFilterDto is null || userFilterDto.CompanyEmail is null)
             return null;
         var companyEmail = userFilterDto.CompanyEmail;
@@ -168,9 +173,11 @@ public class ServiceController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "UserPolicy")]
     [Route("vacancy/filter")]
     public async Task<VacancyDto?> GetNextVacancyFilter([FromBody] VacancyFilterDto vacancyFilterDto)
     {
+        vacancyFilterDto.UserLogin = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         if (vacancyFilterDto is null || vacancyFilterDto.UserLogin is null)
             return null;
         var userLogin = vacancyFilterDto.UserLogin;

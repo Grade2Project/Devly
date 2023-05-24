@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../all.css">
+    <link rel="stylesheet" href="../styleguide.css">
+
+    <style>
+        body {
+            background: var(--color-background);
+        }
+    </style>
+</head>
+<body>
+    <div class="left__menu__container">
+        <div class="left__menu__header__container">
+            <div class="profile__image"></div>
+            <div class="search search-img" style="width: 70%; min-width: 0">
+                <img src="../svg/icons8-search.svg" alt="none">
+            </div>
+        </div>
+    </div>
+    <div class="swipe__cards">
+        <div class="tinder">
+            <div class="tinder__status">
+                <i class="fa fa-remove"></i>
+                <i class="fa fa-heart"></i>
+            </div>
+
+            <div class="tinder__cards">
+
+            </div>
+
+            <div class="tinder--buttons">
+                <button id="nope"><i class="fa fa-remove"></i></button>
+                <button id="love"><i class="fa fa-heart"></i></button>
+            </div>
+        </div>
+    </div>
+<script src="../scripts/hammer.js"></script>
+<script src="../scripts/utils.js"></script>
+<script src="../scripts/createCard.js"></script>
+<script src="../scripts/swipes.js"></script>
+    <script>
+    sendJSON({
+        login: "u1",
+        password: "111"
+    }, Controllers.AUTH.USER, (status, response) => {
+        localStorage.setItem('token', response);
+    })
+
+    let token = localStorage.getItem('token');
+
+    fetchJSON(Controllers.SERVICE.NEXT_VACANCY, (response) => {
+        console.log(response);
+    }, token);
+
+    const cardHandler = new CardHandler();
+    cardHandler.appendCardToDoc();
+</script>
+</body>
+</html>

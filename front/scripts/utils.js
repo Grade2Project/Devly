@@ -4,7 +4,11 @@ const Controllers = {
     AUTH: {USER: `${HOME}/auth/user`, COMPANY: `${HOME}/auth/company`},
     REG: {USER: `${HOME}/reg`, COMPANY: `${HOME}/company/reg`},
     GRADES: `${HOME}/grades/get`,
-    RESUME: {UPDATE: `${HOME}/resume/update`}
+    RESUME: {UPDATE: `${HOME}/resume/update`},
+    SERVICE: {
+        NEXT_USER: `${HOME}/next/user`,
+        NEXT_VACANCY: `${HOME}/next/vacancy`
+    }
 };
 
 const HTTPMethods = {
@@ -26,30 +30,36 @@ function getInputValueById(id) {
     return candidate.value;
 }
 
-async function sendJSON (data, controller, processResponse) {
-    console.log(data);
+async function sendJSON (data, controller, processResponse, authorizationToken) {
     const json = JSON.stringify(data);
 
     const xhr = new XMLHttpRequest()
     xhr.open(HTTPMethods.POST, controller, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
+    if (authorizationToken !== undefined) {
+        xhr.setRequestHeader('Authorization', `Bearer ${authorizationToken}`);
+    }
 
-    xhr.responseType = 'json';
+    xhr.responseType = 'text'; //Сделать разные, пока хуета
     xhr.onload = () => {
-        console.log(xhr.response);
         processResponse(xhr.status, xhr.response);
     }
 
     xhr.send(json);
 }
 
-async function fetchJSON (controller, processResponse) {
-    XHR.open(HTTPMethods.GET, controller, true);
+async function fetchJSON (controller, processResponse, authorizationToken) {
+    const xhr = new XMLHttpRequest()
+    xhr.open(HTTPMethods.GET, controller, true);
 
-    XHR.responseType = 'json';
-    XHR.onload = () => processResponse(XHR.response);
+    if (authorizationToken !== undefined) {
+        xhr.setRequestHeader('Authorization', `Bearer ${authorizationToken}`);
+    }
 
-    XHR.send();
+    xhr.responseType = 'json';
+    xhr.onload = () => processResponse(xhr.response);
+
+    xhr.send();
 }
 
 

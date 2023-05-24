@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Devly — работа найдется для каждого</title>
+    <link rel="stylesheet" href="../styleguide.css">
+    <link rel="stylesheet" href="../all.css">
+
+    <style>
+        body {
+            background: url("../svg/Artboard 1.svg") no-repeat fixed top center;
+            background-size: 1920px 900px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+
+<div class="head-container">
+    <div class="logo-container">
+        <div class="lv"></div>
+        <div class="lt">Devly</div>
+    </div>
+    <div class="right-menu-container">
+        <div class="search search-img">
+            <img src="../svg/icons8-search.svg" alt="none">
+        </div>
+        <div class="right-menu-buttons">
+            <a class="right-menu-button" href="auth.html" style="text-decoration: none">Войти</a>
+            <a class="right-menu-button" href="register.html" style="text-decoration: none">Зарегистрироваться</a>
+        </div>
+    </div>
+</div>
+
+<div class="central-container">
+    <span class="cc-h1">#Работа найдется для каждого</span>
+    <span class="cc-h2">Платформа для поиска вакансий и работников</span>
+</div>
+
+<div class="b-container">
+    <button id="bEmployee" class="c-button-outline color-red" onclick="location.href = 'developer.html'">
+        <span class="c-button-h">Начать как работник</span></button>
+    <button id="bCompany" class="c-button-outline color-green" onclick="location.href = 'company.html'">
+        <span class="c-button-h">Начать как компания</span></button>
+</div>
+
+<script src="../scripts/popup.js"></script>
+<script src="../scripts/utils.js"></script>
+<script src="../scripts/inputsValidity.js"></script>
+<script src="../scripts/tabs.js"></script>
+</body>
+</html>

@@ -1,5 +1,4 @@
 using Devly.Database.Models;
-using Devly.Database.Repositories;
 using Devly.Database.Repositories.Abstract;
 using Devly.Extensions;
 using Devly.Models;
@@ -11,11 +10,11 @@ namespace Devly.Controllers;
 
 public class ResumeController : Controller
 {
-    private readonly IUserRepository _userRepository;
+    private readonly ICompaniesRepository _companiesRepository;
     private readonly IGradesRepository _gradesRepository;
     private readonly IProgrammingLanguagesRepository _programmingLanguagesRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IUsersFavoriteLanguagesRepository _usersFavoriteLanguagesRepository;
-    private readonly ICompaniesRepository _companiesRepository;
     private readonly IVacancyRepository _vacancyRepository;
 
     public ResumeController(IUserRepository userRepository,
@@ -38,9 +37,7 @@ public class ResumeController : Controller
     {
         var vacancy = await DtoToVacancy(vacancyDto);
         if (vacancy is null || await _vacancyRepository.FindVacancyAsync(vacancy) != null)
-        {
             return StatusCode(400, "Bad Vacancy");
-        }
 
         await _vacancyRepository.InsertAsync(vacancy);
         return Ok();
@@ -56,16 +53,11 @@ public class ResumeController : Controller
         try
         {
             var resumeToUser = await ResumeToUser(resumeDto);
-            if (resumeToUser is null)
-            {
-                return StatusCode(400, "Bad Grade");
-            }
+            if (resumeToUser is null) return StatusCode(400, "Bad Grade");
 
-            var usersFavoriteLanguages = await _programmingLanguagesRepository.FindLanguagesAsync(resumeDto.FavoriteLanguages)!;
-            if (usersFavoriteLanguages is null)
-            {
-                return StatusCode(400, "Bad Languages");
-            }
+            var usersFavoriteLanguages =
+                await _programmingLanguagesRepository.FindLanguagesAsync(resumeDto.FavoriteLanguages)!;
+            if (usersFavoriteLanguages is null) return StatusCode(400, "Bad Languages");
 
             if (await _userRepository.FindUserByLoginAsync(resumeDto.Login) != null)
             {
@@ -99,10 +91,7 @@ public class ResumeController : Controller
             return null;
         var language = await _programmingLanguagesRepository.FindLanguagesAsync(vacancyDto.ProgrammingLanguage);
         var grade = await _gradesRepository.FindGrade(vacancyDto.Grade);
-        if (language is null || language.Count == 0 || grade == null)
-        {
-            return null;
-        }
+        if (language is null || language.Count == 0 || grade == null) return null;
 
         return new Vacancy
         {

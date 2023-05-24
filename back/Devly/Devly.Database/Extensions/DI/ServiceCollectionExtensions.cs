@@ -1,8 +1,6 @@
 using Devly.Database.Basics.Context;
 using Devly.Database.Basics.Context.ContextProvider;
 using Devly.Database.Basics.Repository;
-using Devly.Database.Models;
-using Devly.Database.Repositories;
 using Devly.Database.Repositories.Abstract;
 using Devly.Database.Repositories.Impl;
 using Microsoft.EntityFrameworkCore;
@@ -14,15 +12,15 @@ namespace Devly.Database.Extensions.DI;
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddNpgsqlDbContext<T>(
-        this IServiceCollection services, 
+        this IServiceCollection services,
         string connectionString,
         int poolSize = 1024) where T : EfDbContext
     {
         services.AddPooledDbContextFactory<T>(
-            (opt => opt.UseNpgsql(connectionString).UseSnakeCaseNamingConvention()),
+            opt => opt.UseNpgsql(connectionString).UseSnakeCaseNamingConvention(),
             poolSize);
-        
-        
+
+
         services.AddEfDatabaseInternal<T>();
         services.AddDbContextFactory<T>();
 
@@ -39,7 +37,9 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<ICompaniesRepository, CompaniesRepository>();
         services.TryAddSingleton<IVacancyRepository, VacancyRepository>();
         services.TryAddSingleton<ICompaniesPasswordsRepository, CompaniesPasswordsRepository>();
-        
+        services.TryAddSingleton<IFavoriteVacanciesRepository, FavoriteVacanciesRepository>();
+        services.TryAddSingleton<IFavoriteUsersRepository, FavoriteUsersRepository>();
+
         return services;
     }
 

@@ -1,4 +1,3 @@
-using Devly.Database.Repositories;
 using Devly.Database.Repositories.Abstract;
 using Devly.Models;
 using Devly.Services;
@@ -8,11 +7,11 @@ namespace Devly.Controllers;
 
 public class RegController : Controller
 {
-    private readonly IUserPasswordRepository _passwordRepository;
+    private readonly ICompaniesPasswordsRepository _companiesPasswordsRepository;
     private readonly ICompaniesRepository _companiesRepository;
     private readonly IPasswordHasher _hasher;
-    private readonly ICompaniesPasswordsRepository _companiesPasswordsRepository;
-    
+    private readonly IUserPasswordRepository _passwordRepository;
+
     public RegController(IUserPasswordRepository passwordRepository,
         IPasswordHasher hasher,
         ICompaniesRepository companiesRepository, ICompaniesPasswordsRepository companiesPasswordsRepository)
@@ -23,26 +22,22 @@ public class RegController : Controller
         _companiesPasswordsRepository = companiesPasswordsRepository;
     }
 
-    [HttpPost, Route("reg")]
+    [HttpPost]
+    [Route("reg")]
     public async Task<IActionResult> Register([FromBody] LoginDto userDto)
     {
-        if (await _passwordRepository.FindByUserLoginAsync(userDto.Login) != null)
-        {
-            return StatusCode(400);
-        }
+        if (await _passwordRepository.FindByUserLoginAsync(userDto.Login) != null) return StatusCode(400);
 
         await _passwordRepository.InsertAsync(userDto.Login, _hasher.HashPassword(userDto.Password));
-        
+
         return Ok();
     }
 
-    [HttpPost, Route("company/reg")]
+    [HttpPost]
+    [Route("company/reg")]
     public async Task<IActionResult> RegisterCompany([FromBody] CompanyDto companyDto)
     {
-        if (await _companiesRepository.GetCompanyByName(companyDto.CompanyName) != null)
-        {
-            return StatusCode(400);
-        }
+        if (await _companiesRepository.GetCompanyByName(companyDto.CompanyName) != null) return StatusCode(400);
 
         var company = await _companiesRepository.InsertAsync
             (companyDto.CompanyName, companyDto.CompanyEmail, companyDto.CompanyInfo).ConfigureAwait(false);

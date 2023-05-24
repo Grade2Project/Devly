@@ -1,4 +1,3 @@
-using Devly.Database.Repositories;
 using Devly.Database.Repositories.Abstract;
 using Devly.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -9,8 +8,8 @@ namespace Devly.Controllers;
 [Route("grades")]
 public class GradeController : Controller
 {
-    private readonly IGradesRepository _repository;
     private readonly IReadOnlyList<string> _grades;
+    private readonly IGradesRepository _repository;
 
     public GradeController(IGradesRepository repository)
     {

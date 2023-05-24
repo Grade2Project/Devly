@@ -12,7 +12,7 @@ public static class QueryExtensions
             ? query
             : query.Include(include);
     }
-    
+
     public static IQueryable<T> IncludeMultiple<T>(this IQueryable<T> query, Expression<Func<T, object>>[]? includes)
         where T : class
     {

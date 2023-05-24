@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="../all.css">
+    <link rel="stylesheet" href="../styleguide.css">
+
+    <style>
+        body {
+            background: var(--color-background);
+        }
+    </style>
+</head>
+<body>
+    <div class="c-form">
+        <label class="cfl">Резюме</label>
+        <div class="c-form-block">
+            <span class="fbl">Личные данные</span>
+            <div class="form__input__wide">
+                <label for="user_initials" class="label__18B_500">ФИО</label><input class="text__input"
+                                                                                    type="text"
+                                                                                    id="user_initials"
+                                                                                    required>
+            </div>
+
+            <div class="form__input__wide">
+                <label for="user_birthdate" class="label__18B_500">Дата рождения</label><input class="text__input"
+                                                                                               type="date"
+                                                                                               id="user_birthdate"
+                                                                                               required>
+            </div>
+
+            <div class="form__input__wide">
+                <label class="label__18B_500">Пол</label>
+                <div class="rb-group">
+                    <input type="radio" name="user_sex" value="male" id="rb_male" style="margin: auto 0" checked>
+                    <label for="rb_male" class="label__18B_500">Мужской</label>
+
+                    <input type="radio" name="user_sex" value="female" id="rb_female" style="margin: auto 0">
+                    <label for="rb_female" class="label__18B_500">Женский</label>
+                </div>
+            </div>
+
+            <div class="form__input__wide">
+                <label for="user_tel" class="label__18B_500">Телефон</label><input class="text__input"
+                                                                                   type="tel"
+                                                                                   minlength="11"
+                                                                                   maxlength="12"
+                                                                                   id="user_tel"
+                                                                                   placeholder="+7"
+                                                                                   required>
+            </div>
+
+            <div class="form__input__wide">
+                <label for="user_city" class="label__18B_500">Город</label><input class="text__input"
+                                                                                  type="text"
+                                                                                  id="user_city"
+                                                                                  required>
+            </div>
+
+            <div class="form__input__wide">
+                <label for="user_city" class="label__18B_500">Твой кекус</label><input type="file"
+                                                                             id="user_avatar" name="avatar"
+                                                                                       accept="image/png, image/jpeg"
+                                                                                       onchange="encodeImage(this.files[0])"
+                                                                                       required>
+            </div>
+        </div>
+
+        <div class="c-form-block">
+            <label class="fbl">Образование</label>
+            <!-- Должен быть выпадающим списком, но пока так-->
+            <div class="form__input__wide">
+                <label for="user_grad_level" class="label__18B_500">Уровень образования</label><input class="text__input" type="text"
+                                                                                                      id="user_grad_level"
+                                                                                                      required>
+            </div>
+
+            <div class="form__input__wide">
+                <label for="user_institution" class="label__18B_500">Название учебного заведения</label><input class="text__input"
+                                                                                                               type="text"
+                                                                                                               id="user_institution"
+                                                                                                               required>
+            </div>
+
+            <div class="form__input__wide">
+                <label for="user_faculty" class="label__18B_500">Факультет</label><input class="text__input" type="text"
+                                                                                         id="user_faculty">
+            </div>
+
+            <div class="form__input__wide">
+                <label for="user_year_of_grad" class="label__18B_500">Год окончания</label><input class="text__input" type="date"
+                                                                                                  id="user_year_of_grad"
+                                                                                                  required>
+            </div>
+        </div>
+
+        <div class="c-form-block">
+            <label class="fbl">Желаемая должность</label>
+            <div class="form__input__wide">
+                <label for="user_position" class="label__18B_500">Должность</label><input class="text__input" type="text" id="user_position">
+            </div>
+
+            <div class="form__input__wide">
+                <label for="user_prog_grade" class="label__18B_500">Грейд</label>
+                <select id="user_prog_grade" class="text__input" style="height: fit-content; padding: 0.55rem 0.75rem; margin-left: -9px" required>
+                </select>
+            </div>
+
+            <div class="form__input__wide">
+                <label for="user_salary" class="label__18B_500">Зарплата</label><input class="text__input"
+                                                                                       type="text"
+                                                                                       id="user_salary">
+            </div>
+
+            <div class="form__input__wide">
+                <label for="user_word_schedule" class="label__18B_500">График работы</label><select id="user_word_schedule" class="text__input" style="height: fit-content; padding: 0.55rem 0.75rem; margin-left: -9px" required>
+                    <option value="Any">Любой</option>
+                    <option value="FT">Полный рабочий день</option>
+                    <option value="PT">Неполный рабочий день</option>
+                    <option value="FT">Свободный график</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="c-form-block">
+            <label class="fbl">О себе</label>
+            <div class="form__input__wide">
+                <label for="user_languages" class="label__18B_500">Языки, которыми владеете</label>
+                <input class="text__input" type="text" id="user_languages">
+            </div>
+
+            <div class="form__input__wide">
+                <label for="user_ext_info" class="label__18B_500">В этом пункте вы можете рассказать о себе то, что не вошло в анкету :)</label>
+                <textarea class="text__input" id="user_ext_info" style="height: fit-content"></textarea>
+            </div>
+        </div>
+
+        <button class="confirm c-button-h" id="form_submit" type="submit" onclick="SendResume()">Продолжить</button>
+    </div>
+
+
+<script src="../scripts/utils.js"></script>
+<script src="../scripts/inputsValidity.js"></script>
+<script>
+    const gradeSelect = document.getElementById('user_prog_grade');
+    let grades;
+    fetchJSON(Controllers.GRADES, (json) => {
+        grades = json.container;
+        for (let grade of grades) {
+            let opt = document.createElement('option');
+            opt.value = grade;
+            opt.innerHTML = grade;
+
+            gradeSelect.appendChild(opt);
+        }
+    });
+
+    const reader = new FileReader();
+    let avatarBytes;
+    function encodeImage(file) {
+        reader.onloadend = function() {
+            console.log(reader.result);
+            avatarBytes = reader.result.split(',')[1];
+            console.log(avatarBytes);
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function SendResume() {
+        const grade = document.querySelector('select[id="user_prog_grade"]').value;
+        const dataRaw = getObjectFromIterable(
+                document.querySelectorAll('input[id^="user_"]'),
+                ti => [ti.id, ti.value]);
+        const info = {
+            'user_initials': dataRaw['user_initials'],
+            'user_grad_level': dataRaw['user_grad_level'],
+            'user_institution': dataRaw['user_institution'],
+            'user_faculty': dataRaw['user_faculty'],
+            'user_year_of_grad': dataRaw['user_year_of_grad'],
+            'user_position': dataRaw['user_position'],
+            'user_salary': dataRaw['user_salary'],
+            'user_word_schedule': dataRaw['user_word_schedule'],
+            'user_ext_info': dataRaw['user_ext_info'],
+        }
+        const data = {
+            login: localStorage['user_login'],
+            name: dataRaw['user_initials'],
+            birthDate: dataRaw['user_birthdate'],
+            city: dataRaw['user_city'],
+            info: JSON.stringify(info),
+            resumePath: "kekus", // ubrat' nahui
+            grade: grade,
+            photo: avatarBytes,
+            email: localStorage['user_login'],
+            phone: dataRaw['user_tel'],
+            imagePath: "esheOdin", // zachem?
+            favoriteLanguages: [dataRaw['user_languages']]
+        }
+        sendJSON(data, Controllers.RESUME.UPDATE,
+            (statusCode, response) => {
+            if (statusCode === 200) {
+                alert('Резюме создано, вы восхитительны');
+            } else {
+                alert('BadKekus');
+            }
+        });
+    }
+</script>
+</body>
+</html>

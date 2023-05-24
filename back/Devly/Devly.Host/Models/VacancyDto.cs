@@ -2,6 +2,7 @@ namespace Devly.Models;
 
 public class VacancyDto
 {
+    public int Id { get; set; }
     public string CompanyName { get; set; }
     public string ProgrammingLanguage { get; set; }
     public int Salary { get; set; }

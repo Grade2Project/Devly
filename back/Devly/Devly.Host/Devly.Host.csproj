@@ -8,9 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Update="appsettings.Development.json">
-        <DependentUpon>appsettings.json</DependentUpon>
-      </Content>
+        <Content Update="appsettings.Development.json">
+            <DependentUpon>appsettings.json</DependentUpon>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Devly.Database\Devly.Database.csproj" />
+        <ProjectReference Include="..\Devly.Database\Devly.Database.csproj" />
     </ItemGroup>
 
 </Project>

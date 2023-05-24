@@ -21,7 +21,18 @@ services:
       - "./nginx.conf:/etc/nginx/conf.d/default.conf"
     networks:
       - local-network
-
+        
+  back:
+    build:
+      context: .
+      dockerfile: ./back/Devly/Devly.Host/Dockerfile
+    container_name: back
+    networks:
+      - local-network
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
 
 networks:
   local-network:

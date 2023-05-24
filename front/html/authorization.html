@@ -5,14 +5,7 @@
     <title>Вход</title>
     <link rel="stylesheet" href="../all.css">
     <link rel="stylesheet" href="../styleguide.css">
-
-    <style>
-        body {
-            background: url('../svg/auth_bg.svg') no-repeat fixed top center;
-            background-size: 2920px 1024px;
-            overflow-y: scroll;
-        }
-    </style>
+    <link rel="stylesheet" href="../authorization.css">
 </head>
 <body>
 <div class="form__container">
@@ -23,17 +16,12 @@
             <a class="tabs__tab" onclick="showTab(1)"><span class="tab__inner">Компания</span></a>
         </div>
         <div class="input-line">
-            <label for="auth_email" class="l">Почта</label><input class="text-input"
-                                                                      type="email"
-                                                                      id="auth_email"
-                                                                      placeholder="example@mail.com"
-                                                                      required>
+            <label for="auth_email" class="l">Почта</label>
+            <input class="text-input" type="email" id="auth_email" placeholder="example@mail.com" required>
         </div>
         <div class="input-line">
-            <label for="auth_password" class="l">Пароль</label><input class="text-input"
-                                                                          type="password"
-                                                                          id="auth_password"
-                                                                          required>
+            <label for="auth_password" class="l">Пароль</label>
+            <input class="text-input" type="password" id="auth_password" required>
         </div>
 
         <button class="button__confirm color-red" type="submit" id="submit_auth" onclick="auth()">

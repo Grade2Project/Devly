@@ -26,7 +26,8 @@ internal class UserRepository : IUserRepository
 
     public async Task<User> FindUserByLoginAsync(string login)
     {
-        return await _repository.FindAsync<User>(u => u.Login == login).ConfigureAwait(false);
+        return await _repository.FindAsync<User>(u => u.Login == login, CancellationToken.None, 
+            user => user.Contact, user => user.Grade, user => user.FavoriteLanguages).ConfigureAwait(false);
     }
 
     public async Task<User> GetRandomUser()

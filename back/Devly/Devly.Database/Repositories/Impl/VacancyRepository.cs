@@ -69,6 +69,8 @@ internal class VacancyRepository : IVacancyRepository
     public async Task<Vacancy> GetRandomVacancy()
     {
         return await _repository.GetNextRandom<Vacancy>
-            (CancellationToken.None, vacancy => vacancy.Company, vacancy => vacancy.ProgrammingLanguage);
+            ( CancellationToken.None, vacancy => vacancy.Company,
+                vacancy => vacancy.ProgrammingLanguage,
+                vacancy => vacancy.Grade);
     }
 }

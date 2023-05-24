@@ -15,9 +15,6 @@ public class AuthController : Controller
     private readonly IIdentityService _identityService;
     private readonly ICompaniesPasswordsRepository _companiesPasswordsRepository;
     private readonly ICompaniesRepository _companiesRepository;
-    private readonly IPasswordHasher _hasher;
-    private readonly IUserPasswordRepository _userPasswordRepository;
-    private readonly IUserRepository _userRepository;
 
     public AuthController(IUserPasswordRepository userPasswordRepository,
         IUserRepository userRepository,
@@ -86,6 +83,8 @@ public class AuthController : Controller
     {
         var hashed = _hasher.HashPassword(dto.Password);
         var company = await _companiesRepository.GetCompanyByEmail(dto.Login);
+        if (company is null) return false;
+        
         var dbCompanyPassword = await _companiesPasswordsRepository
             .GetPasswordById(company.Id);
         return hashed == dbCompanyPassword;

@@ -83,7 +83,7 @@ services.AddSingleton<IIdentityService, IdentityService>();
 
 var app = builder.Build();
 
-app.UseCors();
+app.UseCors(myAllowSpecificOrigins);
 app.UseSwagger().UseSwaggerUI();
 app.UseRouting();
 app.UseAuthentication();

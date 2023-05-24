@@ -35,7 +35,7 @@ public class ServiceController : Controller
     }
     
     [Authorize(Policy = "CompanyPolicy")]
-    [HttpPost, Route("next/user/random")]
+    [HttpGet, Route("user/random")]
     public async Task<ResumeDto> GetNextUserRandom()
     {
         var user = await _userRepository.GetRandomUser();
@@ -43,7 +43,7 @@ public class ServiceController : Controller
     }
     
     [Authorize(Policy = "CompanyPolicy")]
-    [HttpPost, Route("next/user")]
+    [HttpGet, Route("user")]
     public async Task<ResumeDto>? GetNextUser()
     {
         var companyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
@@ -78,7 +78,7 @@ public class ServiceController : Controller
     }
     
     [Authorize(Policy = "UserPolicy")]
-    [HttpPost, Route("next/vacancy/random")]
+    [HttpGet, Route("vacancy/random")]
     public async Task<VacancyDto?> GetNextVacancyRandom()
     {
         var vacancy = await _vacancyRepository.GetRandomVacancy();
@@ -86,7 +86,7 @@ public class ServiceController : Controller
     }
     
     [Authorize(Policy = "UserPolicy")]
-    [HttpPost, Route("next/vacancy")]
+    [HttpGet, Route("vacancy")]
     public async Task<VacancyDto?> GetNextVacancy()
     {
         var userLogin = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
@@ -120,9 +120,11 @@ public class ServiceController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "CompanyPolicy")]
     [Route("user/filter")]
     public async Task<ResumeDto?> GetNextUserFilter([FromBody] UserFilterDto userFilterDto)
     {
+        userFilterDto.CompanyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         if (userFilterDto is null || userFilterDto.CompanyEmail is null)
             return null;
         var companyEmail = userFilterDto.CompanyEmail;
@@ -171,9 +173,11 @@ public class ServiceController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "UserPolicy")]
     [Route("vacancy/filter")]
     public async Task<VacancyDto?> GetNextVacancyFilter([FromBody] VacancyFilterDto vacancyFilterDto)
     {
+        vacancyFilterDto.UserLogin = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         if (vacancyFilterDto is null || vacancyFilterDto.UserLogin is null)
             return null;
         var userLogin = vacancyFilterDto.UserLogin;

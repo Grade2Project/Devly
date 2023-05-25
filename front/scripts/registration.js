@@ -1,4 +1,4 @@
-function registerClient() { // Сделать две разные функции и вместо current_tab использовать window.location.href
+function registerClient() {
     let dataRaw = getObjectFromIterable(
         document.querySelectorAll('[id^="reg_user_"]'),
         ti => [ti.id, ti.value]);
@@ -21,7 +21,7 @@ function registerClient() { // Сделать две разные функции
     });
 }
 
-function registerHR() { // Сделать две разные функции и вместо current_tab использовать window.location.href
+function registerHR() {
         let dataRaw = getObjectFromIterable(
             document.querySelectorAll('[id^="reg_company_"]'),
             ti => [ti.id, ti.value]);
@@ -40,7 +40,6 @@ function registerHR() { // Сделать две разные функции и 
         sendJSON(data, controller,
             (statusCode) => {
             if (statusCode === 200) {
-                // Хуй знает, тут вроде логин респонсе должен лежать, но его не отправляют
                 localStorage['user_login'] = dataRaw['reg_company_email'];
                 console.log('Успешная регистрация');
             }

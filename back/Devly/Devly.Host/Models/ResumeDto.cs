@@ -2,7 +2,7 @@ namespace Devly.Models;
 
 public class ResumeDto
 {
-    public string Login { get; init; }
+    public string Login { get; set; }
     public string Name { get; init; }
     public DateTime BirthDate { get; init; }
     public string City { get; init; }

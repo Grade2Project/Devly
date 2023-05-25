@@ -6,11 +6,11 @@ namespace Devly.Controllers;
 
 public class LikeController : Controller
 {
+    private readonly ICompaniesRepository _companiesRepository;
+    private readonly IFavoriteUsersRepository _favoriteUsersRepository;
+    private readonly IFavoriteVacanciesRepository _favoriteVacanciesRepository;
     private readonly IUserRepository _userRepository;
     private readonly IVacancyRepository _vacancyRepository;
-    private readonly ICompaniesRepository _companiesRepository;
-    private readonly IFavoriteVacanciesRepository _favoriteVacanciesRepository;
-    private readonly IFavoriteUsersRepository _favoriteUsersRepository;
 
     public LikeController(IUserRepository userRepository,
         IVacancyRepository vacancyRepository,
@@ -25,18 +25,17 @@ public class LikeController : Controller
         _favoriteUsersRepository = favoriteUsersRepository;
     }
 
-    [HttpPost, Route("like/vacancy")]
+    [HttpPost]
+    [Route("like/vacancy")]
     public async Task<IActionResult> VacancyLike([FromBody] UserLikeDto userLikeDto)
     {
         var (userLogin, vacancyId) = (userLikeDto.UserLogin, userLikeDto.VacancyId);
         if (await _userRepository.FindUserByLoginAsync(userLogin) == null ||
             await _vacancyRepository.FindVacancyByIdAsync(vacancyId) == null)
-        {
             return StatusCode(400, "Login or vacancy doesn't exists");
-        }
 
         try
-        { 
+        {
             await _favoriteVacanciesRepository.InsertLikePair(userLogin, vacancyId);
         }
         catch (Exception e)
@@ -46,19 +45,18 @@ public class LikeController : Controller
 
         return Ok();
     }
-    
-    [HttpPost, Route("unlike/vacancy")]
+
+    [HttpPost]
+    [Route("unlike/vacancy")]
     public async Task<IActionResult> VacancyUnlike([FromBody] UserLikeDto userLikeDto)
     {
         var (userLogin, vacancyId) = (userLikeDto.UserLogin, userLikeDto.VacancyId);
         if (await _userRepository.FindUserByLoginAsync(userLogin) == null ||
             await _vacancyRepository.FindVacancyByIdAsync(vacancyId) == null)
-        {
             return StatusCode(400, "User or vacancy doesn't exists");
-        }
 
         try
-        { 
+        {
             await _favoriteVacanciesRepository.Unlike(userLogin, vacancyId);
         }
         catch (Exception e)
@@ -68,16 +66,15 @@ public class LikeController : Controller
 
         return Ok();
     }
-    
-    [HttpPost, Route("like/user")]
+
+    [HttpPost]
+    [Route("like/user")]
     public async Task<IActionResult> UserLike([FromBody] CompanyLikeDto companyLikeDto)
     {
         var (companyEmail, userLogin) = (companyLikeDto.CompanyEmail, companyLikeDto.UserLogin);
         var company = await _companiesRepository.GetCompanyByEmail(companyEmail);
         if (await _userRepository.FindUserByLoginAsync(userLogin) == null || company == null)
-        {
             return StatusCode(400, "Company or user doesn't exists");
-        }
 
         try
         {
@@ -90,16 +87,15 @@ public class LikeController : Controller
 
         return Ok();
     }
-    
-    [HttpPost, Route("unlike/user")]
+
+    [HttpPost]
+    [Route("unlike/user")]
     public async Task<IActionResult> UserUnlike([FromBody] CompanyLikeDto companyLikeDto)
     {
         var (companyEmail, userLogin) = (companyLikeDto.CompanyEmail, companyLikeDto.UserLogin);
         var company = await _companiesRepository.GetCompanyByEmail(companyEmail);
         if (await _userRepository.FindUserByLoginAsync(userLogin) == null || company == null)
-        {
             return StatusCode(400, "Company or user doesn't exists");
-        }
 
         try
         {

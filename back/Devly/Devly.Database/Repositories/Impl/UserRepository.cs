@@ -26,7 +26,8 @@ internal class UserRepository : IUserRepository
 
     public async Task<User> FindUserByLoginAsync(string login)
     {
-        return await _repository.FindAsync<User>(u => u.Login == login).ConfigureAwait(false);
+        return await _repository.FindAsync<User>(u => u.Login == login, CancellationToken.None, 
+            user => user.Contact, user => user.Grade, user => user.FavoriteLanguages).ConfigureAwait(false);
     }
 
     public async Task<User> GetRandomUser()
@@ -35,9 +36,15 @@ internal class UserRepository : IUserRepository
             (CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
     }
 
-    public async Task<IReadOnlyList<User>>? GetUsersByGrade(int gradeId)
+    public async Task<IReadOnlyList<User>>? GetUsersLeqThanGrade(int gradeId)
     {
         return await _repository.FindAllAsync<User>(user => user.GradeId <= gradeId,
+            CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
+    }
+
+    public async Task<IReadOnlyList<User>> GetUsersEqGrade(int gradeId)
+    {
+        return await _repository.FindAllAsync<User>(user => user.GradeId == gradeId,
             CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
     }
 }

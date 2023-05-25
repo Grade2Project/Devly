@@ -1,4 +1,4 @@
-using Devly.Database.Basics.Repository;
+ using Devly.Database.Basics.Repository;
 using Devly.Database.Context;
 using Devly.Database.Models;
 using Devly.Database.Repositories.Abstract;
@@ -13,7 +13,7 @@ internal class VacancyRepository : IVacancyRepository
     {
         _repository = repository;
     }
-    
+
     public async Task<IReadOnlyList<Vacancy>> GetAllCompanyVacancies(string companyEmail)
     {
         return await _repository.FindAllAsync<Vacancy>(x => x.Company.CompanyEmail == companyEmail,
@@ -43,6 +43,14 @@ internal class VacancyRepository : IVacancyRepository
             vacancy => vacancy.Grade);
     }
 
+    public async Task<IReadOnlyList<Vacancy>> GetAllGradeVacancies(int gradeId)
+    {
+        return await _repository.FindAllAsync<Vacancy>(v => v.GradeId == gradeId,
+            CancellationToken.None, vacancy => vacancy.Company,
+            vacancy => vacancy.ProgrammingLanguage,
+            vacancy => vacancy.Grade);
+    }
+
     public async Task InsertAsync(Vacancy vacancy)
     {
         await _repository.InsertAsync(vacancy);
@@ -61,6 +69,8 @@ internal class VacancyRepository : IVacancyRepository
     public async Task<Vacancy> GetRandomVacancy()
     {
         return await _repository.GetNextRandom<Vacancy>
-            (CancellationToken.None, vacancy => vacancy.Company, vacancy => vacancy.ProgrammingLanguage);
+            ( CancellationToken.None, vacancy => vacancy.Company,
+                vacancy => vacancy.ProgrammingLanguage,
+                vacancy => vacancy.Grade);
     }
 }

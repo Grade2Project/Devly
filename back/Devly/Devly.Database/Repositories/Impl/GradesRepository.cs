@@ -16,7 +16,7 @@ internal class GradesRepository : IGradesRepository
 
     public async Task<IReadOnlyList<User>> FindAllUsersByGrade(string grade)
     {
-        return await _repository.FindAllAsync<User>(user => user.Grade.Value == grade, default, 
+        return await _repository.FindAllAsync<User>(user => user.Grade.Value == grade, default,
             u => u.Grade);
     }
 

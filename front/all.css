@@ -91,7 +91,6 @@ textarea {
     align-items: center;
     text-align: center;
     letter-spacing: -0.02em;
-    text-transform: lowercase;
     margin: auto 25px;
     color: var(--color-black);
 
@@ -158,7 +157,6 @@ textarea {
 
 .b-container {
     display: flex;
-    position: absolute;
     bottom: 100px;
     left: 150px;
     justify-content: flex-start;
@@ -167,15 +165,6 @@ textarea {
 
     width: fit-content;
     height: fit-content;
-}
-
-.c-button-outline {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 0;
-    background: #ccc;
-    margin: auto 0;
 }
 
 .c-button-h {

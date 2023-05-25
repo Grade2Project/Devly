@@ -21,6 +21,8 @@ function auth() {
             if (statusCode === 200) {
                 localStorage['token'] = response;
                 // window.location.href = 'index.html' // Показывать на индексе как-то, что я войден
+                window.location.href = '../html/swipe.html';
+                localStorage['way'] = ''
             }
             else {
                 console.log('Ошибка входа'); // Сделать чо нибудь прикольное

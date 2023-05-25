@@ -41,8 +41,12 @@ class UserCardHandler extends CardHandler {
         let card = document.createElement('div');
         card.classList.add('tinder__card');
 
+        let centerCropped = document.createElement('div');
+        centerCropped.classList.add('center-cropped');
+
         let img = document.createElement('img');
         img.src = "https://placeimg.com/640/480/tech/grayscale";
+        // img.src = "../../index/gK0xAc7fDOY.jpg";
 
         let name = document.createElement('h3');
         let info = document.createElement('ul');
@@ -55,7 +59,8 @@ class UserCardHandler extends CardHandler {
                 info.appendChild(item);
             }
 
-            card.appendChild(img);
+            centerCropped.appendChild(img);
+            card.appendChild(centerCropped);
             card.appendChild(name);
             card.appendChild(info);
 

@@ -42,17 +42,10 @@
 <script src="../scripts/utils.js"></script>
 <script src="../scripts/createCard.js"></script>
 <script src="../scripts/swipes.js"></script>
-    <script>
-    sendJSON({
-        login: "abc@gmail.com",
-        password: "123"
-    }, Controllers.AUTH.COMPANY, HTTPResponseType.TEXT, (status, response) => {
-        localStorage['token'] = response;
-    })
-
+<script>
     let token = localStorage.getItem('token');
 
-    const cardHandler = new CardCreator(new UserCardHandler());
+    const cardHandler =  new CardCreator(new UserCardHandler());
     cardHandler.appendCardToDoc();
 </script>
 </body>

@@ -844,8 +844,23 @@ input[type=radio] {
     cursor: grabbing;
 }
 
-.swipe__cards .tinder__card img {
-    max-width: 100%;
+.swipe__cards .tinder__card .center-cropped {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 80%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.swipe__cards .tinder__card .center-cropped img {
+
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
+    filter: alpha(opacity=1);
+    opacity: 1;
     pointer-events: none;
 }
 

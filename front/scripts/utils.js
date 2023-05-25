@@ -18,6 +18,11 @@ const HTTPMethods = {
     PATCH: 'PATCH'
 };
 
+const HTTPResponseType = {
+    TEXT: 'text',
+    JSON: 'json'
+}
+
 const XHR = new XMLHttpRequest();
 XHR.addEventListener('error', function(event) {
     console.log(event.target);
@@ -30,25 +35,24 @@ function getInputValueById(id) {
     return candidate.value;
 }
 
-async function sendJSON (data, controller, processResponse, authorizationToken) {
+async function sendJSON (data, controller, responseType, processResponse, authorizationToken) {
     const json = JSON.stringify(data);
 
     const xhr = new XMLHttpRequest()
     xhr.open(HTTPMethods.POST, controller, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
+
     if (authorizationToken !== undefined) {
         xhr.setRequestHeader('Authorization', `Bearer ${authorizationToken}`);
     }
 
-    xhr.responseType = 'text'; //Сделать разные, пока хуета
-    xhr.onload = () => {
-        processResponse(xhr.status, xhr.response);
-    }
+    xhr.responseType = responseType;
+    xhr.onload = () => processResponse(xhr.status, xhr.response);
 
     xhr.send(json);
 }
 
-async function fetchJSON (controller, processResponse, authorizationToken) {
+async function fetchFrom (controller, processResponse, authorizationToken, responseType = 'json') {
     const xhr = new XMLHttpRequest()
     xhr.open(HTTPMethods.GET, controller, true);
 
@@ -56,8 +60,8 @@ async function fetchJSON (controller, processResponse, authorizationToken) {
         xhr.setRequestHeader('Authorization', `Bearer ${authorizationToken}`);
     }
 
-    xhr.responseType = 'json';
-    xhr.onload = () => processResponse(xhr.response);
+    xhr.responseType = responseType;
+    xhr.onload = () => processResponse(xhr.status, xhr.response);
 
     xhr.send();
 }

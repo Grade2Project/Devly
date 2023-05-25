@@ -147,7 +147,7 @@
 <script>
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
-    fetchJSON(Controllers.GRADES, (json) => {
+    fetchFrom(Controllers.GRADES, (json) => {
         grades = json.container;
         for (let grade of grades) {
             let opt = document.createElement('option');

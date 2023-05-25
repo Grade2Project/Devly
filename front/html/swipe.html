@@ -44,19 +44,15 @@
 <script src="../scripts/swipes.js"></script>
     <script>
     sendJSON({
-        login: "u1",
-        password: "111"
-    }, Controllers.AUTH.USER, (status, response) => {
-        localStorage.setItem('token', response);
+        login: "abc@gmail.com",
+        password: "123"
+    }, Controllers.AUTH.COMPANY, HTTPResponseType.TEXT, (status, response) => {
+        localStorage['token'] = response;
     })
 
     let token = localStorage.getItem('token');
 
-    fetchJSON(Controllers.SERVICE.NEXT_VACANCY, (response) => {
-        console.log(response);
-    }, token);
-
-    const cardHandler = new CardHandler();
+    const cardHandler = new CardCreator(new UserCardHandler());
     cardHandler.appendCardToDoc();
 </script>
 </body>

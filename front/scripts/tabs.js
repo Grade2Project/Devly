@@ -4,6 +4,7 @@ const tabsValues = document.querySelectorAll('.tabs__values');
 for (let value of tabsValues) {
     value.style.display = 'none';
 }
+
 let currentTab = undefined;
 showTab(0);
 function showTab(n) {

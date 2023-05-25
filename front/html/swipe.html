@@ -17,7 +17,7 @@
         <div class="left__menu__header__container">
             <div class="profile__image"></div>
             <div class="search search-img" style="width: 70%; min-width: 0">
-                <img src="../svg/icons8-search.svg" alt="none">
+                <img src="../svg/search_icon.svg" alt="none">
             </div>
         </div>
     </div>
@@ -45,7 +45,9 @@
 <script>
     let token = localStorage.getItem('token');
 
-    const cardHandler =  new CardCreator(new UserCardHandler());
+    const cardHandler = localStorage['way'] === 'user'
+        ? new CardCreator(new VacancyCardHandler())
+        : new CardCreator(new UserCardHandler());
     cardHandler.appendCardToDoc();
 </script>
 </body>

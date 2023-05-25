@@ -11,7 +11,7 @@ function auth() {
     }
     console.log(data);
 
-    controller = currentTab === 0 ? Controllers.AUTH.USER : Controllers.AUTH.COMPANY;
+    let controller = currentTab === 0 ? Controllers.AUTH.USER : Controllers.AUTH.COMPANY;
 
     if (!data || !controller)
         throw new Error('Internal error');

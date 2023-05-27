@@ -29,6 +29,8 @@ services:
     container_name: back
     networks:
       - local-network
+    environment:
+      "ConnectionStrings__Postgres" : "Host=postgres;Port=5432;User Id=devly;Password=devly123;Database=postgres;"
     ports:
       - "80:80"
     depends_on:

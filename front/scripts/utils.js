@@ -1,4 +1,4 @@
-const HOME = 'http://httplocalhost:5003';
+const HOME = 'http://localhost:5003';
 // const HOME = 'http://localhost:80'; // Для контейнера
 
 const Controllers = {

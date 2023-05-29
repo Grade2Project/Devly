@@ -54,7 +54,7 @@ public class ServiceController : Controller
     [HttpPost]
     [Authorize(Policy = "CompanyPolicy")]
     [Route("user")]
-    public async Task<ResumeDto?> GetNextUserFilter([FromBody] UserFilterDto userFilterDto)
+    public async Task<ResumeDto?> GetNextUserFilter([FromBody] UserFilterDto? userFilterDto)
     {
         var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         if (userFilterDto is null)
@@ -171,7 +171,7 @@ public class ServiceController : Controller
             var companyVacancies = await _vacancyRepository.GetAllCompanyVacancies(companyEmail);
             foreach (var vacancy in companyVacancies)
             {
-                var usersOfVacancyGrade = await _userRepository.GetUsersLeqThanGrade(vacancy.Grade.Id)!;
+                var usersOfVacancyGrade = await _userRepository.GetUsersGeqThanGrade(vacancy.Grade.Id)!;
                 if (usersOfVacancyGrade == null)
                     continue;
                 usersList?.AddRange(usersOfVacancyGrade.Where(user =>

@@ -10,5 +10,6 @@ public interface IUserRepository
     Task<User?> FindUserByLoginAsync(string login);
     Task<User> GetRandomUser();
     Task<IReadOnlyList<User>>? GetUsersLeqThanGrade(int gradeId);
+    Task<IReadOnlyList<User>>? GetUsersGeqThanGrade(int gradeId);
     Task<IReadOnlyList<User>>? GetUsersEqGrade(int gradeId);
 }

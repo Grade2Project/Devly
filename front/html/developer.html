@@ -137,8 +137,9 @@
 
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
-    fetchFrom(Controllers.GRADES, (json) => {
+    fetchFrom(Controllers.GRADES, (statusCode, json) => {
         grades = json.container;
+
         for (let grade of grades) {
             let opt = document.createElement('option');
             opt.value = grade;
@@ -146,7 +147,7 @@
 
             gradeSelect.appendChild(opt);
         }
-    });
+    }, localStorage['token']);
 
     const reader = new FileReader();
     let avatarBytes;
@@ -189,16 +190,17 @@
             email: localStorage['user_login'],
             phone: dataRaw['user_tel'],
             imagePath: "esheOdin", // zachem?
-            favoriteLanguages: [dataRaw['user_languages']]
+            favoriteLanguages: dataRaw['user_languages'].split(' ')
         }
-        sendJSON(data, Controllers.RESUME.UPDATE,
+        sendJSON(data, Controllers.RESUME.UPDATE, HTTPResponseType.TEXT,
             (statusCode) => {
                 if (statusCode === 200) {
                     alert('Резюме создано, вы восхитительны');
+                    window.location.href = "swipe.html";
                 } else {
                     alert('BadKekus');
                 }
-            });
+            }, localStorage['token']);
     }
 </script>
 </body>

@@ -21,13 +21,6 @@ function initCards(card, index) {
     tinderContainer.classList.add('loaded');
 }
 
-function initSingleCard(card, index) {
-    card.style.zIndex = allCards.length - index;
-    card.style.transform = 'scale(' + (20 - index) / 20 + ') translateY(-' + 30 * index + 'px)';
-    card.style.opacity = (10 - index) / 10;
-
-    tinderContainer.classList.add('loaded');
-}
 function setHammerOnSingleCard(el) {
     let hammertime = new Hammer(el);
 

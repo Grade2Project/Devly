@@ -9,11 +9,11 @@ function registerClient() {
         password: dataRaw['reg_user_password']
     }
 
-    sendJSON(data, controller,
-        (statusCode) => {
+    sendJSON(data, controller, HTTPResponseType.TEXT,
+        (statusCode, response) => {
         if (statusCode === 200) {
-            localStorage['user_login'] = dataRaw['reg_user_email'];
-            console.log('Успешная регистрация');
+            localStorage['token'] = response;
+            window.location.href = '../html/developer.html';
         }
         else {
             console.log('Ошибка регистрации');
@@ -37,10 +37,10 @@ function registerHR() {
             password: dataRaw['reg_company_password']
         }
 
-        sendJSON(data, controller,
-            (statusCode) => {
+        sendJSON(data, controller, HTTPResponseType.TEXT,
+            (statusCode, response) => {
             if (statusCode === 200) {
-                localStorage['user_login'] = dataRaw['reg_company_email'];
+                localStorage['token'] = response;
                 console.log('Успешная регистрация');
             }
             else {

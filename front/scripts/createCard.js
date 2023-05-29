@@ -53,21 +53,43 @@ class UserCardHandler extends CardHandler {
         img.src = "https://placeimg.com/640/480/tech/grayscale";
         // img.src = "../../index/gK0xAc7fDOY.jpg";
 
-        let name = document.createElement('h3');
-        let info = document.createElement('ul');
+        let informationHolder = document.createElement('div');
+        informationHolder.classList.add('information__holder');
+
+        let nameAndCity = document.createElement('div');
+        nameAndCity.classList.add('inner__holder');
+
+        let gradeAndLangs = document.createElement('div');
+        gradeAndLangs.classList.add('inner__holder');
 
         return await sendJSON(null, Controllers.SERVICE.NEXT_USER, HTTPResponseType.JSON, (status, response) => {
-            name.innerText = response['name'];
-            for (let [key, value] of Object.entries(response)) {
-                let item = document.createElement('li');
-                item.innerText = `${key} : ${value}`;
-                info.appendChild(item);
-            }
+            let nameHolder = document.createElement('span');
+            nameHolder.innerText = `${response['name']}, ${response['age']}`;
+            nameHolder.classList.add('label__28B_600');
+            nameAndCity.appendChild(nameHolder);
+
+            let cityLabel = document.createElement('span');
+            cityLabel.classList.add('label__18B_500_GREY');
+            cityLabel.innerText = response['city'];
+            nameAndCity.appendChild(cityLabel);
+
+            let favLangsLabel = document.createElement('span');
+            favLangsLabel.classList.add('label__18B_500_GREY');
+            favLangsLabel.innerText = `${response['favoriteLanguages'].join(', ')}`;
+
+            let gradeLabel = document.createElement('span');
+            gradeLabel.classList.add('label__18B_500_GREY');
+            gradeLabel.innerText = response['grade'];
+
+            gradeAndLangs.appendChild(favLangsLabel);
+            gradeAndLangs.appendChild(gradeLabel);
+
+            informationHolder.appendChild(nameAndCity);
+            informationHolder.appendChild(gradeAndLangs);
 
             centerCropped.appendChild(img);
             card.appendChild(centerCropped);
-            card.appendChild(name);
-            card.appendChild(info);
+            card.appendChild(informationHolder);
 
             return Promise.resolve(card);
 

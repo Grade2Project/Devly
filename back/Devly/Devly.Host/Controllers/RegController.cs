@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Devly.Database.Repositories.Abstract;
 using Devly.Models;
 using Devly.Services;
@@ -10,16 +11,20 @@ public class RegController : Controller
     private readonly ICompaniesPasswordsRepository _companiesPasswordsRepository;
     private readonly ICompaniesRepository _companiesRepository;
     private readonly IPasswordHasher _hasher;
+    private readonly IIdentityService _identityService;
     private readonly IUserPasswordRepository _passwordRepository;
 
     public RegController(IUserPasswordRepository passwordRepository,
         IPasswordHasher hasher,
-        ICompaniesRepository companiesRepository, ICompaniesPasswordsRepository companiesPasswordsRepository)
+        ICompaniesRepository companiesRepository,
+        ICompaniesPasswordsRepository companiesPasswordsRepository,
+        IIdentityService identityService)
     {
         _passwordRepository = passwordRepository;
         _hasher = hasher;
         _companiesRepository = companiesRepository;
         _companiesPasswordsRepository = companiesPasswordsRepository;
+        _identityService = identityService;
     }
 
     [HttpPost]
@@ -29,8 +34,15 @@ public class RegController : Controller
         if (await _passwordRepository.FindByUserLoginAsync(userDto.Login) != null) return StatusCode(400);
 
         await _passwordRepository.InsertAsync(userDto.Login, _hasher.HashPassword(userDto.Password));
-
-        return Ok();
+        var token = await _identityService.GenerateToken(new TokenRequestDto
+        {
+            Email = userDto.Login,
+            CustomClaims = new Dictionary<string, object>
+            {
+                [ClaimTypes.Role] = "User"
+            }
+        });
+        return Ok(token);
     }
 
     [HttpPost]
@@ -43,6 +55,14 @@ public class RegController : Controller
             (companyDto.CompanyName, companyDto.CompanyEmail, companyDto.CompanyInfo).ConfigureAwait(false);
         await _companiesPasswordsRepository.InsertAsync(
             company.Id, _hasher.HashPassword(companyDto.Password));
-        return Ok();
+        var token = await _identityService.GenerateToken(new TokenRequestDto
+        {
+            Email = companyDto.CompanyEmail,
+            CustomClaims = new Dictionary<string, object>
+            {
+                [ClaimTypes.Role] = "Company"
+            }
+        });
+        return Ok(token);
     }
 }

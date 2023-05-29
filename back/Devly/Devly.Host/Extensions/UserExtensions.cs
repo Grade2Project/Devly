@@ -10,12 +10,11 @@ public static class UserExtensions
         return new ResumeDto
         {
             Login = user.Login,
+            Age = user.BirthDate.ToAge(),
             BirthDate = user.BirthDate,
             City = user.City,
             Info = user.Info,
             Name = user.Name,
-            Email = user.Contact.Email,
-            Phone = user.Contact.Phone,
             Grade = user.Grade.Value,
             FavoriteLanguages = user.FavoriteLanguages
                 .Select(x => x.ProgrammingLanguage.LanguageName).ToArray()

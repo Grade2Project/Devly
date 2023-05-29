@@ -14,7 +14,6 @@ public static class ResumeDtoExtensions
             City = resumeDto.City,
             Contact = new Contact { Email = resumeDto.Email, Phone = resumeDto.Phone },
             GradeId = grade.Id,
-            ImagePath = resumeDto.ImagePath,
             Info = resumeDto.Info,
             Name = resumeDto.Name
         };

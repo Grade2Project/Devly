@@ -7,6 +7,7 @@ public class ResumeDto
     public DateTime BirthDate { get; init; }
     public int Age { get; init; }
     public string City { get; init; }
+    public int Experience { get; init; }
     public string Info { get; init; }
     public string Grade { get; init; }
     public byte[] Photo { get; init; }

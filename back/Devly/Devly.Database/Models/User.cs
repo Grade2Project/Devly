@@ -15,6 +15,7 @@ public class User
     [ForeignKey(nameof(GradeId))] public Grade Grade { get; set; }
 
     public string Name { get; set; }
+    public int Experience { get; set; }
     public string City { get; set; }
     public string Info { get; set; }
     public string ImagePath { get; set; }

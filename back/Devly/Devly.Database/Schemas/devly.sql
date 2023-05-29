@@ -31,11 +31,11 @@ create table if not exists devly.users_passwords
 create table if not exists devly.users
 (
     login       varchar(32) references devly.users_passwords (user_login) primary key,
+    experience int,
     birth_date  date,
     name        text,
     city        text,
     info        text,
-    resume_path text,
     grade_id    int references devly.grades (id),
     contact_id  int references devly.contacts (id),
     image_path  text default '/images/default.jpg'::text

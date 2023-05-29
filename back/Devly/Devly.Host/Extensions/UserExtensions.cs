@@ -10,6 +10,7 @@ public static class UserExtensions
         return new ResumeDto
         {
             Login = user.Login,
+            Experience = user.Experience,
             Age = user.BirthDate.ToAge(),
             BirthDate = user.BirthDate,
             City = user.City,

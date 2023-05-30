@@ -108,7 +108,7 @@ public class ServiceController : Controller
     [HttpPost]
     [Authorize(Policy = "UserPolicy")]
     [Route("vacancy")]
-    public async Task<VacancyDto?> GetNextVacancyFilter([FromBody] VacancyFilterDto vacancyFilterDto)
+    public async Task<VacancyDto?> GetNextVacancyFilter([FromBody] VacancyFilterDto? vacancyFilterDto)
     {
         var login = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         if (vacancyFilterDto is null)
@@ -171,18 +171,18 @@ public class ServiceController : Controller
             var companyVacancies = await _vacancyRepository.GetAllCompanyVacancies(companyEmail);
             foreach (var vacancy in companyVacancies)
             {
-                var usersOfVacancyGrade = await _userRepository.GetUsersGeqThanGrade(vacancy.Grade.Id)!;
+                var usersOfVacancyGrade = await _userRepository.GetUsersEqGrade(vacancy.Grade.Id)!;
                 if (usersOfVacancyGrade == null)
                     continue;
                 usersList?.AddRange(usersOfVacancyGrade.Where(user =>
                 {
-                    var userFavoriteLanguages = _usersFavoriteLanguagesRepository
-                        .GetUserFavoriteLanguages(user.Login).Result.Select(x => x.ProgrammingLanguage.LanguageName);
+                    var userFavoriteLanguages = user.FavoriteLanguages.Select(x => x.ProgrammingLanguage.LanguageName)
+                        .ToArray();
                     return userFavoriteLanguages.Contains(vacancy.ProgrammingLanguage.LanguageName);
                 }));
             }
             
-            users = users.Take(10).ToList();
+            users = users.DistinctBy(x => x.Login).ToList();
         }
 
         var userToReturn = users.FirstOrDefault();
@@ -201,8 +201,7 @@ public class ServiceController : Controller
             vacancies = new List<Vacancy>();
             var listVacancies = vacancies as List<Vacancy>;
             var user = await _userRepository.FindUserByLoginAsync(userLogin);
-            var userLanguages = await _usersFavoriteLanguagesRepository
-                .GetUserFavoriteLanguages(userLogin);
+            var userLanguages = user.FavoriteLanguages;
             foreach (var language in userLanguages)
             {
                 var vacanciesOfLanguage =
@@ -212,7 +211,7 @@ public class ServiceController : Controller
                 listVacancies?.AddRange(vacanciesOfLanguage.Where(vac => vac.Grade.Id <= user.GradeId));
             }
 
-            vacancies = vacancies.Take(10).ToList();
+            vacancies = vacancies.DistinctBy(x => x.Id).ToArray();
         }
 
         var vacancyToReturn = vacancies.FirstOrDefault();

@@ -8,7 +8,7 @@ public class MemoryCacheEntry<T> where T : class
 
     public bool IsEnded => CurrentIndex == Entries.Count - 1;
 
-    public MemoryCacheEntry(IReadOnlyList<T> entries, int filterHash)
+    public MemoryCacheEntry(IReadOnlyList<T> entries, int filterHash = 0)
     {
         Entries = entries;
         FilterHash = filterHash;
@@ -17,9 +17,9 @@ public class MemoryCacheEntry<T> where T : class
 
     public T? Next()
     {
-        CurrentIndex++;
         if (IsEnded)
             return null;
+        CurrentIndex++;
         return Entries[CurrentIndex];
     }
 }

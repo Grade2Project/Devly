@@ -1,6 +1,7 @@
  using Devly.Database.Basics.Repository;
 using Devly.Database.Context;
-using Devly.Database.Models;
+ using Devly.Database.Filters;
+ using Devly.Database.Models;
 using Devly.Database.Repositories.Abstract;
 
 namespace Devly.Database.Repositories.Impl;
@@ -49,6 +50,17 @@ internal class VacancyRepository : IVacancyRepository
             CancellationToken.None, vacancy => vacancy.Company,
             vacancy => vacancy.ProgrammingLanguage,
             vacancy => vacancy.Grade);
+    }
+
+    public async Task<IReadOnlyList<Vacancy>> GetAllVacanciesFilter(VacancyFilter vacancyFilter)
+    {
+        return await _repository.FindAllAsync<Vacancy>
+        (v => (vacancyFilter.GradeIds == null || vacancyFilter.GradeIds.Contains(v.GradeId)) &&
+              (vacancyFilter.LanguageIds == null || vacancyFilter.LanguageIds.Contains(v.ProgrammingLanguageId)) &&
+              (vacancyFilter.CompanyName == null || v.Company.CompanyName.Contains(vacancyFilter.CompanyName, StringComparison.OrdinalIgnoreCase)) &&
+              v.Salary >= vacancyFilter.SalaryFrom &&
+              (vacancyFilter.SalaryTo == 0 || v.Salary <= vacancyFilter.SalaryTo), CancellationToken.None, 
+            vacancy => vacancy.Company, vacancy => vacancy.ProgrammingLanguage, vacancy => vacancy.Grade);
     }
 
     public async Task InsertAsync(Vacancy vacancy)

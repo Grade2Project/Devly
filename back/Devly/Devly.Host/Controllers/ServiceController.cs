@@ -63,7 +63,7 @@ public class ServiceController : Controller
         var companyEmail = userFilterDto.CompanyEmail;
         var key = $"company_{companyEmail}{FilterString}";
         var cachedUsers = _memoryCache.Get<MemoryCacheEntry<User>>(key);
-        if (cachedUsers == null || cachedUsers.Entries.Count == 0 || cachedUsers.FilterHash != userFilterDto.GetHashCode())
+        if (cachedUsers == null || cachedUsers.IsEnded || cachedUsers.Entries.Count == 0 || cachedUsers.FilterHash != userFilterDto.GetHashCode())
         {
             var grades = userFilterDto.Grades is null ? _gradesRepository.GetAllGrades().Result.ToArray() :
                 userFilterDto.Grades.Select(x => _gradesRepository.FindGrade(x).Result).ToArray();
@@ -89,20 +89,15 @@ public class ServiceController : Controller
                 return await GetNextUserRandom();
             }
 
-            cachedUsers = new MemoryCacheEntry<User>
-            {
-                Entries = filteredUsers,
-                FilterHash = userFilterDto.GetHashCode()
-            };
+            cachedUsers = new MemoryCacheEntry<User>(filteredUsers, userFilterDto.GetHashCode());
         }
 
         if (cachedUsers.Entries.Count == 0)
             return null;
-        var answer = cachedUsers.Entries[0].MapToResumeDto();
-        cachedUsers.Entries = cachedUsers.Entries.Skip(1).ToList();
+        var answer = cachedUsers.Next();
         _memoryCache.Set(key, cachedUsers,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
-        return answer;
+        return answer.MapToResumeDto();
     }
 
     [HttpPost]
@@ -145,61 +140,55 @@ public class ServiceController : Controller
                 return await GetNextVacancyRandom();
             }
 
-            cachedVacancies = new MemoryCacheEntry<Vacancy>
-            {
-                Entries = filteredVacancies,
-                FilterHash = vacancyFilterDto.GetHashCode()
-            };
+            cachedVacancies = new MemoryCacheEntry<Vacancy>(filteredVacancies, vacancyFilterDto.GetHashCode());
         }
 
         if (cachedVacancies.Entries.Count == 0)
             return null;
-        var answer = cachedVacancies.Entries[0].MapToVacancyDto();
-        cachedVacancies.Entries = cachedVacancies.Entries.Skip(1).ToList();
+        var answer = cachedVacancies.Next();
         _memoryCache.Set(key, cachedVacancies,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
-        return answer;
+        return answer.MapToVacancyDto();
     }
     
     private async Task<ResumeDto>? GetNextUser(string companyEmail)
     {
-        var users = _memoryCache.Get<IReadOnlyList<User>>(companyEmail);
-        if (users == null || users.Count == 0)
+        var cachedUsers = _memoryCache.Get<MemoryCacheEntry<User>>(companyEmail);
+        if (cachedUsers == null || cachedUsers.Entries.Count == 0 || cachedUsers.IsEnded)
         {
-            users = new List<User>();
-            var usersList = users as List<User>;
+            var users = new List<User>();
             var companyVacancies = await _vacancyRepository.GetAllCompanyVacancies(companyEmail);
             foreach (var vacancy in companyVacancies)
             {
                 var usersOfVacancyGrade = await _userRepository.GetUsersEqGrade(vacancy.Grade.Id)!;
                 if (usersOfVacancyGrade == null)
                     continue;
-                usersList?.AddRange(usersOfVacancyGrade.Where(user =>
+                users.AddRange(usersOfVacancyGrade.Where(user =>
                 {
                     var userFavoriteLanguages = user.FavoriteLanguages.Select(x => x.ProgrammingLanguage.LanguageName)
                         .ToArray();
                     return userFavoriteLanguages.Contains(vacancy.ProgrammingLanguage.LanguageName);
                 }));
             }
-            
-            users = users.DistinctBy(x => x.Login).ToList();
-        }
 
-        var userToReturn = users.FirstOrDefault();
-        if (userToReturn is null)
+            users = users.DistinctBy(x => x.Login).ToList();
+            cachedUsers = new MemoryCacheEntry<User>(users, 0);
+        }
+        
+        if (cachedUsers.Entries.Count == 0)
             return await GetNextUserRandom();
-        _memoryCache.Set(companyEmail, users.Skip(1).ToList(),
+        var userToReturn = cachedUsers.Next();
+        _memoryCache.Set(companyEmail, cachedUsers,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
         return userToReturn.MapToResumeDto();
     }
     
     private async Task<VacancyDto?> GetNextVacancy(string userLogin)
     {
-        var vacancies = _memoryCache.Get<IReadOnlyList<Vacancy>>(userLogin);
-        if (vacancies == null || vacancies.Count == 0)
+        var cachedVacancies = _memoryCache.Get<MemoryCacheEntry<Vacancy>>(userLogin);
+        if (cachedVacancies == null || cachedVacancies.Entries.Count == 0 || cachedVacancies.IsEnded)
         {
-            vacancies = new List<Vacancy>();
-            var listVacancies = vacancies as List<Vacancy>;
+            var vacancies = new List<Vacancy>();
             var user = await _userRepository.FindUserByLoginAsync(userLogin);
             var userLanguages = user.FavoriteLanguages;
             foreach (var language in userLanguages)
@@ -208,16 +197,16 @@ public class ServiceController : Controller
                     await _vacancyRepository.GetAllLanguageVacancies(language.ProgrammingLanguage.LanguageName)!;
                 if (vacanciesOfLanguage == null)
                     continue;
-                listVacancies?.AddRange(vacanciesOfLanguage.Where(vac => vac.Grade.Id <= user.GradeId));
+                vacancies.AddRange(vacanciesOfLanguage.Where(vac => vac.Grade.Id <= user.GradeId));
             }
 
-            vacancies = vacancies.DistinctBy(x => x.Id).ToArray();
+            vacancies = vacancies.DistinctBy(x => x.Id).ToList();
+            cachedVacancies = new MemoryCacheEntry<Vacancy>(vacancies, 0);
         }
-
-        var vacancyToReturn = vacancies.FirstOrDefault();
-        if (vacancyToReturn is null)
+        if (cachedVacancies.Entries.Count == 0)
             return await GetNextVacancyRandom();
-        _memoryCache.Set(userLogin, vacancies.Skip(1).ToList(),
+        var vacancyToReturn = cachedVacancies.Next();
+        _memoryCache.Set(userLogin, cachedVacancies,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
 
         return vacancyToReturn.MapToVacancyDto();

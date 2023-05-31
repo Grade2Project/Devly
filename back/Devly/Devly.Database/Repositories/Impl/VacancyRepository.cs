@@ -57,7 +57,7 @@ internal class VacancyRepository : IVacancyRepository
         return await _repository.FindAllAsync<Vacancy>
         (v => (vacancyFilter.GradeIds == null || vacancyFilter.GradeIds.Contains(v.GradeId)) &&
               (vacancyFilter.LanguageIds == null || vacancyFilter.LanguageIds.Contains(v.ProgrammingLanguageId)) &&
-              (vacancyFilter.CompanyName == null || v.Company.CompanyName.Contains(vacancyFilter.CompanyName, StringComparison.OrdinalIgnoreCase)) &&
+              (vacancyFilter.CompanyName == null || v.Company.CompanyName.Contains(vacancyFilter.CompanyName)) &&
               v.Salary >= vacancyFilter.SalaryFrom &&
               (vacancyFilter.SalaryTo == 0 || v.Salary <= vacancyFilter.SalaryTo), CancellationToken.None, 
             vacancy => vacancy.Company, vacancy => vacancy.ProgrammingLanguage, vacancy => vacancy.Grade);

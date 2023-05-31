@@ -5,10 +5,11 @@ class CardsStorage {
 }
 
 class CardHandler {
-    async fetchCard() {};
+    async fetchCard() {
+    };
 }
 
-class VacancyCardHandler extends CardHandler{
+class VacancyCardHandler extends CardHandler {
     async fetchCard() {
         let card = document.createElement('div');
         card.classList.add('tinder__card');
@@ -43,54 +44,46 @@ class VacancyCardHandler extends CardHandler{
 
 class UserCardHandler extends CardHandler {
     async fetchCard() {
+        let content = document.getElementById('card_template').content.cloneNode(true);
+
         let card = document.createElement('div');
         card.classList.add('tinder__card');
 
-        let centerCropped = document.createElement('div');
-        centerCropped.classList.add('center-cropped');
-
-        let img = document.createElement('img');
-        img.src = "https://placeimg.com/640/480/tech/grayscale";
-        // img.src = "../../index/gK0xAc7fDOY.jpg";
-
-        let informationHolder = document.createElement('div');
-        informationHolder.classList.add('information__holder');
-
-        let nameAndCity = document.createElement('div');
-        nameAndCity.classList.add('inner__holder');
-
-        let gradeAndLangs = document.createElement('div');
-        gradeAndLangs.classList.add('inner__holder');
 
         return await sendJSON(null, Controllers.SERVICE.NEXT_USER, HTTPResponseType.JSON, (status, response) => {
-            let nameHolder = document.createElement('span');
-            nameHolder.innerText = `${response['name']}, ${response['age']}`;
-            nameHolder.classList.add('label__28B_600');
-            nameAndCity.appendChild(nameHolder);
+            let info = JSON.parse(response['info']);
 
-            let cityLabel = document.createElement('span');
-            cityLabel.classList.add('label__18B_500_GREY');
-            cityLabel.innerText = response['city'];
-            nameAndCity.appendChild(cityLabel);
+            try {
+                content.getElementById('user_photo').setAttribute(
+                    'src',
+                    "https://placeimg.com/640/480/tech/grayscale"
+                );
+                content.getElementById('user_name').innerText = `${response['name']}, ${response['age']}`;
+                content.getElementById('user_city').innerText = response['city'];
+                content.getElementById('user_languages').innerText = response['favoriteLanguages'].join(', ');
+                content.getElementById('user_grade').innerText = response['grade'];
+                content.getElementById('user_position').innerText = `Должность: ${info['position']}`;
+                content.getElementById('user_salary').innerText = `Зарплата: ${info['salary']}₽`;
+                content.getElementById('user_schedule').innerText = `График: ${info['schedule']}`;
+                content.getElementById('user_experience').innerText = `Стаж: ${plural(response['experience'])}`;
+                content.getElementById('user_edu_name').innerText = `Университет: ${info['edu_name']}`;
+                content.getElementById('user_edu_grad').innerText = `Уровень образования: ${info['edu_grad']}`;
+                content.getElementById('user_edu_program').innerText = `Направление: ${info['edu_program']}`;
+                content.getElementById('user_edu_release').innerText = `Год окончания: ${new Date(info['edu_release']).toLocaleDateString()}`;
+                content.getElementById('user_ext_info').innerText = info['ext_info'];
+            }
+            catch (e) {
+                console.log(e);
+            }
 
-            let favLangsLabel = document.createElement('span');
-            favLangsLabel.classList.add('label__18B_500_GREY');
-            favLangsLabel.innerText = `${response['favoriteLanguages'].join(', ')}`;
+            card.addEventListener('wheel', (we) => {
+                if (we.deltaY > 0) {
+                    card.classList.add('ofy-scroll');
+                    card.scrollBy(0, 430);
+                }
+            }, {once: true});
 
-            let gradeLabel = document.createElement('span');
-            gradeLabel.classList.add('label__18B_500_GREY');
-            gradeLabel.innerText = response['grade'];
-
-            gradeAndLangs.appendChild(favLangsLabel);
-            gradeAndLangs.appendChild(gradeLabel);
-
-            informationHolder.appendChild(nameAndCity);
-            informationHolder.appendChild(gradeAndLangs);
-
-            centerCropped.appendChild(img);
-            card.appendChild(centerCropped);
-            card.appendChild(informationHolder);
-
+            card.append(content);
             return Promise.resolve(card);
 
         }, token).then(() => card);
@@ -112,7 +105,7 @@ class CardCreator {
     async appendCardToDoc() {
         if (CardsStorage.fetchedCards.length <= CardsStorage.fetchedCardsMax / 2) await this.fetchNCards(CardsStorage.fetchedCardsMax);
         let card = CardsStorage.fetchedCards.shift();
-        CardsStorage.cardsHolder.appendChild(card);
+        await CardsStorage.cardsHolder.appendChild(card);
 
         setHammerOnSingleCard(card);
         refreshCards();

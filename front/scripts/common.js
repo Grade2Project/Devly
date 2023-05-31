@@ -1,5 +1,5 @@
 function redirectIfNotAuthorized() {
-    if (localStorage['user_login'] === undefined) {
+    if (localStorage['token'] === undefined) {
         location.href = '../html/authorization.html';
     }
 }

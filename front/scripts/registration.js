@@ -13,6 +13,7 @@ function registerClient() {
         (statusCode, response) => {
         if (statusCode === 200) {
             localStorage['token'] = response;
+            console.log('Успешная регистрация');
             window.location.href = '../html/developer.html';
         }
         else {
@@ -31,8 +32,8 @@ function registerHR() {
             companyName: dataRaw['reg_company_name'],
             companyEmail: dataRaw['reg_company_email'],
             companyInfo: {
-                companyInn: dataRaw['reg_company_inn'],
-                companyTel: dataRaw['reg_company_tel']
+                inn: dataRaw['reg_company_inn'],
+                tel: dataRaw['reg_company_tel']
             },
             password: dataRaw['reg_company_password']
         }

@@ -24,7 +24,7 @@ const HTTPResponseType = {
 }
 
 const XHR = new XMLHttpRequest();
-XHR.addEventListener('error', function(event) {
+XHR.addEventListener('error', function (event) {
     console.log(event.target);
     alert('Oops! Something went wrong.');
 });
@@ -35,7 +35,7 @@ function getInputValueById(id) {
     return candidate.value;
 }
 
-async function sendJSON (data, controller, responseType, processResponse, authorizationToken) {
+async function sendJSON(data, controller, responseType, processResponse, authorizationToken) {
     const json = JSON.stringify(data);
 
     const xhr = new XMLHttpRequest()
@@ -52,7 +52,7 @@ async function sendJSON (data, controller, responseType, processResponse, author
     xhr.send(json);
 }
 
-async function fetchFrom (controller, processResponse, authorizationToken, responseType = 'json') {
+async function fetchFrom(controller, processResponse, authorizationToken, responseType = 'json') {
     const xhr = new XMLHttpRequest()
     xhr.open(HTTPMethods.GET, controller, true);
 
@@ -67,7 +67,11 @@ async function fetchFrom (controller, processResponse, authorizationToken, respo
 }
 
 
-
 function getObjectFromIterable(iterable, mappingLambda) {
     return Object.fromEntries(Array.from(iterable, item => item).map(mappingLambda));
+}
+
+function plural(n) {
+    [choice1, choice2, choice3] = ['год', 'года', 'лет']
+    return n + ' ' + ((((n % 10) === 1) && ((n % 100) !== 11)) ? (choice1) : (((((n % 10) >= 2) && ((n % 10) <= 4)) && (((n % 100) < 10) || ((n % 100) >= 20))) ? (choice2) : (choice3)))
 }

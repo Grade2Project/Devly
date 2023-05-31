@@ -13,8 +13,7 @@
     </style>
 </head>
 <body>
-<template id="card_template">
-
+<template id="template__user_card">
         <div class="center-cropped">
             <img src="" alt="Image Here" id="user_photo">
         </div>
@@ -57,7 +56,39 @@
                 </div>
             </div>
         </div>
+</template>
 
+<template id="template__vacancy_card">
+    <div class="center-cropped">
+        <img src="" alt="Image Here" id="company_photo">
+    </div>
+    <div class="information__holder">
+        <div class="inner__holder">
+            <span class="label__28B_600" id="company_name"></span>
+            <span class="label__18B_500_GREY" id="vacancy_city"></span>
+        </div>
+        <div class="inner__holder">
+            <span class="label__18B_500_GREY" id="vacancy_language"></span>
+            <span class="label__18B_500_GREY" id="vacancy_grade"></span>
+        </div>
+    </div>
+    <div class="extra-info__button"></div>
+    <div class="extra__base__container">
+        <div class="extra__inner__container">
+            <span class="label__20B_600">Вакансия</span>
+            <div class="__data__container">
+                <span class="label__16B_500" id="vacancy_position"></span>
+                <span class="label__16B_500" id="vacancy_salary"></span>
+            </div>
+        </div>
+
+        <div class="extra__inner__container">
+            <span class="label__20B_600">О нас</span>
+            <div class="__data__container">
+                <span class="label__16B_500" id="vacancy_ext_info"></span>
+            </div>
+        </div>
+    </div>
 </template>
 
     <div class="left__menu__container">

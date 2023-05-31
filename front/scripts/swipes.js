@@ -5,7 +5,6 @@ let allCards = document.querySelectorAll('.tinder__cards');
 const nope = document.getElementById('nope');
 const love = document.getElementById('love');
 const template = document.getElementById('card_template');
-setHammerOnSingleCard(template);
 
 function refreshCards() {
     allCards = document.querySelectorAll('.tinder__cards');

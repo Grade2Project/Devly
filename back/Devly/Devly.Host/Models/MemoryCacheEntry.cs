@@ -15,7 +15,7 @@ public class MemoryCacheEntry<T> where T : class
         CurrentIndex = -1;
     }
 
-    public T Next()
+    public T? Next()
     {
         CurrentIndex++;
         if (IsEnded)

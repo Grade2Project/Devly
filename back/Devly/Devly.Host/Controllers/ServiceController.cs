@@ -154,7 +154,7 @@ public class ServiceController : Controller
     private async Task<ResumeDto>? GetNextUser(string companyEmail)
     {
         var cachedUsers = _memoryCache.Get<MemoryCacheEntry<User>>(companyEmail);
-        if (cachedUsers == null || cachedUsers.Entries.Count == 0 || cachedUsers.IsEnded)
+        if (cachedUsers == null || cachedUsers.IsEnded || cachedUsers.Entries.Count == 0)
         {
             var users = new List<User>();
             var companyVacancies = await _vacancyRepository.GetAllCompanyVacancies(companyEmail);
@@ -175,9 +175,9 @@ public class ServiceController : Controller
             cachedUsers = new MemoryCacheEntry<User>(users, 0);
         }
         
-        if (cachedUsers.Entries.Count == 0)
-            return await GetNextUserRandom();
         var userToReturn = cachedUsers.Next();
+        if (userToReturn is null)
+            return await GetNextUserRandom();
         _memoryCache.Set(companyEmail, cachedUsers,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
         return userToReturn.MapToResumeDto();
@@ -186,7 +186,7 @@ public class ServiceController : Controller
     private async Task<VacancyDto?> GetNextVacancy(string userLogin)
     {
         var cachedVacancies = _memoryCache.Get<MemoryCacheEntry<Vacancy>>(userLogin);
-        if (cachedVacancies == null || cachedVacancies.Entries.Count == 0 || cachedVacancies.IsEnded)
+        if (cachedVacancies == null || cachedVacancies.IsEnded || cachedVacancies.Entries.Count == 0)
         {
             var vacancies = new List<Vacancy>();
             var user = await _userRepository.FindUserByLoginAsync(userLogin);
@@ -203,9 +203,9 @@ public class ServiceController : Controller
             vacancies = vacancies.DistinctBy(x => x.Id).ToList();
             cachedVacancies = new MemoryCacheEntry<Vacancy>(vacancies, 0);
         }
-        if (cachedVacancies.Entries.Count == 0)
-            return await GetNextVacancyRandom();
         var vacancyToReturn = cachedVacancies.Next();
+        if (vacancyToReturn is null)
+            return await GetNextVacancyRandom();
         _memoryCache.Set(userLogin, cachedVacancies,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
 

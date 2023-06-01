@@ -65,30 +65,22 @@ public class ServiceController : Controller
                 cachedUsers.FilterHash != userFilterDto.GetHashCode())
             {
                 var grades = userFilterDto.Grades is null
-                    ? _gradesRepository.GetAllGrades().Result.ToArray()
-                    : userFilterDto.Grades.Select(x => _gradesRepository.FindGrade(x).Result).ToArray();
+                    ? _gradesRepository.GetAllGrades().Result
+                    : userFilterDto.Grades.Select(x => _gradesRepository.FindGrade(x).Result);
                 var languages = userFilterDto.Languages is null
-                    ? _programmingLanguagesRepository.GetAllLanguages().Result.ToArray()
+                    ? _programmingLanguagesRepository.GetAllLanguages().Result
                     : _programmingLanguagesRepository.FindLanguagesAsync(userFilterDto.Languages).Result;
-                if (grades.Any(x => x is null) || languages.Any(x => x is null)) return null;
-                var languagesIds = languages.Select(x => x.Id).ToHashSet();
 
-                List<User> filteredUsers;
-                try
+
+                var filteredUsers = _userRepository.GetAllUsersFilter(new UserFilter
                 {
-                    filteredUsers = grades.Select(grade => _userRepository.GetUsersEqGrade(grade.Id)?.Result)
-                        .SelectMany(x => x)
-                        .DistinctBy(x => x.Login)
-                        .Where(user =>
-                            user.FavoriteLanguages.Any(
-                                language => languagesIds.Contains(language.ProgrammingLanguageId)))
-                        .ToList();
-                    // потом надо сделать Take(n)
-                }
-                catch (Exception e)
-                {
-                    return GetNextUserRandom().Result;
-                }
+                    LanguageIds = languages.Select(x => x.Id).ToArray(),
+                    GradeIds = grades.Select(x => x.Id).ToArray(),
+                    ExperienceFrom = userFilterDto.ExperienceFrom,
+                    City = userFilterDto.City,
+                    UserName = userFilterDto.UserName
+                })
+                    .Result;
 
                 cachedUsers = new MemoryCacheEntry<User>(filteredUsers, userFilterDto.GetHashCode());
             }
@@ -126,6 +118,7 @@ public class ServiceController : Controller
                     ? _programmingLanguagesRepository.GetAllLanguages().Result.Select(x => x.Id).ToArray()
                     : _programmingLanguagesRepository.FindLanguagesAsync
                         (vacancyFilterDto.Languages).Result.Select(x => x.Id).ToArray();
+                
                 var filteredVacancies = _vacancyRepository.GetAllVacanciesFilter(new VacancyFilter
                     {
                         GradeIds = grades,
@@ -136,42 +129,34 @@ public class ServiceController : Controller
                     })
                     ?.Result.ToArray();
                 
-                cachedVacancies = new MemoryCacheEntry<Vacancy>(filteredVacancies, vacancyFilterDto.GetHashCode());
+                cachedVacancies = new MemoryCacheEntry<Vacancy>(filteredVacancies!, vacancyFilterDto.GetHashCode());
             }
-
-            if (cachedVacancies.Entries.Count == 0)
-                return null;
+            
             var answer = cachedVacancies.Next();
+            if (answer is null)
+                return null;
             _memoryCache.Set(key, cachedVacancies,
                 new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
             return answer.MapToVacancyDto();
         }
     }
     
-    private async Task<ResumeDto>? GetNextUser(string companyEmail)
+    private async Task<ResumeDto> GetNextUser(string companyEmail)
     {
         lock (_memoryCache)
         {
             var cachedUsers = _memoryCache.Get<MemoryCacheEntry<User>>(companyEmail);
             if (cachedUsers == null || cachedUsers.IsEnded || cachedUsers.Entries.Count == 0)
             {
-                var users = new List<User>();
                 var companyVacancies = _vacancyRepository.GetAllCompanyVacancies(companyEmail).Result;
-                foreach (var vacancy in companyVacancies)
+                var users = _userRepository.GetAllUsersFilter(new UserFilter
                 {
-                    var usersOfVacancyGrade = _userRepository.GetUsersEqGrade(vacancy.Grade.Id).Result;
-                    if (usersOfVacancyGrade == null)
-                        continue;
-                    users.AddRange(usersOfVacancyGrade.Where(user =>
-                    {
-                        var userFavoriteLanguages = user.FavoriteLanguages
-                            .Select(x => x.ProgrammingLanguage.LanguageName)
-                            .ToArray();
-                        return userFavoriteLanguages.Contains(vacancy.ProgrammingLanguage.LanguageName);
-                    }));
-                }
-
-                users = users.DistinctBy(x => x.Login).ToList();
+                    GradeIds = companyVacancies.Select(x => x.GradeId).ToArray(),
+                    LanguageIds = companyVacancies.Select(x => x.ProgrammingLanguageId).ToArray(),
+                })?.Result;
+                
+                if (users == null)
+                    return GetNextUserRandom().Result;
                 cachedUsers = new MemoryCacheEntry<User>(users);
             }
 
@@ -184,7 +169,7 @@ public class ServiceController : Controller
         }
     }
     
-    private async Task<VacancyDto?> GetNextVacancy(string userLogin)
+    private async Task<VacancyDto> GetNextVacancy(string userLogin)
     {
         lock (_memoryCache)
         {

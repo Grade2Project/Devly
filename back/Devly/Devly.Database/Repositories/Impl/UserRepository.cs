@@ -1,5 +1,6 @@
 using Devly.Database.Basics.Repository;
 using Devly.Database.Context;
+using Devly.Database.Filters;
 using Devly.Database.Models;
 using Devly.Database.Repositories.Abstract;
 
@@ -45,6 +46,18 @@ internal class UserRepository : IUserRepository
     public async Task<IReadOnlyList<User>> GetUsersGeqThanGrade(int gradeId)
     {
         return await _repository.FindAllAsync<User>(user => user.GradeId >= gradeId,
+            CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
+    }
+
+    public async Task<IReadOnlyList<User>> GetAllUsersFilter(UserFilter userFilter)
+    {
+        return await _repository.FindAllAsync<User>(user =>
+            (userFilter.City == default || user.City == userFilter.City) &&
+            (userFilter.ExperienceFrom == 0 || user.Experience >= userFilter.ExperienceFrom) &&
+            (userFilter.UserName == default || user.Name.Contains(userFilter.UserName)) &&
+            (userFilter.GradeIds == default || userFilter.GradeIds.Contains(user.GradeId)) &&
+            (userFilter.LanguageIds == default ||
+             user.FavoriteLanguages.Any(x => userFilter.LanguageIds.Contains(x.ProgrammingLanguageId))),
             CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
     }
 

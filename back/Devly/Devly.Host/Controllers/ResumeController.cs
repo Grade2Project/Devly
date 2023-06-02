@@ -1,10 +1,11 @@
 using Devly.Database.Models;
 using Devly.Database.Repositories.Abstract;
 using Devly.Extensions;
+using Devly.Helpers;
 using Devly.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.JsonWebTokens;
+
 
 namespace Devly.Controllers;
 
@@ -16,12 +17,15 @@ public class ResumeController : Controller
     private readonly IUserRepository _userRepository;
     private readonly IUsersFavoriteLanguagesRepository _usersFavoriteLanguagesRepository;
     private readonly IVacancyRepository _vacancyRepository;
+    private readonly IPhotoHelper _photo;
 
     public ResumeController(IUserRepository userRepository,
         IGradesRepository gradesRepository,
         IProgrammingLanguagesRepository programmingLanguagesRepository,
         IUsersFavoriteLanguagesRepository usersFavoriteLanguagesRepository,
-        ICompaniesRepository companiesRepository, IVacancyRepository vacancyRepository)
+        ICompaniesRepository companiesRepository, 
+        IVacancyRepository vacancyRepository,
+        IPhotoHelper photo)
     {
         _userRepository = userRepository;
         _gradesRepository = gradesRepository;
@@ -29,6 +33,7 @@ public class ResumeController : Controller
         _usersFavoriteLanguagesRepository = usersFavoriteLanguagesRepository;
         _companiesRepository = companiesRepository;
         _vacancyRepository = vacancyRepository;
+        _photo = photo;
     }
     
     [Authorize(Policy = "CompanyPolicy")]
@@ -55,12 +60,30 @@ public class ResumeController : Controller
             var resumeToUser = await ResumeToUser(resumeDto);
             if (resumeToUser is null) return StatusCode(400, "Bad Grade");
 
-            var usersFavoriteLanguages =
-                await _programmingLanguagesRepository.FindLanguagesAsync(resumeDto.FavoriteLanguages)!;
-            if (usersFavoriteLanguages is null) return StatusCode(400, "Bad Languages");
-
-            if (await _userRepository.FindUserByLoginAsync(resumeDto.Login) != null)
+            string path;
+            if (resumeDto.Photo is { Length: > 0 })
             {
+                path = $"../photos/users/{Guid.NewGuid()}.txt";
+                _photo.Save(resumeDto.Photo, path);
+            }
+            else
+            {
+                path = "../photos/users/default.txt";
+            }
+
+            resumeToUser.ImagePath = path;
+
+            var usersFavoriteLanguages = await _programmingLanguagesRepository.FindLanguagesAsync(resumeDto.FavoriteLanguages)!;
+            if (usersFavoriteLanguages is null)
+            {
+                return StatusCode(400, "Bad Languages");
+            }
+
+            var user = await _userRepository.FindUserByLoginAsync(resumeDto.Login);
+            if (user != null)
+            {
+                if (user.ImagePath.EndsWith("default.txt"))
+                    _photo.Delete(user.ImagePath);
                 await _userRepository.UpdateAsync(resumeToUser);
                 await _usersFavoriteLanguagesRepository.UpdateAllForUserAsync(usersFavoriteLanguages, resumeDto.Login);
             }

@@ -4,6 +4,7 @@ using Devly.Configs;
 using Devly.Database.Context;
 using Devly.Database.Extensions.DI;
 using Devly.Extensions;
+using Devly.Helpers;
 using Devly.Services;
 using Devly.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -80,6 +81,7 @@ services.AddConfig<AuthConfig>(config.GetRequiredSection("Auth"));
 
 services.AddSingleton<IPasswordHasher, ShaPasswordHasher>();
 services.AddSingleton<IIdentityService, IdentityService>();
+services.AddHelpers();
 
 var app = builder.Build();
 

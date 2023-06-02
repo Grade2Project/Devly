@@ -2,6 +2,7 @@ using Devly.Database.Filters;
 using Devly.Database.Models;
 using Devly.Database.Repositories.Abstract;
 using Devly.Extensions;
+using Devly.Helpers;
 using Devly.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,26 +19,29 @@ public class ServiceController : Controller
     private readonly IProgrammingLanguagesRepository _programmingLanguagesRepository;
     private readonly IUserRepository _userRepository;
     private readonly IVacancyRepository _vacancyRepository;
+    private readonly IPhotoHelper _photoHelper;
 
     public ServiceController(IUserRepository userRepository,
         IVacancyRepository vacancyRepository,
         IMemoryCache memoryCache,
         IGradesRepository gradesRepository,
-        IProgrammingLanguagesRepository programmingLanguagesRepository)
+        IProgrammingLanguagesRepository programmingLanguagesRepository,
+        IPhotoHelper photoHelper)
     {
         _userRepository = userRepository;
         _vacancyRepository = vacancyRepository;
         _memoryCache = memoryCache;
         _gradesRepository = gradesRepository;
         _programmingLanguagesRepository = programmingLanguagesRepository;
+        _photoHelper = photoHelper;
     }
     
     [Authorize(Policy = "CompanyPolicy")]
     [HttpGet, Route("user/random")]
-    public async Task<ResumeDto> GetNextUserRandom()
+    public async Task<ResumeDto?> GetNextUserRandom()
     {
         var user = await _userRepository.GetRandomUser();
-        return user.MapToResumeDto();
+        return await ToResumeDto(user);
     }
     
     
@@ -46,7 +50,23 @@ public class ServiceController : Controller
     public async Task<VacancyDto?> GetNextVacancyRandom()
     {
         var vacancy = await _vacancyRepository.GetRandomVacancy();
-        return vacancy?.MapToVacancyDto();
+        return await ToVacancyDto(vacancy);
+    }
+
+    [HttpGet]
+    [Route("user/find")]
+    public async Task<ResumeDto?> GetResumeByLogin(string login)
+    {
+        var user = await _userRepository.FindUserByLoginAsync(login);
+        return await ToResumeDto(user);
+    }
+    
+    [HttpGet]
+    [Route("vacancy/find")]
+    public async Task<VacancyDto?> GetVacancyById(int id)
+    {
+        var vacancy = await _vacancyRepository.FindVacancyByIdAsync(id);
+        return await ToVacancyDto(vacancy);
     }
 
     [HttpPost]
@@ -90,7 +110,7 @@ public class ServiceController : Controller
             var answer = cachedUsers.Next();
             _memoryCache.Set(key, cachedUsers,
                 new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
-            return answer.MapToResumeDto();
+            return ToResumeDto(answer).Result;
         }
     }
 
@@ -137,11 +157,11 @@ public class ServiceController : Controller
                 return null;
             _memoryCache.Set(key, cachedVacancies,
                 new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
-            return answer.MapToVacancyDto();
+            return ToVacancyDto(answer).Result;
         }
     }
     
-    private async Task<ResumeDto> GetNextUser(string companyEmail)
+    private async Task<ResumeDto?> GetNextUser(string companyEmail)
     {
         lock (_memoryCache)
         {
@@ -165,11 +185,11 @@ public class ServiceController : Controller
                 return GetNextUserRandom().Result;
             _memoryCache.Set(companyEmail, cachedUsers,
                 new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
-            return userToReturn.MapToResumeDto();
+            return ToResumeDto(userToReturn).Result;
         }
     }
     
-    private async Task<VacancyDto> GetNextVacancy(string userLogin)
+    private async Task<VacancyDto?> GetNextVacancy(string userLogin)
     {
         lock (_memoryCache)
         {
@@ -195,7 +215,25 @@ public class ServiceController : Controller
             _memoryCache.Set(userLogin, cachedVacancies,
                 new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
 
-            return vacancyToReturn.MapToVacancyDto();
+            return ToVacancyDto(vacancyToReturn).Result;
         }
+    }
+
+    private async Task<ResumeDto?> ToResumeDto(User? user)
+    {
+        if (user is null)
+            return null;
+        var photo = await _photoHelper.LoadFrom(user.ImagePath ?? "../photos/users/default.txt");
+        //Временно, чтобы не менять тестовые данные
+        return user.MapToResumeDto(photo);
+    }
+
+    private async Task<VacancyDto?> ToVacancyDto(Vacancy? vacancy)
+    {
+        if (vacancy is null)
+            return null;
+        var path = vacancy.Company.ImagePath ?? "../photos/companies/default.txt";
+        var photo = await _photoHelper.LoadFrom(path);
+        return vacancy.MapToVacancyDto(photo);
     }
 }

@@ -1,5 +1,7 @@
 using System.Security.Claims;
+using Devly.Database.Models;
 using Devly.Database.Repositories.Abstract;
+using Devly.Helpers;
 using Devly.Models;
 using Devly.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,18 +15,21 @@ public class RegController : Controller
     private readonly IPasswordHasher _hasher;
     private readonly IIdentityService _identityService;
     private readonly IUserPasswordRepository _passwordRepository;
+    private readonly IPhotoHelper _photoHelper;
 
     public RegController(IUserPasswordRepository passwordRepository,
         IPasswordHasher hasher,
         ICompaniesRepository companiesRepository,
         ICompaniesPasswordsRepository companiesPasswordsRepository,
-        IIdentityService identityService)
+        IIdentityService identityService,
+        IPhotoHelper photoHelper)
     {
         _passwordRepository = passwordRepository;
         _hasher = hasher;
         _companiesRepository = companiesRepository;
         _companiesPasswordsRepository = companiesPasswordsRepository;
         _identityService = identityService;
+        _photoHelper = photoHelper;
     }
 
     [HttpPost]
@@ -51,8 +56,27 @@ public class RegController : Controller
     {
         if (await _companiesRepository.GetCompanyByName(companyDto.CompanyName) != null) return StatusCode(400);
 
-        var company = await _companiesRepository.InsertAsync
-            (companyDto.CompanyName, companyDto.CompanyEmail, companyDto.CompanyInfo).ConfigureAwait(false);
+        var company = new Company
+        {
+            CompanyEmail = companyDto.CompanyEmail,
+            CompanyName = companyDto.CompanyName,
+            Info = companyDto.CompanyInfo,
+        };
+
+        string path;
+        if (companyDto.Photo is { Length: > 0 })
+        {
+            path = $"../photos/companies/{Guid.NewGuid()}.txt";
+            _photoHelper.Save(companyDto.Photo, path);
+        }
+        else
+        {
+            path = "../photos/companies/default.txt";
+        }
+
+        company.ImagePath = path;
+
+        await _companiesRepository.InsertAsync(company).ConfigureAwait(false);
         await _companiesPasswordsRepository.InsertAsync(
             company.Id, _hasher.HashPassword(companyDto.Password));
         var token = await _identityService.GenerateToken(new TokenRequestDto

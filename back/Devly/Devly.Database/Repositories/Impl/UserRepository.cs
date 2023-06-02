@@ -25,7 +25,7 @@ internal class UserRepository : IUserRepository
         await _repository.UpdateAsync(user);
     }
 
-    public async Task<User> FindUserByLoginAsync(string login)
+    public async Task<User?> FindUserByLoginAsync(string login)
     {
         return await _repository.FindAsync<User>(u => u.Login == login, CancellationToken.None, 
             user => user.Contact, user => user.Grade, user => user.FavoriteLanguages).ConfigureAwait(false);

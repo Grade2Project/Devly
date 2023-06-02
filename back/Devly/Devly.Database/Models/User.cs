@@ -18,7 +18,7 @@ public class User
     public int Experience { get; set; }
     public string City { get; set; }
     public string Info { get; set; }
-    public string ImagePath { get; set; }
+    public string? ImagePath { get; set; }
     public int ContactId { get; set; }
 
     [ForeignKey(nameof(ContactId))] public Contact Contact { get; set; }

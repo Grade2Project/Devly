@@ -31,9 +31,12 @@ internal class VacancyRepository : IVacancyRepository
                                                          x.ProgrammingLanguageId == vacancy.ProgrammingLanguageId);
     }
 
-    public async Task<Vacancy> FindVacancyByIdAsync(int id)
+    public async Task<Vacancy?> FindVacancyByIdAsync(int id)
     {
-        return await _repository.FindAsync<Vacancy>(x => x.Id == id);
+        return await _repository.FindAsync<Vacancy>(x => x.Id == id, CancellationToken.None,
+            vacancy => vacancy.Company,
+            vacancy => vacancy.ProgrammingLanguage,
+            vacancy => vacancy.Grade);
     }
 
     public async Task<IReadOnlyList<Vacancy>>? GetAllLanguageVacancies(string languageName)

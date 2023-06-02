@@ -8,4 +8,5 @@ public class Company
     public string Info { get; set; }
 
     public IReadOnlyList<Vacancy> Vacancies { get; set; }
+    public string? ImagePath { get; set; }
 }

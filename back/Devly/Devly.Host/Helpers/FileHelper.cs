@@ -6,4 +6,9 @@ internal class FileHelper : IFileHelper
     {
         return File.OpenWrite(path);
     }
+
+    public FileStream OpenRead(string path)
+    {
+        return File.OpenRead(path);
+    }
 }

@@ -16,15 +16,15 @@ public class ResumeController : Controller
     private readonly IUsersFavoriteLanguagesRepository _usersFavoriteLanguagesRepository;
     private readonly ICompaniesRepository _companiesRepository;
     private readonly IVacancyRepository _vacancyRepository;
-    private readonly IFileHelper _file;
+    private readonly IPhotoHelper _photo;
 
     public ResumeController(IUserRepository userRepository,
         IGradesRepository gradesRepository,
         IProgrammingLanguagesRepository programmingLanguagesRepository,
         IUsersFavoriteLanguagesRepository usersFavoriteLanguagesRepository,
         ICompaniesRepository companiesRepository, 
-        IVacancyRepository vacancyRepository, 
-        IFileHelper file)
+        IVacancyRepository vacancyRepository,
+        IPhotoHelper photo)
     {
         _userRepository = userRepository;
         _gradesRepository = gradesRepository;
@@ -32,7 +32,7 @@ public class ResumeController : Controller
         _usersFavoriteLanguagesRepository = usersFavoriteLanguagesRepository;
         _companiesRepository = companiesRepository;
         _vacancyRepository = vacancyRepository;
-        _file = file;
+        _photo = photo;
     }
 
     [HttpPost, Route("vacancy/update")]
@@ -65,7 +65,7 @@ public class ResumeController : Controller
                 var imagePath = $"../photos/{guid}.txt";
                 resumeToUser.ImagePath = imagePath;
                 //Не авэйтим, чтобы не было фризов
-                SavePhoto(resumeDto.Photo, imagePath);
+                _photo.Save(resumeDto.Photo, imagePath);
             }
 
             var usersFavoriteLanguages = await _programmingLanguagesRepository.FindLanguagesAsync(resumeDto.FavoriteLanguages)!;
@@ -91,12 +91,6 @@ public class ResumeController : Controller
         }
 
         return Ok();
-    }
-
-    private async Task SavePhoto(byte[] photo, string path)
-    {
-        await using var writer = new BinaryWriter(_file.OpenWrite(path));
-        writer.Write(photo);
     }
 
     private async Task<User?> ResumeToUser(ResumeDto resumeDto)

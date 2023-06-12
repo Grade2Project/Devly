@@ -18,6 +18,7 @@ class VacancyCardHandler extends CardHandler {
 
         return await sendJSON(null, Controllers.SERVICE.NEXT_VACANCY, HTTPResponseType.JSON, (status, response) => {
             let info = JSON.parse(response['info']);
+            console.log(info);
 
             content.getElementById('company_photo').setAttribute(
                 'src',
@@ -28,9 +29,9 @@ class VacancyCardHandler extends CardHandler {
             content.getElementById('vacancy_city').innerText = 'г. Екатеринбург';
             content.getElementById('vacancy_language').innerText = response['programmingLanguage'];
             content.getElementById('vacancy_grade').innerText = response['grade'];
-            content.getElementById('vacancy_position').innerText = `Должность: ${info['vac_position']}`;
+            content.getElementById('vacancy_position').innerText = `Должность: ${info['position']}`;
             content.getElementById('vacancy_salary').innerText = `Зарплата: ${response['salary']}`;
-            content.getElementById('vacancy_ext_info').innerText = info['vac_desc'];
+            content.getElementById('vacancy_ext_info').innerText = info['desc'];
 
             card.addEventListener('wheel', (we) => {
                 if (we.deltaY > 0) {
@@ -59,7 +60,7 @@ class UserCardHandler extends CardHandler {
 
             content.getElementById('user_photo').setAttribute(
                 'src',
-                "https://placeimg.com/640/480/tech/grayscale"
+                `data:image/jpg/png/jpeg;base64,${response['photo']}`
             );
             content.getElementById('user_name').innerText = `${response['name'].split(' ').splice(0, 2).join(' ')}, ${response['age']}`;
             content.getElementById('user_city').innerText = response['city'];

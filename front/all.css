@@ -694,58 +694,6 @@ input[type=radio] {
     outline: 0;
 }
 
-.left__menu__container {
-    position: absolute;
-    display: flex;
-    justify-content: flex-start;
-    flex-flow: row;
-
-    background-color: var(--color-white);
-    border-right: 2px solid var(--color-light-black);
-
-    margin: 0;
-    padding: 0;
-    min-width: 400px;
-    min-height: 100%;
-    top: 0;
-    left: 0;
-}
-
-.left__menu__container .left__menu__header__container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 15px 25px;
-    gap: 30px;
-
-    width: 100%;
-    min-height: 75px;
-    height: fit-content;
-    left: 0;
-    top: 0;
-
-    margin-bottom: 20px;
-
-    background: #4F4F4F;
-    opacity: 0.9;
-    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.25);
-    border-radius: 0 0 10px 10px;
-}
-
-.left__menu__header__container .profile__image {
-    width: 60px;
-    height: 60px;
-    left: 0;
-    top: 0;
-    background-clip: border-box;
-    border-radius: 30px;
-
-    background: linear-gradient(157.02deg, #087E8B 14.89%, #FF5A5F 112.59%);;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.25));
-}
-
 .swipe__cards, :before, :after {
     position: absolute;
     box-sizing: border-box;
@@ -1056,6 +1004,10 @@ input[type=radio] {
     padding-left: 10px;
 }
 
+multi-input {
+    display: inline-block;
+    margin: 0 20px 20px 0;
+}
 
 
 

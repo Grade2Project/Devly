@@ -5,10 +5,13 @@
     <title>Title</title>
     <link rel="stylesheet" href="../all.css">
     <link rel="stylesheet" href="../styleguide.css">
+    <link rel="stylesheet" href="../sellect.css">
+    <link rel="stylesheet" href="side-menu.css">
 
     <style>
         body {
             background: var(--color-background);
+            font-family: var(--font-family-roboto);
         }
     </style>
 </head>
@@ -93,11 +96,11 @@
 
     <div class="left__menu__container">
         <div class="left__menu__header__container">
-            <div class="profile__image"></div>
-            <div class="search search-img" style="width: 70%; min-width: 0">
-                <img src="../svg/search_icon.svg" alt="none">
-            </div>
+            <a class="profile__image" href="settings/profile.html"></a>
+            <span class="label__20B_600">Оля Контур</span>
         </div>
+
+        <label for="grades__select">Грейд</label><input type="text" id="grades__select">
     </div>
     <div class="swipe__cards">
         <div class="tinder">
@@ -116,12 +119,23 @@
             </div>
         </div>
     </div>
+
 <script src="../scripts/hammer.js"></script>
 <script src="../scripts/utils.js"></script>
 <script src="../scripts/createCard.js"></script>
 <script src="../scripts/swipes.js"></script>
+<script src="../scripts/sellect.js-master/src/sellect.js"></script>
 <script>
     let token = localStorage.getItem('token');
+
+    fetchFrom(Controllers.GRADES, (statusCode, response) => {
+        let grades = response.container;
+        let gradesSelector = sellect(document.getElementById('grades__select'), {
+            originList: grades
+        });
+
+        gradesSelector.init();
+    }, localStorage['token']);
 
     const cardHandler = localStorage['way'] === 'user'
         ? new CardCreator(new VacancyCardHandler())

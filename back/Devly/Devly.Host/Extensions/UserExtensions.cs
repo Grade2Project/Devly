@@ -13,7 +13,7 @@ public static class UserExtensions
             Experience = user.Experience,
             Age = user.BirthDate.ToAge(),
             BirthDate = user.BirthDate,
-            City = user.City,
+            City = user.City.Name,
             Photo = photo,
             Info = user.Info,
             Name = user.Name,

@@ -1,5 +1,13 @@
 create schema devly;
 
+CREATE OR REPLACE FUNCTION random_between(low INT ,high INT)
+    RETURNS INT AS
+$$
+BEGIN
+    RETURN floor(random()* (high-low + 1) + low);
+END;
+$$ language 'plpgsql' STRICT;
+
 create table if not exists devly.grades
 (
     id    serial primary key,
@@ -13,6 +21,12 @@ values ('Junior'),
        ('Middle+'),
        ('Senior'),
        ('Lead');
+
+create table if not exists devly.cities
+(
+    id serial primary key,
+    name text
+);
 
 create table if not exists devly.contacts
 (
@@ -34,7 +48,7 @@ create table if not exists devly.users
     experience int,
     birth_date  date,
     name        text,
-    city        text,
+    city_id     int references devly.cities(id) default random_between(1, 1117),
     info        text,
     grade_id    int references devly.grades (id),
     contact_id  int references devly.contacts (id),
@@ -90,6 +104,7 @@ create table if not exists devly.vacancies
     grade_id                integer not null
         references devly.grades (id),
     salary                  int     not null,
+    city_id int references devly.cities(id) default random_between(1, 1117),
     info                    text    not null
 );
 

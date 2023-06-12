@@ -13,6 +13,7 @@ public static class VacancyExtensions
             CompanyName = vacancy.Company.CompanyName,
             Info = vacancy.Info,
             Photo = photo,
+            City = vacancy.City.Name,
             ProgrammingLanguage = vacancy.ProgrammingLanguage.LanguageName,
             Salary = vacancy.Salary,
             Grade = vacancy.Grade.Value

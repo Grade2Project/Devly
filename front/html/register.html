@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="form__container">
-    <div class="form__body__FS">
+    <form class="form__body__FS" action=""  id="reg_form">
         <span class="h1__central_46">Регистрация</span>
         <div class="tabs__container">
             <a class="tabs__tab" onclick="showTab(0)"><span class="tab__inner">Пользователь</span></a>
@@ -58,11 +58,10 @@
             </div>
         </div>
 
-        <button class="button__confirm color-red" type="submit" id="reg_submit"
-                onclick="currentTab === 0 ? registerClient() : registerHR()">
+        <button class="button__confirm color-red" type="submit" id="reg_submit">
             <span class="button__confirm_inner">Зарегистрироваться</span>
         </button>
-    </div>
+    </form>
 </div>
 <script src="../scripts/tabs.js"></script>
 <script src="../scripts/utils.js"></script>
@@ -73,5 +72,11 @@
     userPassRepetition.checkValidity = () => userPassRepetition.value === userPass.value;
 </script>
 <script src="../scripts/registration.js"></script>
+<script>
+    document.getElementById("reg_form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        currentTab === 0 ? registerClient() : registerHR()
+    })
+</script>
 </body>
 </html>

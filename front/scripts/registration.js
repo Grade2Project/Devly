@@ -12,9 +12,10 @@ function registerClient() {
     sendJSON(data, controller, HTTPResponseType.TEXT,
         (statusCode, response) => {
         if (statusCode === 200) {
+            console.log(response);
             localStorage['token'] = response;
             console.log('Успешная регистрация');
-            window.location.href = '../html/developer.html';
+            // window.location.href = '../html/developer.html';
         }
         else {
             console.log('Ошибка регистрации');

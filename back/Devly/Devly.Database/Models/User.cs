@@ -24,4 +24,5 @@ public class User
     [ForeignKey(nameof(ContactId))] public Contact Contact { get; set; }
 
     public IReadOnlyList<UsersFavoriteLanguage> FavoriteLanguages { get; set; }
+    public IReadOnlyList<UsersFavoriteVacancy> FavoriteVacancies { get; set; }
 }

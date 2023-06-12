@@ -46,7 +46,7 @@
     function createListsHTML(list, item) {
         var listItem = document.createElement('span');
         var listIcon = document.createElement('i');
-        listItem.classList.add('sellect-trigger', 'sellect-item');
+        listItem.classList.add('sellect-trigger', 'sellect-item', 'noselect');
         listIcon.classList.add('fa', 'fa-times', 'sellect-close-icon');
 
         listItem.innerHTML = item;
@@ -360,4 +360,15 @@
 
         return self.options.originList;
     };
+
+    _Sellect.prototype.refresh = function (elements) {
+        let self = this;
+        self.originListHTML.childNodes.forEach(function (item) {
+            self.originListHTML.removeChild(item);
+        })
+
+        elements.forEach(function (item) {
+            createListsHTML(self.originListHTML, item);
+        })
+    }
 })();

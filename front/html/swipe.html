@@ -99,8 +99,23 @@
             <a class="profile__image" href="settings/profile.html"></a>
             <span class="label__20B_600">Оля Контур</span>
         </div>
+        <div class="content__container">
+            <div>
+                <label for="grades__filter">Грейд</label><input type="text" id="grades__filter">
+            </div>
 
-        <label for="grades__select">Грейд</label><input type="text" id="grades__select">
+            <div>
+                <label for="languages__filter">Языки программирования</label><input type="text" id="languages__filter">
+            </div>
+
+            <div>
+                <label for="cities__filter">Города</label><input type="text" id="cities__filter">
+            </div>
+
+            <button class="button__confirm color-green" id="apply_filters" type="button">
+                <span class="button__confirm_inner">Применить</span>
+            </button>
+        </div>
     </div>
     <div class="swipe__cards">
         <div class="tinder">
@@ -130,12 +145,39 @@
 
     fetchFrom(Controllers.GRADES, (statusCode, response) => {
         let grades = response.container;
-        let gradesSelector = sellect(document.getElementById('grades__select'), {
+        let gradesFilter = sellect(document.getElementById('grades__filter'), {
             originList: grades
         });
 
-        gradesSelector.init();
+        gradesFilter.init();
     }, localStorage['token']);
+
+    fetchFrom(Controllers.LANGS, (statusCode, response) => {
+        let langs = response.container;
+        let langsFilter = sellect(document.getElementById('languages__filter'), {
+            originList: langs
+        });
+
+        langsFilter.init();
+    }, localStorage['token']);
+
+    let citiesFilterE = document.getElementById('cities__filter');
+    let mockParent = document.createElement('div');
+    let mock = document.createElement('input');
+    mock.setAttribute('type', 'text');
+    mock.setAttribute('id', 'cities__filter');
+    mockParent.appendChild(mock);
+
+    let citiesFilter = sellect(citiesFilterE, {
+        originList: []
+    });
+    citiesFilter.init();
+
+    citiesFilterE.oninput = () => {
+        fetchFrom(`${Controllers.CITIES}?pattern=${citiesFilterE.value}`, (statusCode, response) => {
+            citiesFilter.refresh(response.container);
+        });
+    }
 
     const cardHandler = localStorage['way'] === 'user'
         ? new CardCreator(new VacancyCardHandler())

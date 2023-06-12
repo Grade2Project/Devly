@@ -74,9 +74,11 @@ public class AuthController : Controller
 
     private async Task<bool> AuthUserInternal(LoginDto dto)
     {
+        var user = await _userPasswordRepository.FindByUserLoginAsync(dto.Login).ConfigureAwait(false);
+        if (user == null)
+            return false;
         var hashed = _hasher.HashPassword(dto.Password);
-        var dbUserPassword = await _userPasswordRepository.FindByUserLoginAsync(dto.Login).ConfigureAwait(false);
-        return dbUserPassword != null && dbUserPassword.HashedPass == hashed;
+        return user != null && user.HashedPass == hashed;
     }
 
     private async Task<bool> AuthCompanyInternal(LoginDto dto)

@@ -1,10 +1,11 @@
 using Devly.Database.Models;
 using Devly.Database.Repositories.Abstract;
 using Devly.Extensions;
+using Devly.Helpers;
 using Devly.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.JsonWebTokens;
+
 
 namespace Devly.Controllers;
 
@@ -16,12 +17,17 @@ public class ResumeController : Controller
     private readonly IUserRepository _userRepository;
     private readonly IUsersFavoriteLanguagesRepository _usersFavoriteLanguagesRepository;
     private readonly IVacancyRepository _vacancyRepository;
+    private readonly IPhotoHelper _photo;
+    private readonly ICitiesRepository _cities;
 
     public ResumeController(IUserRepository userRepository,
         IGradesRepository gradesRepository,
         IProgrammingLanguagesRepository programmingLanguagesRepository,
         IUsersFavoriteLanguagesRepository usersFavoriteLanguagesRepository,
-        ICompaniesRepository companiesRepository, IVacancyRepository vacancyRepository)
+        ICompaniesRepository companiesRepository, 
+        IVacancyRepository vacancyRepository,
+        IPhotoHelper photo,
+        ICitiesRepository cities)
     {
         _userRepository = userRepository;
         _gradesRepository = gradesRepository;
@@ -29,6 +35,8 @@ public class ResumeController : Controller
         _usersFavoriteLanguagesRepository = usersFavoriteLanguagesRepository;
         _companiesRepository = companiesRepository;
         _vacancyRepository = vacancyRepository;
+        _photo = photo;
+        _cities = cities;
     }
     
     [Authorize(Policy = "CompanyPolicy")]
@@ -55,12 +63,30 @@ public class ResumeController : Controller
             var resumeToUser = await ResumeToUser(resumeDto);
             if (resumeToUser is null) return StatusCode(400, "Bad Grade");
 
-            var usersFavoriteLanguages =
-                await _programmingLanguagesRepository.FindLanguagesAsync(resumeDto.FavoriteLanguages)!;
-            if (usersFavoriteLanguages is null) return StatusCode(400, "Bad Languages");
-
-            if (await _userRepository.FindUserByLoginAsync(resumeDto.Login) != null)
+            string path;
+            if (resumeDto.Photo is { Length: > 0 })
             {
+                path = $"../photos/users/{Guid.NewGuid()}.txt";
+                _photo.Save(resumeDto.Photo, path);
+            }
+            else
+            {
+                path = "../photos/users/default.txt";
+            }
+
+            resumeToUser.ImagePath = path;
+
+            var usersFavoriteLanguages = await _programmingLanguagesRepository.FindLanguagesAsync(resumeDto.FavoriteLanguages)!;
+            if (usersFavoriteLanguages is null)
+            {
+                return StatusCode(400, "Bad Languages");
+            }
+
+            var user = await _userRepository.FindUserByLoginAsync(resumeDto.Login);
+            if (user != null)
+            {
+                if (user.ImagePath.EndsWith("default.txt"))
+                    _photo.Delete(user.ImagePath);
                 await _userRepository.UpdateAsync(resumeToUser);
                 await _usersFavoriteLanguagesRepository.UpdateAllForUserAsync(usersFavoriteLanguages, resumeDto.Login);
             }
@@ -80,8 +106,9 @@ public class ResumeController : Controller
 
     private async Task<User?> ResumeToUser(ResumeDto resumeDto)
     {
-        var grade = await _gradesRepository.FindGrade(resumeDto.Grade);
-        return grade == null ? null : resumeDto.MapToUser(grade);
+        var grade = await _gradesRepository.FindGrade(resumeDto.Grade)!;
+        var city = await _cities.GetCityByName(resumeDto.City);
+        return grade == null || city == null ? null : resumeDto.MapToUser(grade, city.Id);
     }
 
     private async Task<Vacancy?> DtoToVacancy(VacancyDto vacancyDto)
@@ -91,12 +118,14 @@ public class ResumeController : Controller
             return null;
         var language = await _programmingLanguagesRepository.FindLanguagesAsync(vacancyDto.ProgrammingLanguage);
         var grade = await _gradesRepository.FindGrade(vacancyDto.Grade);
-        if (language is null || language.Count == 0 || grade == null) return null;
+        var city = await _cities.GetCityByName(vacancyDto.City);
+        if (language is null || language.Count == 0 || grade == null || city is null) return null;
 
         return new Vacancy
         {
             CompanyId = company.Id,
             Info = vacancyDto.Info,
+            CityId = city.Id,
             ProgrammingLanguageId = language[0].Id,
             Salary = vacancyDto.Salary,
             GradeId = grade.Id

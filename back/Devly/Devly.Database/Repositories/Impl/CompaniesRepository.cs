@@ -14,14 +14,8 @@ internal class CompaniesRepository : ICompaniesRepository
         _repository = repository;
     }
 
-    public async Task<Company> InsertAsync(string companyName, string companyEmail, string info)
+    public async Task<Company> InsertAsync(Company company)
     {
-        var company = new Company
-        {
-            CompanyName = companyName,
-            CompanyEmail = companyEmail,
-            Info = info
-        };
         await _repository.InsertAsync(company);
         return company;
     }

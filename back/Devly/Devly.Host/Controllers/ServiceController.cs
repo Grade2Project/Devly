@@ -20,6 +20,8 @@ public class ServiceController : Controller
     private readonly IUserRepository _userRepository;
     private readonly IVacancyRepository _vacancyRepository;
     private readonly ICompaniesRepository _companies;
+    private readonly IFavoriteUsersRepository _favoriteUsers;
+    private readonly IFavoriteVacanciesRepository _favoriteVacancies;
     private readonly IPhotoHelper _photoHelper;
 
     public ServiceController(IUserRepository userRepository,
@@ -28,7 +30,9 @@ public class ServiceController : Controller
         IGradesRepository gradesRepository,
         IProgrammingLanguagesRepository programmingLanguagesRepository,
         IPhotoHelper photoHelper,
-        ICompaniesRepository companies)
+        ICompaniesRepository companies,
+        IFavoriteUsersRepository favoriteUsers,
+        IFavoriteVacanciesRepository favoriteVacancies)
     {
         _userRepository = userRepository;
         _vacancyRepository = vacancyRepository;
@@ -37,6 +41,8 @@ public class ServiceController : Controller
         _programmingLanguagesRepository = programmingLanguagesRepository;
         _photoHelper = photoHelper;
         _companies = companies;
+        _favoriteUsers = favoriteUsers;
+        _favoriteVacancies = favoriteVacancies;
     }
     
     [Authorize(Policy = "CompanyPolicy")]
@@ -173,7 +179,7 @@ public class ServiceController : Controller
             {
                 var company = _companies.GetCompanyByEmail(companyEmail).Result;
                 var companyVacancies = company.Vacancies;
-                var alreadyLiked = company.FavoriteUsers.Select(x => x.UserLogin).ToArray();
+                var alreadyLiked = _favoriteUsers.GetAllUsersCompanyLiked(company.Id)?.Result;
                 var users = _userRepository.GetAllUsersFilter(new UserFilter
                 {
                     GradeIds = companyVacancies.Select(x => x.GradeId).ToArray(),
@@ -202,7 +208,7 @@ public class ServiceController : Controller
             if (cachedVacancies == null || cachedVacancies.IsEnded || cachedVacancies.Entries.Count == 0)
             {
                 var user = _userRepository.FindUserByLoginAsync(userLogin).Result!;
-                var alreadyLiked = user.FavoriteVacancies.Select(x => x.VacancyId).ToArray();
+                var alreadyLiked = _favoriteVacancies.GetAllVacanciesUserLiked(userLogin)?.Result;
                 var userLanguages = user.FavoriteLanguages.Select(x => x.ProgrammingLanguageId);
                 var vacancies = _vacancyRepository.GetAllVacanciesFilter(new VacancyFilter
                 {

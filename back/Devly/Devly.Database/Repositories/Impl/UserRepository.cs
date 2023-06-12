@@ -49,7 +49,7 @@ internal class UserRepository : IUserRepository
             CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
     }
 
-    public async Task<IReadOnlyList<User>> GetAllUsersFilter(UserFilter userFilter, string[]? except = null)
+    public async Task<IReadOnlyList<User>> GetAllUsersFilter(UserFilter userFilter, IEnumerable<string>? except = null)
     {
         return await _repository.FindAllAsync<User>(user =>
                 (except == null || !except.Contains(user.Login)) &&

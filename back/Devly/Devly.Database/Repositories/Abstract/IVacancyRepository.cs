@@ -10,7 +10,7 @@ public interface IVacancyRepository
     public Task<Vacancy?> FindVacancyByIdAsync(int id);
     public Task<IReadOnlyList<Vacancy>>? GetAllLanguageVacancies(string languageName);
     public Task<IReadOnlyList<Vacancy>>? GetAllGradeVacancies(int gradeId);
-    public Task<IReadOnlyList<Vacancy>>? GetAllVacanciesFilter(VacancyFilter vacancyFilter, int[]? except = null);
+    public Task<IReadOnlyList<Vacancy>>? GetAllVacanciesFilter(VacancyFilter vacancyFilter, IEnumerable<int>? except = null);
 
     public Task InsertAsync(Vacancy vacancy);
     public Task DeleteAsync(Vacancy vacancy);

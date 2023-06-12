@@ -55,7 +55,7 @@ internal class VacancyRepository : IVacancyRepository
             vacancy => vacancy.Grade);
     }
 
-    public async Task<IReadOnlyList<Vacancy>> GetAllVacanciesFilter(VacancyFilter vacancyFilter, int[]? except = null)
+    public async Task<IReadOnlyList<Vacancy>> GetAllVacanciesFilter(VacancyFilter vacancyFilter, IEnumerable<int>? except = null)
     {
         return await _repository.FindAllAsync<Vacancy>
         (v => 

@@ -10,6 +10,6 @@ public interface IUserRepository
     Task UpdateAsync(User user);
     Task<User?> FindUserByLoginAsync(string login);
     Task<User> GetRandomUser();
-    Task<IReadOnlyList<User>> GetAllUsersFilter(UserFilter userFilter, string[]? except = null);
+    Task<IReadOnlyList<User>> GetAllUsersFilter(UserFilter userFilter, IEnumerable<string>? except = null);
  
 }

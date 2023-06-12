@@ -23,7 +23,7 @@ internal class VacancyRepository : IVacancyRepository
             vacancy => vacancy.Grade);
     }
 
-    public async Task<Vacancy> FindVacancyAsync(Vacancy vacancy)
+    public async Task<Vacancy?> FindVacancyAsync(Vacancy vacancy)
     {
         return await _repository.FindAsync<Vacancy>(x => x.Info == vacancy.Info &&
                                                          x.Salary == vacancy.Salary &&
@@ -55,10 +55,12 @@ internal class VacancyRepository : IVacancyRepository
             vacancy => vacancy.Grade);
     }
 
-    public async Task<IReadOnlyList<Vacancy>> GetAllVacanciesFilter(VacancyFilter vacancyFilter)
+    public async Task<IReadOnlyList<Vacancy>> GetAllVacanciesFilter(VacancyFilter vacancyFilter, int[]? except = null)
     {
         return await _repository.FindAllAsync<Vacancy>
-        (v => (vacancyFilter.GradeIds == null || vacancyFilter.GradeIds.Contains(v.GradeId)) &&
+        (v => 
+                (except == null || !except.Contains(v.Id)) &&
+                (vacancyFilter.GradeIds == null || vacancyFilter.GradeIds.Contains(v.GradeId)) &&
               (vacancyFilter.LanguageIds == null || vacancyFilter.LanguageIds.Contains(v.ProgrammingLanguageId)) &&
               (vacancyFilter.CompanyName == null || v.Company.CompanyName.Contains(vacancyFilter.CompanyName)) &&
               v.Salary >= vacancyFilter.SalaryFrom &&

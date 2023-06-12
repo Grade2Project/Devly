@@ -49,9 +49,10 @@ internal class UserRepository : IUserRepository
             CancellationToken.None, user => user.Contact, user => user.Grade, user => user.FavoriteLanguages);
     }
 
-    public async Task<IReadOnlyList<User>> GetAllUsersFilter(UserFilter userFilter)
+    public async Task<IReadOnlyList<User>> GetAllUsersFilter(UserFilter userFilter, string[]? except = null)
     {
         return await _repository.FindAllAsync<User>(user =>
+                (except == null || !except.Contains(user.Login)) &&
             (userFilter.City == default || user.City == userFilter.City) &&
             (userFilter.ExperienceFrom == 0 || user.Experience >= userFilter.ExperienceFrom) &&
             (userFilter.UserName == default || user.Name.Contains(userFilter.UserName)) &&

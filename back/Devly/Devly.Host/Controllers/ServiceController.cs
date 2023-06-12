@@ -19,6 +19,7 @@ public class ServiceController : Controller
     private readonly IProgrammingLanguagesRepository _programmingLanguagesRepository;
     private readonly IUserRepository _userRepository;
     private readonly IVacancyRepository _vacancyRepository;
+    private readonly ICompaniesRepository _companies;
     private readonly IPhotoHelper _photoHelper;
 
     public ServiceController(IUserRepository userRepository,
@@ -26,7 +27,8 @@ public class ServiceController : Controller
         IMemoryCache memoryCache,
         IGradesRepository gradesRepository,
         IProgrammingLanguagesRepository programmingLanguagesRepository,
-        IPhotoHelper photoHelper)
+        IPhotoHelper photoHelper,
+        ICompaniesRepository companies)
     {
         _userRepository = userRepository;
         _vacancyRepository = vacancyRepository;
@@ -34,6 +36,7 @@ public class ServiceController : Controller
         _gradesRepository = gradesRepository;
         _programmingLanguagesRepository = programmingLanguagesRepository;
         _photoHelper = photoHelper;
+        _companies = companies;
     }
     
     [Authorize(Policy = "CompanyPolicy")]
@@ -168,12 +171,14 @@ public class ServiceController : Controller
             var cachedUsers = _memoryCache.Get<MemoryCacheEntry<User>>(companyEmail);
             if (cachedUsers == null || cachedUsers.IsEnded || cachedUsers.Entries.Count == 0)
             {
-                var companyVacancies = _vacancyRepository.GetAllCompanyVacancies(companyEmail).Result;
+                var company = _companies.GetCompanyByEmail(companyEmail).Result;
+                var companyVacancies = company.Vacancies;
+                var alreadyLiked = company.FavoriteUsers.Select(x => x.UserLogin).ToArray();
                 var users = _userRepository.GetAllUsersFilter(new UserFilter
                 {
                     GradeIds = companyVacancies.Select(x => x.GradeId).ToArray(),
                     LanguageIds = companyVacancies.Select(x => x.ProgrammingLanguageId).ToArray(),
-                })?.Result;
+                }, alreadyLiked)?.Result;
                 
                 if (users == null)
                     return GetNextUserRandom().Result;
@@ -197,12 +202,13 @@ public class ServiceController : Controller
             if (cachedVacancies == null || cachedVacancies.IsEnded || cachedVacancies.Entries.Count == 0)
             {
                 var user = _userRepository.FindUserByLoginAsync(userLogin).Result!;
+                var alreadyLiked = user.FavoriteVacancies.Select(x => x.VacancyId).ToArray();
                 var userLanguages = user.FavoriteLanguages.Select(x => x.ProgrammingLanguageId);
                 var vacancies = _vacancyRepository.GetAllVacanciesFilter(new VacancyFilter
                 {
                     GradeIds = new[] { user.GradeId },
                     LanguageIds = userLanguages.ToArray()
-                })
+                }, alreadyLiked)
                     ?.Result;
                 if (vacancies is null)
                     return GetNextVacancyRandom().Result;

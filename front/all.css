@@ -139,6 +139,7 @@ textarea {
     color: var(--color-black);
 }
 
+
 .cc-h1:first-letter {
     color: var(--color-acsent-green);
 }
@@ -693,56 +694,6 @@ input[type=radio] {
     outline: 0;
 }
 
-.left__menu__container {
-    position: absolute;
-    display: flex;
-    justify-content: flex-start;
-    flex-flow: row;
-
-    background-color: var(--color-white);
-    border-right: 2px solid var(--color-light-black);
-
-    margin: 0;
-    padding: 0;
-    min-width: 400px;
-    min-height: 100%;
-    top: 0;
-    left: 0;
-}
-
-.left__menu__container .left__menu__header__container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 15px 25px;
-    gap: 30px;
-
-    width: 100%;
-    min-height: 75px;
-    height: fit-content;
-    left: 0;
-    top: 0;
-
-    background: #4F4F4F;
-    opacity: 0.9;
-    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.25);
-    border-radius: 0 0 10px 10px;
-}
-
-.left__menu__header__container .profile__image {
-    width: 60px;
-    height: 60px;
-    left: 0;
-    top: 0;
-    background-clip: border-box;
-    border-radius: 30px;
-
-    background: linear-gradient(157.02deg, #087E8B 14.89%, #FF5A5F 112.59%);;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.25));
-}
-
 .swipe__cards, :before, :after {
     position: absolute;
     box-sizing: border-box;
@@ -811,19 +762,40 @@ input[type=radio] {
 
 .swipe__cards .tinder__card {
     display: inline-block;
+
     width: 90vw;
     max-width: 400px;
     height: 70vh;
-    background: #FFFFFF;
-    padding-bottom: 40px;
-    border-radius: 8px;
+    background: var(--color-black);
+    padding-bottom: 15px;
+    border-radius: 15px;
     overflow: hidden;
     position: absolute;
     will-change: transform;
     transition: all 0.3s ease-in-out;
-    cursor: -webkit-grab;
-    cursor: -moz-grab;
+
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25);
     cursor: grab;
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+}
+
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-thumb {
+    width: 20px;
+    border-radius: 13px;
+    background-color: transparent;
+    color: red;
+    background-clip: padding-box;
+    border: 8px solid transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 0 10px;
+}
+
+.ofy-scroll.ofy-scroll.ofy-scroll.ofy-scroll {
+    overflow: overlay;
 }
 
 .swipe__cards .moving.tinder__card {
@@ -833,8 +805,27 @@ input[type=radio] {
     cursor: grabbing;
 }
 
-.swipe__cards .tinder__card img {
-    max-width: 100%;
+.swipe__cards .tinder__card .center-cropped {
+    display: flex;
+    justify-content: center;
+
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    height: 80%;
+    width: 100%;
+
+    overflow: hidden;
+
+    pointer-events: none;
+    border-radius: 10px;
+}
+
+.swipe__cards .tinder__card .center-cropped img {
+
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
+    filter: alpha(opacity=1);
+    opacity: 1;
     pointer-events: none;
 }
 
@@ -897,7 +888,137 @@ input[type=radio] {
     background-color: var(--color-acsent-red);
 }
 
+.tinder__card .information__holder {
+    display: flex;
+    flex-direction: column;
 
+    gap: 10px;
+    margin: 10px 15px;
+
+    pointer-events: none;
+}
+
+.tinder__card .information__holder .inner__holder {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+    margin: 0 0;
+
+    pointer-events: none;
+}
+
+.label__28B_600 {
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+
+    color: #eeeeee;
+    text-align: left;
+
+    pointer-events: none;
+}
+
+.label__20B_600 {
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+
+    color: #eeeeee;
+    text-align: left;
+
+    pointer-events: none;
+}
+
+.label__16B_500 {
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+
+    color: #eeeeee;
+    text-align: left;
+
+    pointer-events: none;
+}
+
+.label__18B_500_GREY {
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+
+    color: #cccccc;
+    text-align: left;
+
+    pointer-events: none;
+}
+
+
+.swipe__cards .tinder__card .extra-info__button {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+
+    transform: translate(-50%, 50%);
+
+    background-color: var(--color-acsent-red);
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+}
+
+.swipe__cards .tinder__card .extra__base__container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+
+    gap: 20px;
+    margin: 40px 15px 10px 15px;
+    pointer-events: none;
+}
+
+.swipe__cards .tinder__card .extra__inner__container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.swipe__cards .tinder__card .extra__inner__container .__data__container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+
+    gap: 5px;
+    padding-left: 10px;
+}
+
+multi-input {
+    display: inline-block;
+    margin: 0 20px 20px 0;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
 
 
 

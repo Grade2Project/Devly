@@ -88,6 +88,11 @@
         </div>
 
         <div class="form__input__wide">
+            <label for="user_work_exp" class="label__18B_500">Стаж работы</label>
+            <input class="text__input" type="number" maxlength="3" id="user_work_exp" required>
+        </div>
+
+        <div class="form__input__wide">
             <label for="user_prog_grade" class="label__18B_500">Грейд</label>
             <select id="user_prog_grade" class="text__input"
                     style="height: fit-content; padding: 0.55rem 0.75rem; margin-left: -9px" required>
@@ -137,8 +142,9 @@
 
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
-    fetchJSON(Controllers.GRADES, (json) => {
+    fetchFrom(Controllers.GRADES, (statusCode, json) => {
         grades = json.container;
+
         for (let grade of grades) {
             let opt = document.createElement('option');
             opt.value = grade;
@@ -146,7 +152,7 @@
 
             gradeSelect.appendChild(opt);
         }
-    });
+    }, localStorage['token']);
 
     const reader = new FileReader();
     let avatarBytes;
@@ -167,15 +173,14 @@
             ti => [ti.id, ti.value]);
         dataRaw['user_birthdate'] += 'T00:00:00Z'
         const info = {
-            'user_initials': dataRaw['user_initials'],
-            'user_grad_level': dataRaw['user_grad_level'],
-            'user_institution': dataRaw['user_institution'],
-            'user_faculty': dataRaw['user_faculty'],
-            'user_year_of_grad': dataRaw['user_year_of_grad'],
-            'user_position': dataRaw['user_position'],
-            'user_salary': dataRaw['user_salary'],
-            'user_word_schedule': dataRaw['user_word_schedule'],
-            'user_ext_info': dataRaw['user_ext_info'],
+            'edu_grad': dataRaw['user_grad_level'],
+            'edu_name': dataRaw['user_institution'],
+            'edu_program': dataRaw['user_faculty'],
+            'edu_release': dataRaw['user_year_of_grad'],
+            'position': dataRaw['user_position'],
+            'salary': dataRaw['user_salary'],
+            'schedule': dataRaw['user_word_schedule'],
+            'ext_info': dataRaw['user_ext_info'],
         }
         const data = {
             login: localStorage['user_login'],
@@ -185,20 +190,22 @@
             info: JSON.stringify(info),
             resumePath: "kekus", // ubrat' nahui
             grade: grade,
+            experience: dataRaw['user_work_exp'],
             photo: avatarBytes,
             email: localStorage['user_login'],
             phone: dataRaw['user_tel'],
             imagePath: "esheOdin", // zachem?
-            favoriteLanguages: [dataRaw['user_languages']]
+            favoriteLanguages: dataRaw['user_languages'].split(' ')
         }
-        sendJSON(data, Controllers.RESUME.UPDATE,
+        sendJSON(data, Controllers.RESUME.UPDATE, HTTPResponseType.TEXT,
             (statusCode) => {
                 if (statusCode === 200) {
                     alert('Резюме создано, вы восхитительны');
+                    window.location.href = "swipe.html";
                 } else {
                     alert('BadKekus');
                 }
-            });
+            }, localStorage['token']);
     }
 </script>
 </body>

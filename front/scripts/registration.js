@@ -9,11 +9,12 @@ function registerClient() {
         password: dataRaw['reg_user_password']
     }
 
-    sendJSON(data, controller,
-        (statusCode) => {
+    sendJSON(data, controller, HTTPResponseType.TEXT,
+        (statusCode, response) => {
         if (statusCode === 200) {
-            localStorage['user_login'] = dataRaw['reg_user_email'];
+            localStorage['token'] = response;
             console.log('Успешная регистрация');
+            window.location.href = '../html/developer.html';
         }
         else {
             console.log('Ошибка регистрации');
@@ -31,16 +32,16 @@ function registerHR() {
             companyName: dataRaw['reg_company_name'],
             companyEmail: dataRaw['reg_company_email'],
             companyInfo: {
-                companyInn: dataRaw['reg_company_inn'],
-                companyTel: dataRaw['reg_company_tel']
+                inn: dataRaw['reg_company_inn'],
+                tel: dataRaw['reg_company_tel']
             },
             password: dataRaw['reg_company_password']
         }
 
-        sendJSON(data, controller,
-            (statusCode) => {
+        sendJSON(data, controller, HTTPResponseType.TEXT,
+            (statusCode, response) => {
             if (statusCode === 200) {
-                localStorage['user_login'] = dataRaw['reg_company_email'];
+                localStorage['token'] = response;
                 console.log('Успешная регистрация');
             }
             else {

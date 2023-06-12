@@ -4,6 +4,7 @@ const tinderContainer = document.querySelector('.tinder');
 let allCards = document.querySelectorAll('.tinder__cards');
 const nope = document.getElementById('nope');
 const love = document.getElementById('love');
+const template = document.getElementById('card_template');
 
 function refreshCards() {
     allCards = document.querySelectorAll('.tinder__cards');
@@ -21,21 +22,16 @@ function initCards(card, index) {
     tinderContainer.classList.add('loaded');
 }
 
-function initSingleCard(card, index) {
-    card.style.zIndex = allCards.length - index;
-    card.style.transform = 'scale(' + (20 - index) / 20 + ') translateY(-' + 30 * index + 'px)';
-    card.style.opacity = (10 - index) / 10;
-
-    tinderContainer.classList.add('loaded');
-}
 function setHammerOnSingleCard(el) {
     let hammertime = new Hammer(el);
 
     hammertime.on('pan', function (event) {
+        if (event.target.className === 'extra-info__button') return;
         el.classList.add('moving');
     });
 
     hammertime.on('pan', function (event) {
+        if (event.target.className === 'extra-info__button') return;
         if (event.deltaX === 0) return;
         if (event.center.x === 0 && event.center.y === 0) return;
         tinderContainer.classList.toggle('tinder_love', event.deltaX > 0);
@@ -49,6 +45,7 @@ function setHammerOnSingleCard(el) {
     });
 
     hammertime.on('panend', function (event) {
+        if (event.target.className === 'extra-info__button') return;
         el.classList.remove('moving');
         tinderContainer.classList.remove('tinder_love');
         tinderContainer.classList.remove('tinder_nope');

@@ -1,6 +1,4 @@
 function auth() {
-    startWrongPasswordAnimation();
-
     const dataRaw = getObjectFromIterable(
         document.querySelectorAll('[id^="auth_"]'),
         ti => [ti.id, ti.value]);
@@ -17,10 +15,11 @@ function auth() {
         throw new Error('Internal error');
 
     sendJSON(data, controller,
-        (statusCode) => {
+        HTTPResponseType.TEXT, (statusCode, response) => {
             if (statusCode === 200) {
-                localStorage['user_login'] = dataRaw['auth_email'];
-                window.location.href = 'index.html'
+                localStorage['token'] = response;
+                localStorage['way'] = currentTab === 0 ? 'user' : 'company';
+                window.location.href = '../html/swipe.html';
             } else {
                 startWrongPasswordAnimation();
             }

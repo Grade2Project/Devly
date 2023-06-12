@@ -38,7 +38,12 @@ public class DevlyDbContext : EfDbContext
 
         modelBuilder.Entity<User>().HasMany(x => x.FavoriteLanguages)
             .WithOne(x => x.User);
+        modelBuilder.Entity<User>().HasMany(x => x.FavoriteVacancies)
+            .WithOne(x => x.User);
+        
         modelBuilder.Entity<Company>().HasMany(x => x.Vacancies)
+            .WithOne(x => x.Company);
+        modelBuilder.Entity<Company>().HasMany(x => x.FavoriteUsers)
             .WithOne(x => x.Company);
 
         modelBuilder.Entity<UsersFavoriteLanguage>().Navigation(fl => fl.ProgrammingLanguage).AutoInclude();

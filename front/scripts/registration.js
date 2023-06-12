@@ -15,7 +15,7 @@ function registerClient() {
             console.log(response);
             localStorage['token'] = response;
             console.log('Успешная регистрация');
-            // window.location.href = '../html/developer.html';
+            window.location.href = '../html/developer.html';
         }
         else {
             console.log('Ошибка регистрации');

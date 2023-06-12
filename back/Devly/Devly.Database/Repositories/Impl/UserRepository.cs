@@ -53,7 +53,7 @@ internal class UserRepository : IUserRepository
     {
         return await _repository.FindAllAsync<User>(user =>
                 (except == null || !except.Contains(user.Login)) &&
-            (userFilter.City == default || user.City == userFilter.City) &&
+            (userFilter.City == default || user.City.Name == userFilter.City) &&
             (userFilter.ExperienceFrom == 0 || user.Experience >= userFilter.ExperienceFrom) &&
             (userFilter.UserName == default || user.Name.Contains(userFilter.UserName)) &&
             (userFilter.GradeIds == default || userFilter.GradeIds.Contains(user.GradeId)) &&

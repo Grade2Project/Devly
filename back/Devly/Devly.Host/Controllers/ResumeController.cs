@@ -18,6 +18,7 @@ public class ResumeController : Controller
     private readonly IUsersFavoriteLanguagesRepository _usersFavoriteLanguagesRepository;
     private readonly IVacancyRepository _vacancyRepository;
     private readonly IPhotoHelper _photo;
+    private readonly ICitiesRepository _cities;
 
     public ResumeController(IUserRepository userRepository,
         IGradesRepository gradesRepository,
@@ -25,7 +26,8 @@ public class ResumeController : Controller
         IUsersFavoriteLanguagesRepository usersFavoriteLanguagesRepository,
         ICompaniesRepository companiesRepository, 
         IVacancyRepository vacancyRepository,
-        IPhotoHelper photo)
+        IPhotoHelper photo,
+        ICitiesRepository cities)
     {
         _userRepository = userRepository;
         _gradesRepository = gradesRepository;
@@ -34,6 +36,7 @@ public class ResumeController : Controller
         _companiesRepository = companiesRepository;
         _vacancyRepository = vacancyRepository;
         _photo = photo;
+        _cities = cities;
     }
     
     [Authorize(Policy = "CompanyPolicy")]
@@ -103,8 +106,9 @@ public class ResumeController : Controller
 
     private async Task<User?> ResumeToUser(ResumeDto resumeDto)
     {
-        var grade = await _gradesRepository.FindGrade(resumeDto.Grade);
-        return grade == null ? null : resumeDto.MapToUser(grade);
+        var grade = await _gradesRepository.FindGrade(resumeDto.Grade)!;
+        var city = await _cities.GetCityByName(resumeDto.City);
+        return grade == null || city == null ? null : resumeDto.MapToUser(grade, city.Id);
     }
 
     private async Task<Vacancy?> DtoToVacancy(VacancyDto vacancyDto)
@@ -114,12 +118,14 @@ public class ResumeController : Controller
             return null;
         var language = await _programmingLanguagesRepository.FindLanguagesAsync(vacancyDto.ProgrammingLanguage);
         var grade = await _gradesRepository.FindGrade(vacancyDto.Grade);
-        if (language is null || language.Count == 0 || grade == null) return null;
+        var city = await _cities.GetCityByName(vacancyDto.City);
+        if (language is null || language.Count == 0 || grade == null || city is null) return null;
 
         return new Vacancy
         {
             CompanyId = company.Id,
             Info = vacancyDto.Info,
+            CityId = city.Id,
             ProgrammingLanguageId = language[0].Id,
             Salary = vacancyDto.Salary,
             GradeId = grade.Id

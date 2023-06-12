@@ -17,7 +17,10 @@ public class Vacancy
     public int GradeId { get; set; }
 
     [ForeignKey(nameof(GradeId))] public Grade Grade { get; set; }
-
+    
+    public int CityId { get; set; }
+    [ForeignKey(nameof(CityId))] public City City { get; set; }
+    
     public int Salary { get; set; }
     public string Info { get; set; }
 }

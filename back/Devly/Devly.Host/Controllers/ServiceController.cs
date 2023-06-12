@@ -22,6 +22,7 @@ public class ServiceController : Controller
     private readonly ICompaniesRepository _companies;
     private readonly IFavoriteUsersRepository _favoriteUsers;
     private readonly IFavoriteVacanciesRepository _favoriteVacancies;
+    private readonly ICitiesRepository _cities;
     private readonly IPhotoHelper _photoHelper;
 
     public ServiceController(IUserRepository userRepository,
@@ -32,7 +33,8 @@ public class ServiceController : Controller
         IPhotoHelper photoHelper,
         ICompaniesRepository companies,
         IFavoriteUsersRepository favoriteUsers,
-        IFavoriteVacanciesRepository favoriteVacancies)
+        IFavoriteVacanciesRepository favoriteVacancies,
+        ICitiesRepository cities)
     {
         _userRepository = userRepository;
         _vacancyRepository = vacancyRepository;
@@ -43,6 +45,7 @@ public class ServiceController : Controller
         _companies = companies;
         _favoriteUsers = favoriteUsers;
         _favoriteVacancies = favoriteVacancies;
+        _cities = cities;
     }
     
     [Authorize(Policy = "CompanyPolicy")]
@@ -236,7 +239,6 @@ public class ServiceController : Controller
         if (user is null)
             return null;
         var photo = await _photoHelper.LoadFrom(user.ImagePath ?? "../photos/users/default.txt");
-        //Временно, чтобы не менять тестовые данные
         return user.MapToResumeDto(photo);
     }
 
@@ -246,6 +248,6 @@ public class ServiceController : Controller
             return null;
         var path = vacancy.Company.ImagePath ?? "../photos/companies/default.txt";
         var photo = await _photoHelper.LoadFrom(path);
-        return vacancy.MapToVacancyDto(photo);
+        return vacancy.MapToVacancyDto( photo);
     }
 }

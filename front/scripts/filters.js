@@ -1,3 +1,6 @@
+//TODO: сделать единый environment для всех хендлеров, фильтров и прочего.
+
+
 let token = localStorage.getItem('token');
 let btnApplyFilters = document.getElementById('apply_filters');
 

@@ -1,6 +1,7 @@
  using Devly.Database.Basics.Repository;
 using Devly.Database.Context;
-using Devly.Database.Models;
+ using Devly.Database.Filters;
+ using Devly.Database.Models;
 using Devly.Database.Repositories.Abstract;
 
 namespace Devly.Database.Repositories.Impl;
@@ -22,7 +23,7 @@ internal class VacancyRepository : IVacancyRepository
             vacancy => vacancy.Grade);
     }
 
-    public async Task<Vacancy> FindVacancyAsync(Vacancy vacancy)
+    public async Task<Vacancy?> FindVacancyAsync(Vacancy vacancy)
     {
         return await _repository.FindAsync<Vacancy>(x => x.Info == vacancy.Info &&
                                                          x.Salary == vacancy.Salary &&
@@ -30,9 +31,12 @@ internal class VacancyRepository : IVacancyRepository
                                                          x.ProgrammingLanguageId == vacancy.ProgrammingLanguageId);
     }
 
-    public async Task<Vacancy> FindVacancyByIdAsync(int id)
+    public async Task<Vacancy?> FindVacancyByIdAsync(int id)
     {
-        return await _repository.FindAsync<Vacancy>(x => x.Id == id);
+        return await _repository.FindAsync<Vacancy>(x => x.Id == id, CancellationToken.None,
+            vacancy => vacancy.Company,
+            vacancy => vacancy.ProgrammingLanguage,
+            vacancy => vacancy.Grade);
     }
 
     public async Task<IReadOnlyList<Vacancy>>? GetAllLanguageVacancies(string languageName)
@@ -49,6 +53,19 @@ internal class VacancyRepository : IVacancyRepository
             CancellationToken.None, vacancy => vacancy.Company,
             vacancy => vacancy.ProgrammingLanguage,
             vacancy => vacancy.Grade);
+    }
+
+    public async Task<IReadOnlyList<Vacancy>> GetAllVacanciesFilter(VacancyFilter vacancyFilter, IEnumerable<int>? except = null)
+    {
+        return await _repository.FindAllAsync<Vacancy>
+        (v => 
+                (except == null || !except.Contains(v.Id)) &&
+                (vacancyFilter.GradeIds == null || vacancyFilter.GradeIds.Contains(v.GradeId)) &&
+              (vacancyFilter.LanguageIds == null || vacancyFilter.LanguageIds.Contains(v.ProgrammingLanguageId)) &&
+              (vacancyFilter.CompanyName == null || v.Company.CompanyName.Contains(vacancyFilter.CompanyName)) &&
+              v.Salary >= vacancyFilter.SalaryFrom &&
+              (vacancyFilter.SalaryTo == 0 || v.Salary <= vacancyFilter.SalaryTo), CancellationToken.None, 
+            vacancy => vacancy.Company, vacancy => vacancy.ProgrammingLanguage, vacancy => vacancy.Grade);
     }
 
     public async Task InsertAsync(Vacancy vacancy)

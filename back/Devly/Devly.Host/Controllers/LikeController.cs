@@ -1,5 +1,6 @@
 using Devly.Database.Repositories.Abstract;
 using Devly.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Devly.Controllers;
@@ -26,10 +27,11 @@ public class LikeController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "UserPolicy")]
     [Route("like/vacancy")]
-    public async Task<IActionResult> VacancyLike([FromBody] UserLikeDto userLikeDto)
+    public async Task<IActionResult> VacancyLike([FromBody] int vacancyId)
     {
-        var (userLogin, vacancyId) = (userLikeDto.UserLogin, userLikeDto.VacancyId);
+        var userLogin = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         if (await _userRepository.FindUserByLoginAsync(userLogin) == null ||
             await _vacancyRepository.FindVacancyByIdAsync(vacancyId) == null)
             return StatusCode(400, "Login or vacancy doesn't exists");
@@ -47,10 +49,11 @@ public class LikeController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "UserPolicy")]
     [Route("unlike/vacancy")]
-    public async Task<IActionResult> VacancyUnlike([FromBody] UserLikeDto userLikeDto)
+    public async Task<IActionResult> VacancyUnlike([FromBody] int vacancyId)
     {
-        var (userLogin, vacancyId) = (userLikeDto.UserLogin, userLikeDto.VacancyId);
+        var userLogin = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         if (await _userRepository.FindUserByLoginAsync(userLogin) == null ||
             await _vacancyRepository.FindVacancyByIdAsync(vacancyId) == null)
             return StatusCode(400, "User or vacancy doesn't exists");
@@ -68,10 +71,11 @@ public class LikeController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "CompanyPolicy")]
     [Route("like/user")]
-    public async Task<IActionResult> UserLike([FromBody] CompanyLikeDto companyLikeDto)
+    public async Task<IActionResult> UserLike([FromBody] string userLogin)
     {
-        var (companyEmail, userLogin) = (companyLikeDto.CompanyEmail, companyLikeDto.UserLogin);
+        var companyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         var company = await _companiesRepository.GetCompanyByEmail(companyEmail);
         if (await _userRepository.FindUserByLoginAsync(userLogin) == null || company == null)
             return StatusCode(400, "Company or user doesn't exists");
@@ -89,10 +93,11 @@ public class LikeController : Controller
     }
 
     [HttpPost]
+    [Authorize(Policy = "CompanyPolicy")]
     [Route("unlike/user")]
-    public async Task<IActionResult> UserUnlike([FromBody] CompanyLikeDto companyLikeDto)
+    public async Task<IActionResult> UserUnlike([FromBody] string userLogin)
     {
-        var (companyEmail, userLogin) = (companyLikeDto.CompanyEmail, companyLikeDto.UserLogin);
+        var companyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         var company = await _companiesRepository.GetCompanyByEmail(companyEmail);
         if (await _userRepository.FindUserByLoginAsync(userLogin) == null || company == null)
             return StatusCode(400, "Company or user doesn't exists");

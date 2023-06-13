@@ -17,7 +17,7 @@ public class ArrayComparer<T> : IEqualityComparer<T[]>
 	/// </remarks>
 	/// <param name="array">The array to generate a hash code for.</param>
 	/// <returns>The hash code for the values in the array.</returns>
-	public int GetHashCode(T[] array)
+	public int GetHashCode(T[]? array)
     {
         // if non-null array then go into unchecked block to avoid overflow
         if (array != null)

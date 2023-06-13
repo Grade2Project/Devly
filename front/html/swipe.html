@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../styleguide.css">
     <link rel="stylesheet" href="../sellect.css">
     <link rel="stylesheet" href="side-menu.css">
+    <link rel="stylesheet" href="buttons.css">
 
     <style>
         body {
@@ -22,7 +23,7 @@
         </div>
         <div class="information__holder">
             <div class="inner__holder">
-                <span class="label__28B_600" id="user_name"></span>
+                <span class="label__24B_600" id="user_name"></span>
                 <span class="label__18B_500_GREY" id="user_city"></span>
             </div>
             <div class="inner__holder">
@@ -112,8 +113,8 @@
                 <label for="cities__filter">Города</label><input type="text" id="cities__filter">
             </div>
 
-            <button class="button__confirm color-green" id="apply_filters" type="button">
-                <span class="button__confirm_inner">Применить</span>
+            <button class="button__w100__r10__green" id="apply_filters" type="button" disabled>
+                <label class="label__16B_500">Применить</label>
             </button>
         </div>
     </div>
@@ -140,45 +141,8 @@
 <script src="../scripts/createCard.js"></script>
 <script src="../scripts/swipes.js"></script>
 <script src="../scripts/sellect.js-master/src/sellect.js"></script>
+<script src="../scripts/filters.js"></script>
 <script>
-    let token = localStorage.getItem('token');
-
-    fetchFrom(Controllers.GRADES, (statusCode, response) => {
-        let grades = response.container;
-        let gradesFilter = sellect(document.getElementById('grades__filter'), {
-            originList: grades
-        });
-
-        gradesFilter.init();
-    }, localStorage['token']);
-
-    fetchFrom(Controllers.LANGS, (statusCode, response) => {
-        let langs = response.container;
-        let langsFilter = sellect(document.getElementById('languages__filter'), {
-            originList: langs
-        });
-
-        langsFilter.init();
-    }, localStorage['token']);
-
-    let citiesFilterE = document.getElementById('cities__filter');
-    let mockParent = document.createElement('div');
-    let mock = document.createElement('input');
-    mock.setAttribute('type', 'text');
-    mock.setAttribute('id', 'cities__filter');
-    mockParent.appendChild(mock);
-
-    let citiesFilter = sellect(citiesFilterE, {
-        originList: []
-    });
-    citiesFilter.init();
-
-    citiesFilterE.oninput = () => {
-        fetchFrom(`${Controllers.CITIES}?pattern=${citiesFilterE.value}`, (statusCode, response) => {
-            citiesFilter.refresh(response.container);
-        });
-    }
-
     const cardHandler = localStorage['way'] === 'user'
         ? new CardCreator(new VacancyCardHandler())
         : new CardCreator(new UserCardHandler());

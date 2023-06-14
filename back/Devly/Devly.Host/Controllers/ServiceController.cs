@@ -109,7 +109,7 @@ public class ServiceController : Controller
                     LanguageIds = languages.Select(x => x.Id).ToArray(),
                     GradeIds = grades.Select(x => x.Id).ToArray(),
                     ExperienceFrom = userFilterDto.ExperienceFrom,
-                    City = userFilterDto.City,
+                    Cities = userFilterDto.Cities,
                     UserName = userFilterDto.UserName
                 })
                     .Result;

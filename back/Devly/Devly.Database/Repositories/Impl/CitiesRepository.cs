@@ -21,7 +21,8 @@ internal class CitiesRepository : ICitiesRepository
 
     public async Task<IReadOnlyList<City>> GetCitiesByPattern(string pattern)
     {
-        var cities = await _repository.FindAllAsync<City>(c => c.Name.Contains(pattern));
+        var cities = await _repository.FindAllAsync<City>(c => 
+            c.Name.StartsWith(pattern));
         return cities.Take(10).ToArray();
     }
 

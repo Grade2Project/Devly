@@ -3,8 +3,16 @@
 class Filter {
     __container = document.querySelector('.content__container');
     __filer__template = document.getElementById('filter__base');
+    __values = [];
 
-    values = [];
+    set values(values) {
+        //TODO: тут должна была быть проверка прокси, но пока не работает.
+        this.__values = values;
+    }
+
+    get values() {
+        return this.__values;
+    }
 
     constructor(name, description) {
         this.name = name;
@@ -19,9 +27,7 @@ class Filter {
         this.__initialize();
     }
 
-    __initialize() {
-
-    }
+    __initialize() {}
 
     isEmpty() {
         return this.values.length === 0;
@@ -93,35 +99,27 @@ class CitiesFilter extends Filter {
 }
 
 class Filters {
-    __changeHandler = {
-        set: function (target, key, value) {
-            target[key] = value;
-
-            //TODO: Сломалось кхуям из-за this
-            if (false) {
-                btnApplyFilters.disabled = false;
-                return true;
-            }
-
-            btnApplyFilters.disabled = true;
-            cardHandler.applyFilters(null);
-
-            return true;
-        }
-    }
-
+    __container = document.querySelector('.content__container');
+    __filters = {};
     constructor() {
-        let __filters = {};
         for (let filter of arguments) {
-            __filters[filter.name] = filter.values;
+            this.__filters[filter.name] = filter;
         }
 
-        this.__proxy = new Proxy(__filters, this.__changeHandler);
+        this.__container.appendChild(
+            document
+                .getElementById('filter__apply__button')
+                .content
+                .cloneNode(true)
+        );
     }
 
     isEmpty() {
-        console.log(this.__proxy);
-        return false;
+        for (let filter of Object.values(this.__filters)) {
+            if (!filter.isEmpty()) return false;
+        }
+
+        return true;
     }
 
     applyFilters() {}
@@ -129,18 +127,21 @@ class Filters {
 
 class CompanyFilters extends Filters {
     applyFilters() {
-        cardHandler.applyFilters({
-            grades: this.__proxy.grades.length !== 0 ? this.__proxy.grades : null,
-            languages: this.__proxy.languages.length !== 0 ? this.__proxy.languages : null,
-            cities: this.__proxy.cities.length !== 0 ? this.__proxy.cities : null,
+        let filter = this.isEmpty()
+            ? null
+            : {
+            grades: this.__filters.grades.values.length !== 0 ? this.__filters.grades.values : null,
+            languages: this.__filters.languages.values.length !== 0 ? this.__filters.languages.values : null,
+            cities: this.__filters.cities.values.length !== 0 ? this.__filters.cities.values : null,
             experienceFrom: 0,
             userName: null
-        })
+        }
+
+        cardHandler.applyFilters(filter);
     }
 }
 
 let token = localStorage.getItem('token');
-let btnApplyFilters = document.getElementById('apply_filters');
 
 // btnApplyFilters.onclick = () => {
 //     cardHandler.applyFilters({

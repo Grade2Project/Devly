@@ -12,9 +12,9 @@ class Filter {
         return this.__values;
     }
 
-    constructor(name, description) {
+    constructor(name, description, template = null) {
         this.name = name;
-        let filterObj = this.__filer__template.content.cloneNode(true);
+        let filterObj = template === null ? this.__filer__template.content.cloneNode(true) : template;
         filterObj.querySelector('input').setAttribute('id', `${this.name}__filter`);
         filterObj.querySelector('label').setAttribute('for', `${this.name}__filter`);
         filterObj.querySelector('label').innerText = description;
@@ -93,6 +93,12 @@ class CitiesFilter extends Filter {
                 citiesFilter.refresh(response.container);
             });
         }
+    }
+}
+
+class ExperienceFilter extends Filter{
+    constructor() {
+        super('experienceFrom', 'Опыт работы');
     }
 }
 

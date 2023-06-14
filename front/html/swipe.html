@@ -95,24 +95,17 @@
     </div>
 </template>
 
+<template id="filter__base">
+    <div>
+        <label></label><input type="text">
+    </div>
+</template>
     <div class="left__menu__container">
         <div class="left__menu__header__container">
             <a class="profile__image" href="settings/profile.html"></a>
             <span class="label__20B_600">Оля Контур</span>
         </div>
         <div class="content__container">
-            <div>
-                <label for="grades__filter">Грейд</label><input type="text" id="grades__filter">
-            </div>
-
-            <div>
-                <label for="languages__filter">Языки программирования</label><input type="text" id="languages__filter">
-            </div>
-
-            <div>
-                <label for="cities__filter">Города</label><input type="text" id="cities__filter">
-            </div>
-
             <button class="button__w100__r10__green" id="apply_filters" type="button" disabled>
                 <label class="label__16B_500">Применить</label>
             </button>
@@ -147,6 +140,8 @@
         ? new CardCreator(new VacancyCardHandler())
         : new CardCreator(new UserCardHandler());
 
+    const filtersHandler = new CompanyFilters(new GradesFilter(), new LanguagesFilter(), new CitiesFilter());
+    filtersHandler.isEmpty();
     cardHandler.appendCardToDoc();
 
 </script>

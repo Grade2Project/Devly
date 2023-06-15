@@ -78,7 +78,7 @@ function setHammerOnSingleCard(el) {
 
             if (event.deltaX > 0) suggestLike();
             else suggestDislike();
-            cardHandler.appendCardToDoc();
+            environment.cardHandler.appendCardToDoc();
 
             let endY = Math.abs(event.velocityY) * moveOutWidth;
             let toY = event.deltaY > 0 ? endY : -endY;
@@ -112,7 +112,7 @@ function createButtonListener(love) {
             suggestDislike();
         }
 
-        cardHandler.appendCardToDoc();
+        environment.cardHandler.appendCardToDoc();
 
         event.preventDefault();
     };

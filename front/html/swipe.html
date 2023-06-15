@@ -114,10 +114,10 @@
             <span class="label__20B_600">Оля Контур</span>
         </div>
         <div class="content__container">
-            <div class="range-slider">
-                <input class="range-slider__range" type="range" value="0" min="0" max="7" step="1">
-                <span class="range-slider__value">0</span>
-            </div>
+<!--            <div class="range-slider">-->
+<!--                <input class="range-slider__range" type="range" value="0" min="0" max="7" step="1">-->
+<!--                <span class="range-slider__value">0</span>-->
+<!--            </div>-->
         </div>
     </div>
     <div class="swipe__cards">
@@ -143,22 +143,17 @@
 <script src="../scripts/sellect.js-master/src/sellect.js"></script>
 <script src="../scripts/filters.js"></script>
 <script src="../scripts/rangeSlider.js"></script>
+<script src="../scripts/environment.js"></script>
 <script>
-    const cardHandler = localStorage['way'] === 'user'
-        ? new CardCreator(new VacancyCardHandler())
-        : new CardCreator(new UserCardHandler());
-
-    const filtersHandler = new CompanyFilters(
-        new GradesFilter(),
-        new LanguagesFilter(),
-        new CitiesFilter()
-    );
+    const environment = localStorage['way'] === 'user'
+        ? new UserEnvironment()
+        : new CompanyEnvironment();
 
     document.getElementById('apply_filters').onclick = () => {
-        filtersHandler.applyFilters();
+        environment.filtersHandler.applyFilters();
     };
 
-    cardHandler.appendCardToDoc();
+    environment.cardHandler.appendCardToDoc();
 </script>
 </body>
 </html>

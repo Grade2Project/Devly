@@ -141,7 +141,7 @@ class CompanyFilters extends Filters {
             userName: null
         }
 
-        cardHandler.applyFilters(filter);
+        environment.cardHandler.applyFilters(filter);
     }
 }
 

@@ -1,0 +1,77 @@
+.change_password{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 50px 0 0 50px;
+    position: absolute;
+    width: 1063px;
+    height: 750px;
+    left: 377px;
+    top: 0;
+
+    background: #DDDDDD;
+}
+
+.change_password .label__password{
+    width: auto;
+    height: 47px;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 47px;
+    margin-bottom: 15px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.02em;
+
+    color: #307A83;
+}
+
+.create_new_password{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+
+    width: 611px;
+    height: 100px;
+}
+
+.create_new_password label{
+    width: auto;
+    height: 28px;
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.02em;
+
+    color: #3C3C3C;
+}
+
+.create_new_password input{
+    width: 571px;
+    height: 40px;
+    background: #FFFFFF;
+    font-size: 30px;
+    border: 3px solid #DDDDDD;
+    color: #3C3C3C;
+}
+.create_new_password .password__block{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+
+    width: 611px;
+    height: 100px;
+}

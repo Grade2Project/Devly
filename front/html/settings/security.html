@@ -3,8 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../../all.css">
+    <link rel="stylesheet" href="../../styleguide.css">
+    <link rel="stylesheet" href="side-menu.css">
+    <link rel="stylesheet" href="security.css">
 </head>
 <body>
+<div class="left__menu__container">
+    <div class="left__menu__header__container">
+        <div class="profile__image"></div>
+        <span class="label__20B_600">Имя Фамилия</span>
+    </div>
 
+    <div class="settings__button_container">
+        <div class="settings__button">
+            <label class="label">Профиль</label>
+        </div>
+        <div class="settings__button">
+            <label class="label">Вакансии</label>
+        </div>
+        <div class="settings__button">
+            <label class="label">Безопасность</label>
+        </div>
+    </div>
+</div>
+<div class="change_password">
+    <span class="label__password">Смена пароля</span>
+    <form class="create_new_password">
+        <div class="password__block">
+            <label for="New_password_first">Новый пароль</label><br>
+            <input id="New_password_first" type="text" value="" name="New_password_first">
+        </div>
+        <div class="password__block">
+            <label for="New_password_second">Новый пароль</label><br>
+            <input id="New_password_second" type="text" value="" name="New_password_second">
+        </div>
+    </form>
+</div>
 </body>
 </html>

@@ -777,6 +777,7 @@ input[type=radio] {
     box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25);
     cursor: grab;
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
 }
 
 *::-webkit-scrollbar,
@@ -784,7 +785,7 @@ input[type=radio] {
     width: 20px;
     border-radius: 13px;
     background-color: transparent;
-    color: #FFFFFF;
+    color: red;
     background-clip: padding-box;
     border: 8px solid transparent;
 }
@@ -794,7 +795,7 @@ input[type=radio] {
 }
 
 .ofy-scroll.ofy-scroll.ofy-scroll.ofy-scroll {
-    overflow-y: overlay;
+    overflow: overlay;
 }
 
 .swipe__cards .moving.tinder__card {
@@ -1007,6 +1008,16 @@ input[type=radio] {
 multi-input {
     display: inline-block;
     margin: 0 20px 20px 0;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
 

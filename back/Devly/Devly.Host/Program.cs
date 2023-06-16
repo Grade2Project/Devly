@@ -4,6 +4,7 @@ using Devly.Configs;
 using Devly.Database.Context;
 using Devly.Database.Extensions.DI;
 using Devly.Extensions;
+using Devly.Helpers;
 using Devly.Services;
 using Devly.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -25,6 +26,8 @@ services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins("http://localhost:63343");
+            policy.WithOrigins("http://localhost:63342");
+            policy.WithOrigins("http://127.0.0.1:8080");
             policy.AllowAnyHeader();
         });
 });
@@ -80,6 +83,7 @@ services.AddConfig<AuthConfig>(config.GetRequiredSection("Auth"));
 
 services.AddSingleton<IPasswordHasher, ShaPasswordHasher>();
 services.AddSingleton<IIdentityService, IdentityService>();
+services.AddHelpers();
 
 var app = builder.Build();
 

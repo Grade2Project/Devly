@@ -1,9 +1,12 @@
 const HOME = 'http://localhost:5003';
+// const HOME = 'http://localhost:80'; // Для контейнера
 
 const Controllers = {
     AUTH: {USER: `${HOME}/auth/user`, COMPANY: `${HOME}/auth/company`},
     REG: {USER: `${HOME}/reg`, COMPANY: `${HOME}/company/reg`},
     GRADES: `${HOME}/grades/get`,
+    LANGS: `${HOME}/lang/get`,
+    CITIES: `${HOME}/cities/similar`,
     RESUME: {UPDATE: `${HOME}/resume/update`},
     SERVICE: {
         NEXT_USER: `${HOME}/next/user`,

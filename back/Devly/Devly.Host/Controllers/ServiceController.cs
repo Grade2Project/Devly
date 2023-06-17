@@ -80,6 +80,39 @@ public class ServiceController : Controller
         var vacancy = await _vacancyRepository.FindVacancyByIdAsync(id);
         return await ToVacancyDto(vacancy);
     }
+    
+    [HttpGet]
+    [Route("vacancy/all")]
+    public async Task<ArrayDto<VacancyDto>?> GetCompanyVacancies(string? companyEmail)
+    {
+        if (companyEmail is null)
+            return null;
+        var vacancies = await _vacancyRepository.GetAllCompanyVacancies(companyEmail);
+        return new ArrayDto<VacancyDto>(vacancies?.Select(x=> ToVacancyDto(x).Result).ToArray());
+    }
+
+
+    [HttpGet]
+    [Route("resume/info")]
+    public async Task<string?> GetResumeInfo(string? userLogin)
+    {
+        if (userLogin is null)
+            return null;
+        var resume = await _userRepository.FindUserByLoginAsync(userLogin);
+        return resume?.Info;
+    }
+    
+    
+    [HttpGet]
+    [Route("vacancy/info")]
+    public async Task<string?> GetVacancyInfo(int? vacancyId)
+    {
+        if (vacancyId is null)
+            return null;
+        var vacancy = await _vacancyRepository.FindVacancyByIdAsync((int)vacancyId);
+        return vacancy?.Info;
+    }
+    
 
     [HttpPost]
     [Authorize(Policy = "CompanyPolicy")]

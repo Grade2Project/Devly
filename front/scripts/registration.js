@@ -13,39 +13,43 @@ function registerClient() {
         (statusCode, response) => {
         if (statusCode === 200) {
             localStorage['token'] = response;
-            console.log('Успешная регистрация');
             window.location.href = '../html/developer.html';
         }
         else {
-            console.log('Ошибка регистрации');
+            startWrongEmailAnimation();
         }
     });
 }
 
 function registerHR() {
-        let dataRaw = getObjectFromIterable(
-            document.querySelectorAll('[id^="reg_company_"]'),
-            ti => [ti.id, ti.value]);
+    let dataRaw = getObjectFromIterable(
+        document.querySelectorAll('[id^="reg_company_"]'),
+        ti => [ti.id, ti.value]
+    );
 
-        let controller = Controllers.REG.COMPANY;
-        let data = {
-            companyName: dataRaw['reg_company_name'],
-            companyEmail: dataRaw['reg_company_email'],
-            companyInfo: {
-                inn: dataRaw['reg_company_inn'],
-                tel: dataRaw['reg_company_tel']
-            },
-            password: dataRaw['reg_company_password']
-        }
-
-        sendJSON(data, controller, HTTPResponseType.TEXT,
-            (statusCode, response) => {
-            if (statusCode === 200) {
-                localStorage['token'] = response;
-                console.log('Успешная регистрация');
-            }
-            else {
-                console.log('Ошибка регистрации');
-            }
-        });
+    let controller = Controllers.REG.COMPANY;
+    let data = {
+        companyName: dataRaw['reg_company_name'],
+        companyEmail: dataRaw['reg_company_email'],
+        companyInfo: {
+            inn: dataRaw['reg_company_inn'],
+            tel: dataRaw['reg_company_tel']
+        },
+        password: dataRaw['reg_company_password']
     }
+
+    sendJSON(data, controller, HTTPResponseType.TEXT,
+        (statusCode, response) => {
+        if (statusCode === 200) {
+            localStorage['token'] = response;
+        }
+        else {
+            startWrongEmailAnimation()
+        }
+    });
+    }
+
+function startWrongEmailAnimation() {
+    let emailField = document.querySelector('input[id=reg_user_email]');
+    incorrectInputAnimation(emailField);
+}

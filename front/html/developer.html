@@ -138,11 +138,12 @@
 <script src="../scripts/inputsValidity.js"></script>
 <script src="../scripts/common.js"></script>
 <script>
-    redirectIfNotAuthorized(); // Закомментить для дебага!!!!!!
-
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
     fetchFrom(Controllers.GRADES, (statusCode, json) => {
+        if (statusCode === 401)
+            location.href = '../html/authorization.html';
+
         grades = json.container;
 
         for (let grade of grades) {

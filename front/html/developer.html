@@ -16,7 +16,7 @@
 <body>
 <div class="c-form">
     <label class="cfl">Резюме</label>
-    <div class="c-form-block">
+    <form class="c-form-block" action="" id="resume_form">
         <span class="fbl">Личные данные</span>
         <div class="form__input__wide">
             <label for="user_initials" class="label__18B_500">ФИО</label>
@@ -54,7 +54,7 @@
             <input type="file" id="user_avatar" name="avatar" accept="image/png, image/jpeg"
                    onchange="encodeImage(this.files[0])" required>
         </div>
-    </div>
+    </form>
 
     <div class="c-form-block">
         <label class="fbl">Образование</label>
@@ -130,7 +130,7 @@
         </div>
     </div>
 
-    <button class="confirm c-button-h" id="form_submit" type="submit" onclick="SendResume()">Продолжить</button>
+    <button class="confirm c-button-h" id="form_submit" type="submit">Продолжить</button>
 </div>
 
 
@@ -141,8 +141,8 @@
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
     fetchFrom(Controllers.GRADES, (statusCode, json) => {
-        if (statusCode === 401)
-            location.href = '../html/authorization.html';
+        // if (statusCode === 401)
+        //     location.href = '../html/authorization.html';
 
         grades = json.container;
 
@@ -158,14 +158,10 @@
     const reader = new FileReader();
     let avatarBytes;
 
-    function encodeImage(file) {
-        reader.onloadend = function () {
-            console.log(reader.result);
-            avatarBytes = reader.result.split(',')[1];
-            console.log(avatarBytes);
-        }
-        reader.readAsDataURL(file);
-    }
+    document.getElementById("resume_form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        SendResume();
+    });
 
     function SendResume() {
         const grade = document.querySelector('select[id="user_prog_grade"]').value;

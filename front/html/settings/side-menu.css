@@ -2,13 +2,14 @@
     font-family: 'Roboto Flex', sans-serif;
     src: url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100;200;300;400;500;600;700;800;900;1000&display=swap');
 }
+
 .left__menu__container {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: absolute;
     width: 376px;
-    height: 800px;
+    height: 100%;
     left: 0px;
     top: 0px;
 

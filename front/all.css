@@ -922,20 +922,6 @@ input[type=radio] {
     pointer-events: none;
 }
 
-.label__24B_600 {
-    height: fit-content;
-
-    font-family: var(--font-family-roboto);
-    font-style: normal;
-    font-weight: 600;
-    font-size: 24px;
-
-    color: #eeeeee;
-    text-align: left;
-
-    pointer-events: none;
-}
-
 .label__20B_600 {
     height: fit-content;
 

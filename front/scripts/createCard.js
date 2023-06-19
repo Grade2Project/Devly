@@ -10,13 +10,13 @@ class CardHandler {
 }
 
 class VacancyCardHandler extends CardHandler {
-    async fetchCard(filter) {
+    async fetchCard() {
         let content = document.getElementById('template__vacancy_card').content.cloneNode(true);
 
         let card = document.createElement('div');
         card.classList.add('tinder__card');
 
-        return await sendJSON(filter, Controllers.SERVICE.NEXT_VACANCY, HTTPResponseType.JSON, (status, response) => {
+        return await sendJSON(null, Controllers.SERVICE.NEXT_VACANCY, HTTPResponseType.JSON, (status, response) => {
             let info = JSON.parse(response['info']);
             console.log(info);
 
@@ -48,14 +48,14 @@ class VacancyCardHandler extends CardHandler {
 }
 
 class UserCardHandler extends CardHandler {
-    async fetchCard(filter) {
+    async fetchCard() {
         let content = document.getElementById('template__user_card').content.cloneNode(true);
 
         let card = document.createElement('div');
         card.classList.add('tinder__card');
 
 
-        return await sendJSON(filter, Controllers.SERVICE.NEXT_USER, HTTPResponseType.JSON, (status, response) => {
+        return await sendJSON(null, Controllers.SERVICE.NEXT_USER, HTTPResponseType.JSON, (status, response) => {
             let info = JSON.parse(response['info']);
 
             content.getElementById('user_photo').setAttribute(
@@ -79,8 +79,9 @@ class UserCardHandler extends CardHandler {
             card.addEventListener('wheel', (we) => {
                 if (we.deltaY > 0) {
                     card.classList.add('ofy-scroll');
+                    card.scrollBy(0, 430);
                 }
-            });
+            }, {once: true});
 
             card.append(content);
             return Promise.resolve(card);
@@ -92,21 +93,11 @@ class UserCardHandler extends CardHandler {
 class CardCreator {
     constructor(handler) {
         this.cardHandler = handler;
-        this.filter = null;
-    }
-
-    async applyFilters(newFilter) {
-        this.filter = newFilter;
-        console.log(this.filter);
-        CardsStorage.fetchedCards = [];
-
-        removeCardsFromDoc();
-        await this.appendCardToDoc();
     }
 
     async fetchNCards(n) {
         for (let i = 0; i < n; i++) {
-            let a = await this.cardHandler.fetchCard(this.filter);
+            let a = await this.cardHandler.fetchCard();
             CardsStorage.fetchedCards.push(a);
         }
     }

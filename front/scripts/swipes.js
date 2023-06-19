@@ -22,18 +22,6 @@ function initCards(card, index) {
     tinderContainer.classList.add('loaded');
 }
 
-function removeCardFromDocWithDelay(card) {
-    setTimeout(() => {
-        card.remove();
-    }, 300);
-}
-
-function removeCardsFromDoc() {
-    for (let card of document.querySelectorAll('.tinder__card')) {
-        card.remove();
-    }
-}
-
 function setHammerOnSingleCard(el) {
     let hammertime = new Hammer(el);
 
@@ -71,14 +59,11 @@ function setHammerOnSingleCard(el) {
         if (keep) {
             event.target.style.transform = '';
         } else {
-            removeCardFromDocWithDelay(event.target);
-
             let endX = Math.max(Math.abs(event.velocityX) * moveOutWidth, moveOutWidth);
             let toX = event.deltaX > 0 ? endX : -endX;
-
             if (event.deltaX > 0) suggestLike();
             else suggestDislike();
-            environment.cardHandler.appendCardToDoc();
+            cardHandler.appendCardToDoc();
 
             let endY = Math.abs(event.velocityY) * moveOutWidth;
             let toY = event.deltaY > 0 ? endY : -endY;
@@ -89,6 +74,7 @@ function setHammerOnSingleCard(el) {
 
             event.target.style.transform = 'translate(' + toX + 'px, ' + (toY + event.deltaY) + 'px) rotate(' + rotate + 'deg)';
             initCards();
+
         }
     });
 }
@@ -99,10 +85,10 @@ function createButtonListener(love) {
         const moveOutWidth = document.body.clientWidth * 1.5;
 
         if (!cards.length) return false;
+
         let card = cards[0];
 
         card.classList.add('removed');
-        removeCardFromDocWithDelay(card);
 
         if (love) {
             card.style.transform = 'translate(' + moveOutWidth + 'px, -100px) rotate(-30deg)';
@@ -112,7 +98,7 @@ function createButtonListener(love) {
             suggestDislike();
         }
 
-        environment.cardHandler.appendCardToDoc();
+        cardHandler.appendCardToDoc();
 
         event.preventDefault();
     };

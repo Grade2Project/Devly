@@ -23,12 +23,6 @@
         </div>
 
         <div class="form__input__wide">
-            <label for="user_city" class="label__18B_500">Фото</label>
-            <input type="file" id="user_avatar" name="avatar" accept="image/png, image/jpeg"
-                   onchange="encodeImage(this.files[0])" required>
-        </div>
-
-        <div class="form__input__wide">
             <label for="user_position" class="label__18B_500">Должность</label>
             <input class="text__input" type="text" id="user_position">
         </div>
@@ -87,8 +81,8 @@
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
     fetchFrom(Controllers.GRADES, (statusCode, json) => {
-        // if (statusCode === 401)
-        //     location.href = '../../authorization.html';
+        if (statusCode === 401)
+            location.href = '../../authorization.html';
 
         grades = json.container;
 
@@ -100,9 +94,6 @@
             gradeSelect.appendChild(opt);
         }
     }, localStorage['token']);
-
-    const reader = new FileReader();
-    let avatarBytes;
 
     document.getElementById("create_vacancy_form").addEventListener("submit", (e) => {
         e.preventDefault();
@@ -127,13 +118,13 @@
             info: JSON.stringify(info),
             salary: dataRaw['user_salary'],
             grade: grade,
-            photo: avatarBytes,
+            photo: null,
             ProgrammingLanguage: dataRaw['user_languages'] // ToDo: case problem
         }
         sendJSON(data, Controllers.VACANCY.UPDATE, HTTPResponseType.TEXT,
             (statusCode) => {
                 if (statusCode === 200) {
-                    window.location.href = "Comp_vacancy.html";
+                    window.location.href = "vacancy.html";
                 }
             }, localStorage['token']);
     }

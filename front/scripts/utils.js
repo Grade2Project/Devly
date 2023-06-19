@@ -12,6 +12,10 @@ const Controllers = {
     SERVICE: {
         NEXT_USER: `${HOME}/next/user`,
         NEXT_VACANCY: `${HOME}/next/vacancy`
+    },
+    ABOUTME: {
+        USER: `${HOME}/aboutMe/user`,
+        COMPANY: `${HOME}/aboutMe/company`
     }
 };
 
@@ -56,9 +60,9 @@ async function sendJSON(data, controller, responseType, processResponse, authori
     xhr.send(json);
 }
 
-async function fetchFrom(controller, processResponse, authorizationToken, responseType = 'json') {
+async function fetchFrom(controller, processResponse, authorizationToken, responseType = 'json', async=true) {
     const xhr = new XMLHttpRequest()
-    xhr.open(HTTPMethods.GET, controller, true);
+    xhr.open(HTTPMethods.GET, controller, async);
 
     if (authorizationToken !== undefined) {
         xhr.setRequestHeader('Authorization', `Bearer ${authorizationToken}`);
@@ -83,6 +87,7 @@ function plural(n) {
 function encodeImage(file) {
     reader.onloadend = function () {
         avatarBytes = reader.result.split(',')[1];
+        console.log(avatarBytes);
     }
     reader.readAsDataURL(file);
 }

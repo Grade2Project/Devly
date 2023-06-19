@@ -141,8 +141,8 @@
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
     fetchFrom(Controllers.GRADES, (statusCode, json) => {
-        // if (statusCode === 401)
-        //     location.href = '../html/authorization.html';
+        if (statusCode === 401)
+            location.href = '../html/authorization.html';
 
         grades = json.container;
 
@@ -174,28 +174,28 @@
             'schedule': dataRaw['user_word_schedule'],
             'ext_info': dataRaw['user_ext_info'],
         }
+
         const data = {
-            login: localStorage['user_login'],
+            login: 'kek',
             name: dataRaw['user_initials'],
             birthDate: dataRaw['user_birthdate'],
             city: dataRaw['user_city'],
             info: JSON.stringify(info),
-            resumePath: "kekus", // ubrat' nahui
             grade: grade,
             experience: dataRaw['user_work_exp'],
             photo: avatarBytes,
-            email: localStorage['user_login'],
+            email: 'lol',
             phone: dataRaw['user_tel'],
-            imagePath: "esheOdin", // zachem?
             favoriteLanguages: dataRaw['user_languages'].split(' ')
         }
-        console.log(data);
+
         sendJSON(data, Controllers.RESUME.UPDATE, HTTPResponseType.TEXT,
             (statusCode) => {
                 if (statusCode === 200) {
                     alert('Резюме создано, вы восхитительны');
                     window.location.href = "swipe.html";
-                } else {
+                }
+                if (statusCode === 400) {
                     alert('BadKekus');
                 }
             }, localStorage['token']);

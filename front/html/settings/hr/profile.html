@@ -17,20 +17,16 @@
 
     <div class="settings__button_container">
         <div class="settings__button">
-            <label class="label">Профиль</label>
+            <a href="profile.html" class="label">Профиль</a>
         </div>
         <div class="settings__button">
-            <label class="label">Вакансии</label>
-        </div>
-        <div class="settings__button">
-            <label class="label">Безопасность</label>
+            <a href="vacancy.html" class="label">Вакансии</a>
         </div>
     </div>
 </div>
 <div class="profile__menu__container">
     <form class="photo__container">
         <div class="image__ava"></div>
-        <button class="change_ava" type="submit" >Изменить фотографию</button>
     </form>
     <form class="personal__data">
         <div>
@@ -53,8 +49,17 @@
             <label for="email">Email</label><br>
             <input id="email" type="text" value="" name="email">
         </div>
-        <button class="change__per__data" type="submit" >Отправить</button>
     </form>
 </div>
 </body>
+<script src="../../../scripts/utils.js"></script>
+<script>
+    fetchFrom(Controllers.ABOUTME.COMPANY, (statusCode, json) => {
+        if (statusCode === 403)
+            location.href = '../../authorization.html'
+
+        console.log(json);
+        document.getElementById('name').innerText = json['companyName'];
+    }, localStorage['token']);
+</script>
 </html>

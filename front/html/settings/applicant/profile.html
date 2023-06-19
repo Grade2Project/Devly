@@ -11,38 +11,45 @@
 <body>
 <div class="left__menu__container">
     <div class="left__menu__header__container">
-        <div class="profile__image"></div>
-        <span class="label__20B_600">Имя Фамилия</span>
+        <span id="name" class="label__20B_600">Имя Фамилия</span>
     </div>
 
     <div class="settings__button_container">
         <div class="settings__button">
-            <label class="label">Профиль</label>
+            <a href="../../swipe.html" class="label">Свайпы</a>
         </div>
+
         <div class="settings__button">
-            <label class="label">Резюме</label>
+            <a href="profile.html" class="label">Профиль</a>
         </div>
+
         <div class="settings__button">
-            <label class="label">Безопасность</label>
+            <a href="../../developer.html" class="label">Резюме</a>
         </div>
     </div>
 </div>
 <div class="profile__menu__container">
     <form class="photo__container">
         <div class="image__ava"></div>
-        <button class="change_ava" type="submit" >Изменить фотографию</button>
     </form>
-    <form class="personal__data">
+    <div class="personal__data">
         <div>
-            <label for="name">Имя</label><br>
-            <input id="name" type="text" value="" name="name">
+            <label for="name2">Имя</label><br>
+            <label id="name2"></label>
         </div>
         <div>
             <label for="email">Почта</label><br>
-            <input id="email" type="text" value="" name="email">
+            <label id="email"></label>
         </div>
-        <button class="change__per__data" type="submit" >Отправить</button>
-    </form>
+    </div>
 </div>
 </body>
+<script src="../../../scripts/utils.js"></script>
+<script>
+    fetchFrom(Controllers.ABOUTME.USER, (statusCode, json) => {
+        document.getElementById('email').innerText = json['login'];
+        document.getElementById('name').innerText = json['name'];
+        document.getElementById('name2').innerText = json['name'];
+    }, localStorage['token']);
+</script>
 </html>

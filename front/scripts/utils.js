@@ -8,6 +8,7 @@ const Controllers = {
     LANGS: `${HOME}/lang/get`,
     CITIES: `${HOME}/cities/similar`,
     RESUME: {UPDATE: `${HOME}/resume/update`},
+    VACANCY: {UPDATE: `${HOME}/vacancy/update`},
     SERVICE: {
         NEXT_USER: `${HOME}/next/user`,
         NEXT_VACANCY: `${HOME}/next/vacancy`
@@ -77,4 +78,11 @@ function getObjectFromIterable(iterable, mappingLambda) {
 function plural(n) {
     [choice1, choice2, choice3] = ['год', 'года', 'лет']
     return n + ' ' + ((((n % 10) === 1) && ((n % 100) !== 11)) ? (choice1) : (((((n % 10) >= 2) && ((n % 10) <= 4)) && (((n % 100) < 10) || ((n % 100) >= 20))) ? (choice2) : (choice3)))
+}
+
+function encodeImage(file) {
+    reader.onloadend = function () {
+        avatarBytes = reader.result.split(',')[1];
+    }
+    reader.readAsDataURL(file);
 }

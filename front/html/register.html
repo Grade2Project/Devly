@@ -52,6 +52,12 @@
                 <input class="text-input" id="reg_company_email" type="email" required>
             </div>
 
+            <div class="form__input__wide">
+                <label for="reg_company_avatar" class="label__18B_500">Фото</label>
+                <input type="file" id="reg_company_avatar" name="avatar" accept="image/png, image/jpeg"
+                       onchange="encodeImage(this.files[0])" required>
+            </div>
+
             <div class="input-line">
                 <label for="reg_company_password" class="l">Пароль</label>
                 <input class="text-input" id="reg_company_password" type="password" required>
@@ -76,10 +82,13 @@
 </script>
 <script src="../scripts/registration.js"></script>
 <script>
+    const reader = new FileReader();
+    let avatarBytes;
+
     document.getElementById("reg_form").addEventListener("submit", (e) => {
         e.preventDefault();
         currentTab === 0 ? registerClient() : registerHR()
-    })
+    });
 </script>
 </body>
 </html>

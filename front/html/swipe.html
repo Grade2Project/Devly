@@ -6,10 +6,9 @@
     <link rel="stylesheet" href="../all.css">
     <link rel="stylesheet" href="../styleguide.css">
     <link rel="stylesheet" href="../sellect.css">
-
     <link rel="stylesheet" href="buttons.css">
     <link rel="stylesheet" href="rangeSlider.css">
-    <link rel="stylesheet" href="settings/side-menu.css">
+    <link rel="stylesheet" href="side-menu.css">
 
     <style>
         body {
@@ -155,7 +154,7 @@
         localStorage['way'] === 'user' ? Controllers.ABOUTME.USER : Controllers.ABOUTME.COMPANY,
         function () {},
     )
-  
+
     document.getElementById('apply_filters').onclick = () => {
         environment.filtersHandler.applyFilters();
     };

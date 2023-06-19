@@ -27,21 +27,25 @@ function registerHR() {
         ti => [ti.id, ti.value]
     );
 
-    let controller = Controllers.REG.COMPANY;
+    const controller = Controllers.REG.COMPANY;
+    const info = {
+        inn: dataRaw['reg_company_inn'],
+        tel: dataRaw['reg_company_tel']
+    };
     let data = {
         companyName: dataRaw['reg_company_name'],
         companyEmail: dataRaw['reg_company_email'],
-        companyInfo: {
-            inn: dataRaw['reg_company_inn'],
-            tel: dataRaw['reg_company_tel']
-        },
-        password: dataRaw['reg_company_password']
+        companyInfo: JSON.stringify(info),
+        password: dataRaw['reg_company_password'],
+        photo: avatarBytes
     }
 
     sendJSON(data, controller, HTTPResponseType.TEXT,
         (statusCode, response) => {
         if (statusCode === 200) {
             localStorage['token'] = response;
+            localStorage['company_name'] = dataRaw['reg_company_name'];
+            location.href = '../html/settings/hr/create_vacancy.html'
         }
         else {
             startWrongEmailAnimation()

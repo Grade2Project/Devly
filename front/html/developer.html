@@ -14,9 +14,9 @@
     </style>
 </head>
 <body>
-<div class="c-form">
+<form action="" id="resume_form" class="c-form">
     <label class="cfl">Резюме</label>
-    <form class="c-form-block" action="" id="resume_form">
+    <div class="c-form-block">
         <span class="fbl">Личные данные</span>
         <div class="form__input__wide">
             <label for="user_initials" class="label__18B_500">ФИО</label>
@@ -50,11 +50,11 @@
         </div>
 
         <div class="form__input__wide">
-            <label for="user_city" class="label__18B_500">Твой кекус</label>
+            <label for="user_city" class="label__18B_500">Фото</label>
             <input type="file" id="user_avatar" name="avatar" accept="image/png, image/jpeg"
                    onchange="encodeImage(this.files[0])" required>
         </div>
-    </form>
+    </div>
 
     <div class="c-form-block">
         <label class="fbl">Образование</label>
@@ -131,7 +131,7 @@
     </div>
 
     <button class="confirm c-button-h" id="form_submit" type="submit">Продолжить</button>
-</div>
+</form>
 
 
 <script src="../scripts/utils.js"></script>
@@ -157,11 +157,6 @@
 
     const reader = new FileReader();
     let avatarBytes;
-
-    document.getElementById("resume_form").addEventListener("submit", (e) => {
-        e.preventDefault();
-        SendResume();
-    });
 
     function SendResume() {
         const grade = document.querySelector('select[id="user_prog_grade"]').value;
@@ -194,6 +189,7 @@
             imagePath: "esheOdin", // zachem?
             favoriteLanguages: dataRaw['user_languages'].split(' ')
         }
+        console.log(data);
         sendJSON(data, Controllers.RESUME.UPDATE, HTTPResponseType.TEXT,
             (statusCode) => {
                 if (statusCode === 200) {
@@ -204,6 +200,11 @@
                 }
             }, localStorage['token']);
     }
+
+    document.getElementById("resume_form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        SendResume();
+    });
 </script>
 </body>
 </html>

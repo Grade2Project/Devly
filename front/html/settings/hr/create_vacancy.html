@@ -121,16 +121,16 @@
             'desc': dataRaw['user_ext_info']
         }
         const data = {
-            login: localStorage['user_login'],
-            companyName: "privet",
+            login: localStorage['user_login'], // ToDo: Пиздец
+            companyName: localStorage['company_name'],
             city: dataRaw['user_city'],
             info: JSON.stringify(info),
             salary: dataRaw['user_salary'],
             grade: grade,
             photo: avatarBytes,
-            favoriteLanguages: dataRaw['user_languages']
+            ProgrammingLanguage: dataRaw['user_languages'] // ToDo: case problem
         }
-        sendJSON(data, Controllers.RESUME.UPDATE, HTTPResponseType.TEXT,
+        sendJSON(data, Controllers.VACANCY.UPDATE, HTTPResponseType.TEXT,
             (statusCode) => {
                 if (statusCode === 200) {
                     window.location.href = "Comp_vacancy.html";

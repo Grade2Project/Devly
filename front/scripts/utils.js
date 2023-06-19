@@ -83,6 +83,7 @@ function plural(n) {
 function encodeImage(file) {
     reader.onloadend = function () {
         avatarBytes = reader.result.split(',')[1];
+        console.log(avatarBytes);
     }
     reader.readAsDataURL(file);
 }

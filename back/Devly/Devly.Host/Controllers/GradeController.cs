@@ -21,7 +21,7 @@ public class GradeController : Controller
     [HttpGet, Route("get")]
     public Task<ArrayDto<string>> GetGrades()
     {
-        var a = HttpContext.User.Claims.ToList();
+        var _ = HttpContext.User.Claims.ToList();
         return Task.FromResult(new ArrayDto<string>(_grades));
     }
 }

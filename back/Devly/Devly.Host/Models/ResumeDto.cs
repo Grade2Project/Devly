@@ -11,7 +11,7 @@ public class ResumeDto
     public string Info { get; init; }
     public string Grade { get; init; }
     public byte[] Photo { get; init; }
-    public string Email { get; init; }
+    public string Email { get; set; }
     public string Phone { get; init; }
     public string[] FavoriteLanguages { get; init; }
 }

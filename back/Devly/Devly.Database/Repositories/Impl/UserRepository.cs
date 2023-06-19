@@ -27,6 +27,7 @@ internal class UserRepository : IUserRepository
 
     public async Task<User?> FindUserByLoginAsync(string login)
     {
+        var kek = await _repository.FindAsync<User>(u => u.Login == login);
         return await _repository.FindAsync<User>(u => u.Login == login, CancellationToken.None, 
             user => user.Contact, user => user.Grade, user => user.FavoriteLanguages).ConfigureAwait(false);
     }

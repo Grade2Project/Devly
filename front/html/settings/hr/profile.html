@@ -17,7 +17,7 @@
 
     <div class="settings__button_container">
         <div class="settings__button">
-            <a href="vacancy.html" class="label">Профиль</a>
+            <a href="profile.html" class="label">Профиль</a>
         </div>
         <div class="settings__button">
             <a href="vacancy.html" class="label">Вакансии</a>
@@ -52,4 +52,14 @@
     </form>
 </div>
 </body>
+<script src="../../../scripts/utils.js"></script>
+<script>
+    fetchFrom(Controllers.ABOUTME.COMPANY, (statusCode, json) => {
+        if (statusCode === 403)
+            location.href = '../../authorization.html'
+
+        console.log(json);
+        document.getElementById('name').innerText = json['companyName'];
+    }, localStorage['token']);
+</script>
 </html>

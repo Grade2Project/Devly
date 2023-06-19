@@ -47,7 +47,7 @@ public class ServiceController : Controller
         _favoriteVacancies = favoriteVacancies;
         _cities = cities;
     }
-    
+
     [Authorize(Policy = "CompanyPolicy")]
     [HttpGet, Route("user/random")]
     public async Task<ResumeDto?> GetNextUserRandom()

@@ -81,8 +81,8 @@
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
     fetchFrom(Controllers.GRADES, (statusCode, json) => {
-        // if (statusCode === 401)
-        //     location.href = '../../authorization.html';
+        if (statusCode === 401)
+            location.href = '../../authorization.html';
 
         grades = json.container;
 

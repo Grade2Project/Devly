@@ -141,8 +141,8 @@
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
     fetchFrom(Controllers.GRADES, (statusCode, json) => {
-        // if (statusCode === 401)
-        //     location.href = '../html/authorization.html';
+        if (statusCode === 401)
+            location.href = '../html/authorization.html';
 
         grades = json.container;
 
@@ -195,7 +195,8 @@
                 if (statusCode === 200) {
                     alert('Резюме создано, вы восхитительны');
                     window.location.href = "swipe.html";
-                } else {
+                }
+                if (statusCode === 400) {
                     alert('BadKekus');
                 }
             }, localStorage['token']);

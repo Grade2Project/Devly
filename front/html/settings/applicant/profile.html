@@ -11,6 +11,7 @@
 <body>
 <div class="left__menu__container">
     <div class="left__menu__header__container">
+        <img id="image" class="profile__image" src="">
         <span id="name" class="label__20B_600">Имя Фамилия</span>
     </div>
 
@@ -29,27 +30,28 @@
     </div>
 </div>
 <div class="profile__menu__container">
-    <form class="photo__container">
-        <div class="image__ava"></div>
-    </form>
+    <div class="photo__container">
+        <img src="" id="image2" class="image__ava">
+    </div>
     <div class="personal__data">
         <div>
             <label for="name2">Имя</label><br>
-            <label id="name2"></label>
+            <span id="name2"></span>
         </div>
         <div>
             <label for="email">Почта</label><br>
-            <label id="email"></label>
+            <span id="email"></span>
         </div>
     </div>
 </div>
 </body>
 <script src="../../../scripts/utils.js"></script>
+<script src="../../../scripts/sideMenu.js"></script>
 <script>
-    fetchFrom(Controllers.ABOUTME.USER, (statusCode, json) => {
+    fillSideMenu(Controllers.ABOUTME.USER, (json) => {
         document.getElementById('email').innerText = json['login'];
-        document.getElementById('name').innerText = json['name'];
         document.getElementById('name2').innerText = json['name'];
-    }, localStorage['token']);
+        document.getElementById('image2').src = json['photo'];
+    });
 </script>
 </html>

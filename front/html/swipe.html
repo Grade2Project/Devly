@@ -96,8 +96,8 @@
 
     <div class="left__menu__container">
         <div class="left__menu__header__container">
-            <a class="profile__image" href="settings/hr/profile.html"></a>
-            <span class="label__20B_600">Оля Контур</span>
+            <img id="image" class="profile__image" src="">
+            <span id="name" class="label__20B_600">Оля Контур</span>
         </div>
         <div class="content__container">
             <div>
@@ -139,9 +139,15 @@
 <script src="../scripts/utils.js"></script>
 <script src="../scripts/createCard.js"></script>
 <script src="../scripts/swipes.js"></script>
+<script src="../scripts/sideMenu.js"></script>
 <script src="../scripts/sellect.js-master/src/sellect.js"></script>
 <script>
     let token = localStorage.getItem('token');
+
+    fillSideMenu(
+        localStorage['way'] === 'user' ? Controllers.ABOUTME.USER : Controllers.ABOUTME.COMPANY,
+        function () {},
+    )
 
     fetchFrom(Controllers.GRADES, (statusCode, response) => {
         if (statusCode === 401)
@@ -153,7 +159,7 @@
         });
 
         gradesFilter.init();
-    }, localStorage['token']);
+    }, localStorage['token']); //  ToDo: В отдельную функцию
 
     fetchFrom(Controllers.LANGS, (statusCode, response) => {
         let langs = response.container;

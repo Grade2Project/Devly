@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="../../../all.css">
+    <link rel="stylesheet" href="../../../styleguide.css">
+
+    <style>
+        body {
+            background: var(--color-background);
+        }
+    </style>
+</head>
+<body>
+<form action="" class="c-form" id="create_vacancy_form">
+    <label class="cfl">Вакансия</label>
+    <div class="c-form-block">
+        <div class="form__input__wide">
+            <label for="user_city" class="label__18B_500">Город</label>
+            <input class="text__input" type="text" id="user_city" required>
+        </div>
+
+        <div class="form__input__wide">
+            <label for="user_position" class="label__18B_500">Должность</label>
+            <input class="text__input" type="text" id="user_position">
+        </div>
+
+        <div class="form__input__wide">
+            <label for="user_grad_level" class="label__18B_500">Уровень образования</label>
+            <input class="text__input" type="text" id="user_grad_level" required>
+        </div>
+
+        <div class="form__input__wide">
+            <label for="user_work_exp" class="label__18B_500">Стаж работы</label>
+            <input class="text__input" type="number" maxlength="3" id="user_work_exp" required>
+        </div>
+
+        <div class="form__input__wide">
+            <label for="user_prog_grade" class="label__18B_500">Грейд</label>
+            <select id="user_prog_grade" class="text__input"
+                    style="height: fit-content; padding: 0.55rem 0.75rem; margin-left: -9px" required>
+            </select>
+        </div>
+
+        <div class="form__input__wide">
+            <label for="user_languages" class="label__18B_500">Языки программирования</label>
+            <input class="text__input" type="text" id="user_languages">
+        </div>
+
+        <div class="form__input__wide">
+            <label for="user_salary" class="label__18B_500">Зарплата</label>
+            <input class="text__input" type="text" id="user_salary">
+        </div>
+
+        <div class="form__input__wide">
+            <label for="user_word_schedule" class="label__18B_500">График работы</label>
+            <select id="user_word_schedule" class="text__input"
+                    style="height: fit-content; padding: 0.55rem 0.75rem; margin-left: -9px" required>
+                <option value="Any">Любой</option>
+                <option value="FT">Полный рабочий день</option>
+                <option value="PT">Неполный рабочий день</option>
+                <option value="FT">Свободный график</option>
+            </select>
+        </div>
+
+        <div class="form__input__wide">
+            <label for="user_ext_info" class="label__18B_500">Описание вакансию</label>
+            <textarea class="text__input" id="user_ext_info" style="height: fit-content"></textarea>
+        </div>
+    </div>
+
+    <button class="confirm c-button-h" id="form_submit" type="submit">Продолжить</button>
+</form>
+
+
+<script src="../../../scripts/utils.js"></script>
+<script src="../../../scripts/common.js"></script>
+<script>
+    const gradeSelect = document.getElementById('user_prog_grade');
+    let grades;
+    fetchFrom(Controllers.GRADES, (statusCode, json) => {
+        if (statusCode === 401)
+            location.href = '../../authorization.html';
+
+        grades = json.container;
+
+        for (let grade of grades) {
+            let opt = document.createElement('option');
+            opt.value = grade;
+            opt.innerHTML = grade;
+
+            gradeSelect.appendChild(opt);
+        }
+    }, localStorage['token']);
+
+    document.getElementById("create_vacancy_form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        SendVacancy();
+    });
+
+    function SendVacancy() {
+        const grade = document.querySelector('select[id="user_prog_grade"]').value;
+        const dataRaw = getObjectFromIterable(
+            document.querySelectorAll('input[id^="user_"]'),
+            ti => [ti.id, ti.value]);
+        const info = {
+            'edu_grad': dataRaw['user_grad_level'],
+            'position': dataRaw['user_position'],
+            'schedule': dataRaw['user_word_schedule'],
+            'desc': dataRaw['user_ext_info']
+        }
+        const data = {
+            login: localStorage['user_login'], // ToDo: Пиздец
+            companyName: localStorage['company_name'],
+            city: dataRaw['user_city'],
+            info: JSON.stringify(info),
+            salary: dataRaw['user_salary'],
+            grade: grade,
+            photo: null,
+            ProgrammingLanguage: dataRaw['user_languages'] // ToDo: case problem
+        }
+        sendJSON(data, Controllers.VACANCY.UPDATE, HTTPResponseType.TEXT,
+            (statusCode) => {
+                if (statusCode === 200) {
+                    window.location.href = "vacancy.html";
+                }
+            }, localStorage['token']);
+    }
+</script>
+</body>
+</html>

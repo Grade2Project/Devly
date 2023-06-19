@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../../all.css">
+    <link rel="stylesheet" href="../../../styleguide.css">
+    <link rel="stylesheet" href="../side-menu.css">
+    <link rel="stylesheet" href="../profile.css">
+</head>
+<body>
+<div class="left__menu__container">
+    <div class="left__menu__header__container">
+        <img id="image" class="profile__image" src="">
+        <span id="name" class="label__20B_600">Имя Фамилия</span>
+    </div>
+
+    <div class="settings__button_container">
+        <div class="settings__button">
+            <a href="../../swipe.html" class="label">Свайпы</a>
+        </div>
+
+        <div class="settings__button">
+            <a href="profile.html" class="label">Профиль</a>
+        </div>
+
+        <div class="settings__button">
+            <a href="../../developer.html" class="label">Резюме</a>
+        </div>
+    </div>
+</div>
+<div class="profile__menu__container">
+    <div class="photo__container">
+        <img src="" id="image2" class="image__ava">
+    </div>
+    <div class="personal__data">
+        <div>
+            <label for="name2">Имя</label><br>
+            <span id="name2"></span>
+        </div>
+        <div>
+            <label for="email">Почта</label><br>
+            <span id="email"></span>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../../scripts/utils.js"></script>
+<script src="../../../scripts/sideMenu.js"></script>
+<script>
+    fillSideMenu(Controllers.ABOUTME.USER, (json) => {
+        document.getElementById('email').innerText = json['login'];
+        document.getElementById('name2').innerText = json['name'];
+        document.getElementById('image2').src = json['photo'];
+    });
+</script>
+</html>

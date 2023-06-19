@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="form__container">
-    <div class="form__body__FS">
+    <form class="form__body__FS" action=""  id="reg_form">
         <span class="h1__central_46">Регистрация</span>
         <div class="tabs__container">
             <a class="tabs__tab" onclick="showTab(0)"><span class="tab__inner">Пользователь</span></a>
@@ -52,26 +52,43 @@
                 <input class="text-input" id="reg_company_email" type="email" required>
             </div>
 
+            <div class="form__input__wide">
+                <label for="reg_company_avatar" class="label__18B_500">Фото</label>
+                <input type="file" id="reg_company_avatar" name="avatar" accept="image/png, image/jpeg"
+                       onchange="encodeImage(this.files[0])" required>
+            </div>
+
             <div class="input-line">
                 <label for="reg_company_password" class="l">Пароль</label>
                 <input class="text-input" id="reg_company_password" type="password" required>
             </div>
         </div>
 
-        <button class="button__confirm color-red" type="submit" id="reg_submit"
-                onclick="currentTab === 0 ? registerClient() : registerHR()">
+        <button class="button__confirm color-red" type="submit" id="reg_submit">
             <span class="button__confirm_inner">Зарегистрироваться</span>
         </button>
-    </div>
+    </form>
+
+    <a class="letter__17B_500" href="authorization.html" style="margin: 0 auto">Войти ᐳ</a>
 </div>
 <script src="../scripts/tabs.js"></script>
 <script src="../scripts/utils.js"></script>
 <script src="../scripts/inputsValidity.js"></script>
+<script src="../scripts/animations.js"></script>
 <script>
     const userPassRepetition = document.getElementById('reg_user_password_repeat');
     const userPass = document.getElementById('reg_user_password');
     userPassRepetition.checkValidity = () => userPassRepetition.value === userPass.value;
 </script>
 <script src="../scripts/registration.js"></script>
+<script>
+    const reader = new FileReader();
+    let avatarBytes;
+
+    document.getElementById("reg_form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        currentTab === 0 ? registerClient() : registerHR()
+    });
+</script>
 </body>
 </html>

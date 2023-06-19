@@ -57,6 +57,7 @@ public class ResumeController : Controller
     {
         var tokenData = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email");
         resumeDto.Login = tokenData!.Value;
+        resumeDto.Email = tokenData!.Value;
         
         try
         {

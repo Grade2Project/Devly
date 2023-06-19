@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-<div class="c-form">
+<form action="" id="resume_form" class="c-form">
     <label class="cfl">Резюме</label>
     <div class="c-form-block">
         <span class="fbl">Личные данные</span>
@@ -50,7 +50,7 @@
         </div>
 
         <div class="form__input__wide">
-            <label for="user_city" class="label__18B_500">Твой кекус</label>
+            <label for="user_city" class="label__18B_500">Фото</label>
             <input type="file" id="user_avatar" name="avatar" accept="image/png, image/jpeg"
                    onchange="encodeImage(this.files[0])" required>
         </div>
@@ -130,19 +130,20 @@
         </div>
     </div>
 
-    <button class="confirm c-button-h" id="form_submit" type="submit" onclick="SendResume()">Продолжить</button>
-</div>
+    <button class="confirm c-button-h" id="form_submit" type="submit">Продолжить</button>
+</form>
 
 
 <script src="../scripts/utils.js"></script>
 <script src="../scripts/inputsValidity.js"></script>
 <script src="../scripts/common.js"></script>
 <script>
-    redirectIfNotAuthorized(); // Закомментить для дебага!!!!!!
-
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
     fetchFrom(Controllers.GRADES, (statusCode, json) => {
+        if (statusCode === 401)
+            location.href = '../html/authorization.html';
+
         grades = json.container;
 
         for (let grade of grades) {
@@ -156,15 +157,6 @@
 
     const reader = new FileReader();
     let avatarBytes;
-
-    function encodeImage(file) {
-        reader.onloadend = function () {
-            console.log(reader.result);
-            avatarBytes = reader.result.split(',')[1];
-            console.log(avatarBytes);
-        }
-        reader.readAsDataURL(file);
-    }
 
     function SendResume() {
         const grade = document.querySelector('select[id="user_prog_grade"]').value;
@@ -182,31 +174,37 @@
             'schedule': dataRaw['user_word_schedule'],
             'ext_info': dataRaw['user_ext_info'],
         }
+
         const data = {
-            login: localStorage['user_login'],
+            login: 'kek',
             name: dataRaw['user_initials'],
             birthDate: dataRaw['user_birthdate'],
             city: dataRaw['user_city'],
             info: JSON.stringify(info),
-            resumePath: "kekus", // ubrat' nahui
             grade: grade,
             experience: dataRaw['user_work_exp'],
             photo: avatarBytes,
-            email: localStorage['user_login'],
+            email: 'lol',
             phone: dataRaw['user_tel'],
-            imagePath: "esheOdin", // zachem?
             favoriteLanguages: dataRaw['user_languages'].split(' ')
         }
+
         sendJSON(data, Controllers.RESUME.UPDATE, HTTPResponseType.TEXT,
             (statusCode) => {
                 if (statusCode === 200) {
                     alert('Резюме создано, вы восхитительны');
                     window.location.href = "swipe.html";
-                } else {
+                }
+                if (statusCode === 400) {
                     alert('BadKekus');
                 }
             }, localStorage['token']);
     }
+
+    document.getElementById("resume_form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        SendResume();
+    });
 </script>
 </body>
 </html>

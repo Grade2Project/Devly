@@ -27,6 +27,7 @@ internal class UserRepository : IUserRepository
 
     public async Task<User?> FindUserByLoginAsync(string login)
     {
+        var kek = await _repository.FindAsync<User>(u => u.Login == login);
         return await _repository.FindAsync<User>(u => u.Login == login, CancellationToken.None, 
             user => user.Contact, user => user.Grade, user => user.FavoriteLanguages).ConfigureAwait(false);
     }
@@ -53,7 +54,7 @@ internal class UserRepository : IUserRepository
     {
         return await _repository.FindAllAsync<User>(user =>
                 (except == null || !except.Contains(user.Login)) &&
-            (userFilter.City == default || user.City.Name == userFilter.City) &&
+            (userFilter.Cities == default || userFilter.Cities.Contains(user.City.Name)) &&
             (userFilter.ExperienceFrom == 0 || user.Experience >= userFilter.ExperienceFrom) &&
             (userFilter.UserName == default || user.Name.Contains(userFilter.UserName)) &&
             (userFilter.GradeIds == default || userFilter.GradeIds.Contains(user.GradeId)) &&

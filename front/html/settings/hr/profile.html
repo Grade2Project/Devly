@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../../all.css">
+    <link rel="stylesheet" href="../../../styleguide.css">
+    <link rel="stylesheet" href="../side-menu.css">
+    <link rel="stylesheet" href="../profile.css">
+</head>
+<body>
+<div class="left__menu__container">
+    <div class="left__menu__header__container">
+        <img id="image" src="" class="profile__image">
+        <span id="name" class="label__20B_600">Имя Фамилия</span>
+    </div>
+
+    <div class="settings__button_container">
+        <div class="settings__button">
+            <a href="profile.html" class="label">Профиль</a>
+        </div>
+        <div class="settings__button">
+            <a href="vacancy.html" class="label">Вакансии</a>
+        </div>
+        <div class="settings__button">
+            <a href="../../../html/swipe.html" class="label">Свайпы</a>
+        </div>
+    </div>
+</div>
+<div class="profile__menu__container">
+    <div class="photo__container">
+        <img src="" id="image2" class="image__ava">
+    </div>
+    <form class="personal__data">
+        <div>
+            <label for="name2">Имя</label><br>
+            <span id="name2"></span>
+        </div>
+        <div>
+            <label for="inn">ИНН</label><br>
+            <span id="inn"></span>
+        </div>
+        <div>
+            <label for="phone">Телефон</label><br>
+            <span id="phone"></span>
+        </div>
+    </form>
+</div>
+</body>
+<script src="../../../scripts/sideMenu.js"></script>
+<script src="../../../scripts/utils.js"></script>
+<script>
+    fillSideMenu(Controllers.ABOUTME.COMPANY, (json, info) => {
+        document.getElementById('name2').innerText = json['companyName'];
+        document.getElementById('inn').innerText = info['inn'];
+        document.getElementById('phone').innerText = info['tel'];
+        document.getElementById('image2').src = json['photo'];
+    });
+</script>
+</html>

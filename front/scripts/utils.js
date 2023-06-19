@@ -8,9 +8,14 @@ const Controllers = {
     LANGS: `${HOME}/lang/get`,
     CITIES: `${HOME}/cities/similar`,
     RESUME: {UPDATE: `${HOME}/resume/update`},
+    VACANCY: {UPDATE: `${HOME}/vacancy/update`},
     SERVICE: {
         NEXT_USER: `${HOME}/next/user`,
         NEXT_VACANCY: `${HOME}/next/vacancy`
+    },
+    ABOUTME: {
+        USER: `${HOME}/aboutMe/user`,
+        COMPANY: `${HOME}/aboutMe/company`
     }
 };
 
@@ -32,12 +37,6 @@ XHR.addEventListener('error', function (event) {
     alert('Oops! Something went wrong.');
 });
 
-function getInputValueById(id) {
-    const candidate = document.getElementById(id);
-
-    return candidate.value;
-}
-
 async function sendJSON(data, controller, responseType, processResponse, authorizationToken) {
     const json = JSON.stringify(data);
 
@@ -55,9 +54,9 @@ async function sendJSON(data, controller, responseType, processResponse, authori
     xhr.send(json);
 }
 
-async function fetchFrom(controller, processResponse, authorizationToken, responseType = 'json') {
+async function fetchFrom(controller, processResponse, authorizationToken, responseType = 'json', async=true) {
     const xhr = new XMLHttpRequest()
-    xhr.open(HTTPMethods.GET, controller, true);
+    xhr.open(HTTPMethods.GET, controller, async);
 
     if (authorizationToken !== undefined) {
         xhr.setRequestHeader('Authorization', `Bearer ${authorizationToken}`);
@@ -77,4 +76,12 @@ function getObjectFromIterable(iterable, mappingLambda) {
 function plural(n) {
     [choice1, choice2, choice3] = ['год', 'года', 'лет']
     return n + ' ' + ((((n % 10) === 1) && ((n % 100) !== 11)) ? (choice1) : (((((n % 10) >= 2) && ((n % 10) <= 4)) && (((n % 100) < 10) || ((n % 100) >= 20))) ? (choice2) : (choice3)))
+}
+
+function encodeImage(file) {
+    reader.onloadend = function () {
+        avatarBytes = reader.result.split(',')[1];
+        console.log(avatarBytes);
+    }
+    reader.readAsDataURL(file);
 }

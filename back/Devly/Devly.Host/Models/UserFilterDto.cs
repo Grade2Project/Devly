@@ -7,7 +7,7 @@ public class UserFilterDto
     public string[]? Grades { get; set; }
     public string[]? Languages { get; set; }
     public string? UserName { get; set; }
-    public string? City { get; set; }
+    public string[]? Cities { get; set; }
     public int ExperienceFrom { get; set; }
 
     public override int GetHashCode()

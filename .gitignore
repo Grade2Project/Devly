@@ -133,3 +133,6 @@ $RECYCLE.BIN/
 .DS_Store
 
 _NCrunch*
+
+back/Devly/photos/users/*.txt
+back/Devly/photos/companies/*.txt

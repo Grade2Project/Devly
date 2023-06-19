@@ -1,0 +1,131 @@
+.profile__menu__container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 50px 0 0 50px;
+    position: absolute;
+    width: 1065px;
+    height: 94%;
+    left: 376px;
+    top: 0px;
+
+    background: #DDDDDD;
+}
+
+.profile__menu__container .photo__container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top:50px;
+    width: 454px;
+    height: 100%;
+    gap: 60px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.photo__container .image__ava{
+    display: flex;
+    top: 40px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    height: 350px;
+    border-radius: 170px;
+}
+
+.photo__container .change_ava{
+    width: 243px;
+    height: 22px;
+    background: #A6A3A3;
+    border-radius: 8px;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-family-roboto);
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 22px;
+    display: flex;
+    letter-spacing: -0.02em;
+    color: #3C3C3C;
+}
+.photo__container .change_ava:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);}
+
+.photo__container .change_ava:focus{
+    color: #A6A3A3;
+    background: #3C3C3C;
+}
+
+
+.personal__data{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 611px;
+    height: 801px;
+}
+.personal__data label{
+    width: 46px;
+    height: 28px;
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.02em;
+
+    color: #3C3C3C;
+}
+
+.personal__data div{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 4px 20px;
+    gap: 5px;
+
+    width: 611px;
+    height: 100px;
+}
+
+.personal__data input{
+    width: 571px;
+    height: 40px;
+    color: #3C3C3C;
+    font-size: 30px;
+    background: #FFFFFF;
+    border: 3px solid #DDDDDD;
+}
+
+.change__per__data{
+    width: 242px;
+    height: 62px;
+    background: #A6A3A3;
+    border-radius: 70px;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-family-roboto);
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 22px;
+    display: flex;
+    letter-spacing: -0.02em;
+    color: #3C3C3C;
+}
+.change__per__data :hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);}
+
+.change__per__data:focus{
+    background: #3C3C3C;
+    color: #A6A3A3;
+}
+

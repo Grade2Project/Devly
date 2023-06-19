@@ -34,8 +34,6 @@
     width: 350px;
     height: 350px;
     border-radius: 170px;
-    background: linear-gradient(157.02deg, #087E8B 14.89%, #FF5A5F 112.59%);;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.25));
 }
 
 .photo__container .change_ava{

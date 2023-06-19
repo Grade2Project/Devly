@@ -11,8 +11,8 @@
 <body>
 <div class="left__menu__container">
     <div class="left__menu__header__container">
-        <div class="profile__image"></div>
-        <span class="label__20B_600">Имя Фамилия</span>
+        <img id="image" class="profile__image" src="">
+        <span class="label__20B_600" id="name">Имя Фамилия</span>
     </div>
 
     <div class="settings__button_container">
@@ -22,11 +22,14 @@
         <div class="settings__button">
             <a href="vacancy.html" class="label">Вакансии</a>
         </div>
+        <div class="settings__button">
+            <a href="../../../html/swipe.html" class="label">Свайпы</a>
+        </div>
     </div>
 </div>
 <div class="vacancy__menu__container">
     <span class="label__vacancy">Вакансии</span>
-    <form class="change__vacancy">
+    <form class="change__vacancy" action="create_vacancy.html">
         <button class="vacancy" type="button">Тут будет вакансия</button>
         <button class="create__new__vacancy" type="submit">Добавить вакансию</button>
     </form>
@@ -38,6 +41,14 @@
         </form>
     </div>
 </div>
-
 </body>
+<script src="../../../scripts/sideMenu.js"></script>
+<script src="../../../scripts/utils.js"></script>
+<script>
+    fillSideMenu(Controllers.ABOUTME.COMPANY, (json) => {
+        for (let vacancy of json['vacancies']) {
+            // ToDo: Подумать как сюда компанию пихать
+        }
+    });
+</script>
 </html>

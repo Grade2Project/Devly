@@ -37,12 +37,6 @@ XHR.addEventListener('error', function (event) {
     alert('Oops! Something went wrong.');
 });
 
-function getInputValueById(id) {
-    const candidate = document.getElementById(id);
-
-    return candidate.value;
-}
-
 async function sendJSON(data, controller, responseType, processResponse, authorizationToken) {
     const json = JSON.stringify(data);
 

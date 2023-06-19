@@ -18,7 +18,7 @@ function authorize() {
         HTTPResponseType.TEXT, (statusCode, response) => {
             if (statusCode === 200) {
                 localStorage['token'] = response;
-                localStorage['way'] = currentTab === 0 ? 'user' : 'company';
+                localStorage['way'] = currentTab === 0 ? 'user' : 'company'; // ToDo: нах way, давай из jwt
                 window.location.href = '../html/swipe.html';
             } else {
                 startWrongPasswordAnimation();

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../../../styleguide.css">
     <link rel="stylesheet" href="../../side-menu.css">
     <link rel="stylesheet" href="../alignment.css">
-    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="vacancies.css">
 </head>
 <body>
 <div class="h__split__container">
@@ -16,7 +16,7 @@
             <div class="header__container">
                 <img id="image_mini" class="profile__image" src="" alt="">
                 <div class="text__container">
-                    <h1 id=name__side></h1>
+                    <h1 id="name__side"></h1>
                     <h2>Ваш аккаунт компании</h2>
                 </div>
             </div>
@@ -24,31 +24,22 @@
                 <div class="__button" id="button__profile" onclick="redirectTo('profile.html')">
                     <img src="../../../svg/profile_icon.svg"><span>Профиль</span>
                 </div>
-                <div class="__button" id="button__vacancies" onclick="redirectTo('vacancies.html')">
+                <div class="__button" id="button__vacancies" onclick="redirectTo('vacancy.html')">
                     <img src="../../../svg/vacancy_list_icon.svg"><span>Ваши вакансии</span>
                 </div>
             </div>
         </div>
     </div>
     <div class="__inner__right">
-        <div class="info__container">
-            <h1>Профиль</h1>
-            <div class="__split">
-                <div class="__container">
-                    <div class="input-line">
-                        <label for="name" class="l">Название компании</label>
-                        <input class="text-input" type="text" id="name" readonly>
-                    </div>
-                    <div class="input-line">
-                        <label for="inn" class="l">ИНН</label>
-                        <input class="text-input" type="text" id="inn" readonly>
-                    </div>
-                    <div class="input-line">
-                        <label for="phone" class="l">Телефон</label>
-                        <input class="text-input" type="text" id="phone" readonly>
-                    </div>
+        <div class="__holder">
+            <h1>Управление вакансиями</h1>
+            <div class="__wrapper">
+                <div class="vacancies__picker">
+                    <span class="__mock__no__vacancies">Упс, кажется у вас еще нет ни одной вакансии :(</span>
                 </div>
-                <img class="profile__image__large" id="profile_image_large" src="" alt="">
+                <div class="button__add">
+                    <img src="../../../svg/vacancy_add_icon.svg"><span>Добавить вакансию</span>
+                </div>
             </div>
         </div>
     </div>
@@ -57,17 +48,17 @@
 <script src="../../../scripts/sideMenu.js"></script>
 <script src="../../../scripts/utils.js"></script>
 <script>
-    document.getElementById('button__profile').classList.add('hovered');
+    document.getElementById('button__vacancies').classList.add('hovered');
 
-    fillSideMenu(Controllers.ABOUTME.COMPANY, (json, info) => {
+    fillSideMenu(Controllers.ABOUTME.COMPANY, (json) => {
         document.getElementById('name__side').innerText = json['companyName'].length > 22
             ? json['companyName'].slice(0, 22) + '...'
             : json['companyName'];
-        document.getElementById('inn').value = info['inn'];
-        document.getElementById('name').value = json['companyName'] || json['name'];
-        document.getElementById('phone').value = info['tel'];
-        document.getElementById('profile_image_large').src = json['photo'];
         document.getElementById('image_mini').src = json['photo'];
+
+        for (let vacancy of json['vacancies']) {
+            // ToDo: Подумать как сюда компанию пихать
+        }
     });
 </script>
 </html>

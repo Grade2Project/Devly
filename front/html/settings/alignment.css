@@ -1,0 +1,156 @@
+body {
+    background-color: whitesmoke;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+
+    font-family: var(--font-family-roboto);
+}
+
+@media (min-width: 0px) and (max-width: 1300px) {
+    .h__split__container .__inner__left {
+        min-width: 300px;
+        max-width: 300px;
+        min-height: 100vh;
+
+        padding-left: 10px;
+    }
+}
+
+
+@media (min-width: 1300px) {
+    .h__split__container .__inner__left {
+        min-width: 300px;
+        max-width: 300px;
+        min-height: 100vh;
+
+        padding-left: 100px;
+    }
+}
+
+.h__split__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    margin: 0;
+    padding: 0;
+
+    gap: 25px;
+
+    min-width: 100dvmax;
+    min-height: 100dvmax;
+}
+
+.h__split__container .__inner__right {
+    min-width: 1000px;
+    min-height: 100vh;
+}
+
+.h__split__container .__inner__left .settings__container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    width: 100%;
+    height: 100%;
+
+    padding-top: 30px;
+}
+
+.settings__container .header__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    width: 100%;
+    height: fit-content;
+
+    gap: 15px;
+}
+
+.header__container .text__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2px;
+
+
+    font-family: var(--font-family-roboto);
+    margin: auto 0;
+}
+
+.text__container h1 {
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 500;
+
+    white-space: -moz-pre-wrap;
+
+    color: var(--color-black);
+    margin: 0;
+}
+
+.text__container h2 {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+
+    color: var(--color-light-black);
+    margin: 0;
+}
+
+.settings__container .buttons__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    width: 100%;
+    height: fit-content;
+
+    gap: 0;
+
+    font-family: var(--font-family-roboto);
+}
+
+.buttons__container img {
+    width: 16px;
+    height: 16px;
+
+    margin: auto 0;
+}
+
+.buttons__container .__button {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 5px;
+
+    width: 100%;
+    height: fit-content;
+
+    padding: 10px 0 10px 5px;
+
+    background-color: transparent;
+
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.__button span {
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 16px;
+
+    margin-top: 1.2px;
+}
+
+.buttons__container .__button:hover {
+    background-color: #d9d9d9;
+}
+
+.hovered.__button {
+    background-color: #e7e7e7;
+}
+

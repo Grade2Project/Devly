@@ -50,6 +50,14 @@ public class ResumeController : Controller
         await _vacancyRepository.InsertAsync(vacancy);
         return Ok();
     }
+
+    [Authorize(Policy = "CompanyPolicy")]
+    [HttpPost, Route("vacancy/delete")]
+    public async Task<IActionResult> DeleteVacancy()
+    {
+        //TODO
+        return Ok();
+    }
     
     [Authorize(Policy = "UserPolicy")]
     [HttpPost, Route("resume/update")]

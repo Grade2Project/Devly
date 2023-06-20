@@ -135,6 +135,8 @@ body {
 
     border-radius: 5px;
     cursor: pointer;
+
+    transition: background-color 100ms linear;
 }
 
 .__button span {

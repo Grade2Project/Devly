@@ -32,8 +32,6 @@
 
     width: 80%;
     min-width: 500px;
-
-    outline: #FF5A5F dashed 2px;
 }
 
 .__wrapper .vacancies__picker {
@@ -51,8 +49,10 @@
     width: 100%;
 
     padding: 20px 0;
+    gap: 5px;
 
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .vacancies__picker .__mock__no__vacancies {
@@ -64,11 +64,73 @@
 }
 
 .vacancies__picker .vacancy__card {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: start;
 
-    background-color: #dcdcdc;
+    background-color: #eaeaea;
+    padding: 10px 20px;
+    gap: 50px;
+
+    width: 90%;
+
+    border-radius: 15px;
+}
+
+.vacancy__card .remove__button {
+    position: absolute;
+    right: -5px;
+    top: -5px;
+
+    background-color: var(--color-acsent-red);
+
+    width: 15px;
+    height: 15px;
+    padding: 2.5px 2.5px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+    transition: background-color 250ms linear;
+}
+
+.vacancy__card .remove__button:hover {
+    background-color: #c94549;
+}
+
+
+.vacancy__card .text__block {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+
+    margin: 0;
+    padding: 0;
+
+    min-width: 75px;
+
+    gap: 2px;
+}
+
+.text__block h1 {
+    font-size: 14px;
+    line-height: 14px;
+
+    margin: 0;
+    padding: 0;
+
+    font-weight: 500;
+}
+
+.text__block h2 {
+    font-size: 16px;
+    line-height: 16px;
+
+    margin: 0;
+    padding: 0;
+
+    font-weight: 500;
 }
 
 .__wrapper .button__add {
@@ -88,6 +150,12 @@
 
     border-radius: 8px;
     cursor: pointer;
+
+    transition: background-color 250ms linear;
+}
+
+.button__add:hover {
+    background-color: #67b667;
 }
 
 .button__add img {

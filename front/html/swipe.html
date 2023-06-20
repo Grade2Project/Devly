@@ -110,7 +110,7 @@
 
     <div class="left__menu__container">
         <div class="left__menu__header__container">
-            <img id="image" class="profile__image" src="">
+            <img id="image" class="profile__image" src="" onclick="redirectToSettings()">
             <span id="name" class="label__20B_600">Оля Контур</span>
         </div>
         <div class="content__container">
@@ -149,6 +149,10 @@
     const environment = localStorage['way'] === 'user'
         ? new UserEnvironment()
         : new CompanyEnvironment();
+
+    function redirectToSettings() {
+        window.location.href = "settings/hr/profile.html";
+    }
 
     fillSideMenu(
         localStorage['way'] === 'user' ? Controllers.ABOUTME.USER : Controllers.ABOUTME.COMPANY,

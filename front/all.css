@@ -327,7 +327,9 @@ button {
     border: none;
 
     margin-top: 40px;
-    transition: box-shadow 100ms linear;
+    transition: box-shadow 200ms linear;
+
+    cursor: pointer;
 }
 
 .confirm:hover {
@@ -336,10 +338,10 @@ button {
 
 input[type="text"] {
     font-family: var(--font-family-roboto); /* 1 */
-    font-size: inherit; /* 1 */
-    line-height: inherit; /* 1 */
-    margin: 0 0 0 0; /* 2 */
-    padding: 0 0 0 0;
+    /*font-size: inherit; !* 1 *!*/
+    /*line-height: inherit; !* 1 *!*/
+    /*margin: 0 0 0 0; !* 2 *!*/
+    /*padding: 0 0 0 0;*/
 }
 
 .text-input {
@@ -780,22 +782,24 @@ input[type=radio] {
     scrollbar-gutter: stable;
 }
 
-*::-webkit-scrollbar,
-*::-webkit-scrollbar-thumb {
-    width: 20px;
-    border-radius: 13px;
-    background-color: transparent;
-    color: red;
-    background-clip: padding-box;
-    border: 8px solid transparent;
-}
+@supports(overflow: overlay) {
+    *::-webkit-scrollbar,
+    *::-webkit-scrollbar-thumb {
+        width: 20px;
+        border-radius: 13px;
+        background-color: transparent;
+        color: red;
+        background-clip: border-box;
+        border: 8px solid transparent;
+    }
 
-*::-webkit-scrollbar-thumb {
-    box-shadow: inset 0 0 0 10px;
-}
+    *::-webkit-scrollbar-thumb {
+        box-shadow: inset 0 0 0 10px;
+    }
 
-.ofy-scroll.ofy-scroll.ofy-scroll.ofy-scroll {
-    overflow: overlay;
+    .ofy-scroll.ofy-scroll.ofy-scroll.ofy-scroll {
+        overflow-y: overlay;
+    }
 }
 
 .swipe__cards .moving.tinder__card {

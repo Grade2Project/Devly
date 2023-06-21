@@ -6,9 +6,9 @@ const Controllers = {
     REG: {USER: `${HOME}/reg`, COMPANY: `${HOME}/company/reg`},
     GRADES: `${HOME}/grades/get`,
     LANGS: `${HOME}/lang/get`,
-    CITIES: `${HOME}/cities/similar`,
+    CITIES: {SIMILAR: `${HOME}/cities/similar`, ALL: `${HOME}/cities/all`},
     RESUME: {UPDATE: `${HOME}/resume/update`},
-    VACANCY: {UPDATE: `${HOME}/vacancy/update`},
+    VACANCY: {UPDATE: `${HOME}/vacancy/update`, DELETE: `${HOME}/vacancy/delete`},
     SERVICE: {
         NEXT_USER: `${HOME}/next/user`,
         NEXT_VACANCY: `${HOME}/next/vacancy`
@@ -54,7 +54,7 @@ async function sendJSON(data, controller, responseType, processResponse, authori
     xhr.send(json);
 }
 
-async function fetchFrom(controller, processResponse, authorizationToken, responseType = 'json', async=true) {
+async function fetchFrom(controller, processResponse, authorizationToken, responseType = 'json', async= true) {
     const xhr = new XMLHttpRequest()
     xhr.open(HTTPMethods.GET, controller, async);
 

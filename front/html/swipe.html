@@ -32,7 +32,6 @@
                 <span class="label__18B_500_GREY" id="user_grade"></span>
             </div>
         </div>
-        <div class="extra-info__button"></div>
         <div class="extra__base__container">
             <div class="extra__inner__container">
                 <span class="label__20B_600">Рабочие условия</span>
@@ -77,7 +76,6 @@
             <span class="label__18B_500_GREY" id="vacancy_grade"></span>
         </div>
     </div>
-    <div class="extra-info__button"></div>
     <div class="extra__base__container">
         <div class="extra__inner__container">
             <span class="label__20B_600">Вакансия</span>
@@ -110,7 +108,7 @@
 
     <div class="left__menu__container">
         <div class="left__menu__header__container">
-            <img id="image" class="profile__image" src="" onclick="redirectToSettings()">
+            <img id="image" class="profile__image" src="" onclick="environment.redirectToSettings()">
             <span id="name" class="label__20B_600">Оля Контур</span>
         </div>
         <div class="content__container">
@@ -143,20 +141,22 @@
 <script src="../scripts/sideMenu.js"></script>
 <script src="../scripts/sellect.js-master/src/sellect.js"></script>
 <script src="../scripts/filters.js"></script>
-<script src="../scripts/rangeSlider.js"></script>
 <script src="../scripts/environment.js"></script>
 <script>
     const environment = localStorage['way'] === 'user'
         ? new UserEnvironment()
         : new CompanyEnvironment();
 
-    function redirectToSettings() {
-        window.location.href = "settings/hr/profile.html";
-    }
-
     fillSideMenu(
         localStorage['way'] === 'user' ? Controllers.ABOUTME.USER : Controllers.ABOUTME.COMPANY,
-        function () {},
+        //TODO для компании и юзера разное
+        (json, info) => {
+            document.getElementById('name').innerText = (json['name'] || json['companyName'])
+                .split(' ')
+                .slice(0, 2)
+                .join(' ');
+            document.getElementById('image').src = json['photo'];
+        },
     )
 
     document.getElementById('apply_filters').onclick = () => {

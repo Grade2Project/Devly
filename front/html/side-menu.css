@@ -36,7 +36,7 @@
     border-radius: 0 0 10px 10px;
 }
 
-.left__menu__header__container .profile__image {
+.profile__image {
     width: 60px;
     height: 60px;
     left: 0;
@@ -46,6 +46,8 @@
 
     background: linear-gradient(157.02deg, #087E8B 14.89%, #FF5A5F 112.59%);
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.25));
+
+    margin: auto 0;
 }
 
 .left__menu__container .content__container {

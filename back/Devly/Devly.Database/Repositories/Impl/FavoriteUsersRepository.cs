@@ -21,11 +21,11 @@ internal class FavoriteUsersRepository : IFavoriteUsersRepository
         return result.Select(x => x.CompanyId).ToList();
     }
 
-    public async Task<IReadOnlyList<string>> GetAllUsersCompanyLiked(int companyId)
+    public async Task<IReadOnlyList<User>> GetAllUsersCompanyLiked(int companyId)
     {
         var result = await _repository.FindAllAsync<CompaniesFavoriteUser>
-            (x => x.CompanyId == companyId);
-        return result.Select(x => x.UserLogin).ToList();
+            (x => x.CompanyId == companyId, CancellationToken.None, user => user.User);
+        return result.Select(x => x.User).ToList();
     }
 
     public async Task InsertLikePair(int companyId, string userLogin)

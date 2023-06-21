@@ -56,7 +56,6 @@ public class AboutMeController : Controller
         if (company is null) return null;
 
         var photo = await _photoHelper.LoadFrom(company.ImagePath ?? "../photos/users/default.txt");
-        var vacancies = await _vacancyRepository.GetAllCompanyVacancies(company.CompanyEmail);
-        return company.MapToCompanyAboutDto(vacancies, photo);
+        return company.MapToCompanyAboutDto(photo);
     }
 }

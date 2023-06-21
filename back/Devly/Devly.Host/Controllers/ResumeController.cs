@@ -43,9 +43,27 @@ public class ResumeController : Controller
     [HttpPost, Route("vacancy/update")]
     public async Task<IActionResult> AddVacancy([FromBody] VacancyDto vacancyDto)
     {
-        var vacancy = await DtoToVacancy(vacancyDto);
-        if (vacancy is null || await _vacancyRepository.FindVacancyAsync(vacancy) != null)
+        var companyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
+        var company = await _companiesRepository.GetCompanyByEmail(companyEmail);
+        if (company is null || vacancyDto is null)
+            return StatusCode(400, "Bad Vacancy");;
+        var language = await _programmingLanguagesRepository.FindLanguagesAsync(vacancyDto.ProgrammingLanguage);
+        var grade = await _gradesRepository.FindGrade(vacancyDto.Grade);
+        var city = await _cities.GetCityByName(vacancyDto.City);
+        if (language is null || language.Count == 0 || grade == null || city is null)
+        {
             return StatusCode(400, "Bad Vacancy");
+        }
+
+        var vacancy = new Vacancy
+        {
+            CompanyId = company.Id,
+            Info = vacancyDto.Info,
+            CityId = city.Id,
+            ProgrammingLanguageId = language[0].Id,
+            Salary = vacancyDto.Salary,
+            GradeId = grade.Id
+        };
 
         await _vacancyRepository.InsertAsync(vacancy);
         return Ok();
@@ -121,26 +139,5 @@ public class ResumeController : Controller
         var grade = await _gradesRepository.FindGrade(resumeDto.Grade)!;
         var city = await _cities.GetCityByName(resumeDto.City);
         return grade == null || city == null ? null : resumeDto.MapToUser(grade, city.Id);
-    }
-
-    private async Task<Vacancy?> DtoToVacancy(VacancyDto vacancyDto)
-    {
-        var company = await _companiesRepository.GetCompanyByName(vacancyDto.CompanyName);
-        if (company is null)
-            return null;
-        var language = await _programmingLanguagesRepository.FindLanguagesAsync(vacancyDto.ProgrammingLanguage);
-        var grade = await _gradesRepository.FindGrade(vacancyDto.Grade);
-        var city = await _cities.GetCityByName(vacancyDto.City);
-        if (language is null || language.Count == 0 || grade == null || city is null) return null;
-
-        return new Vacancy
-        {
-            CompanyId = company.Id,
-            Info = vacancyDto.Info,
-            CityId = city.Id,
-            ProgrammingLanguageId = language[0].Id,
-            Salary = vacancyDto.Salary,
-            GradeId = grade.Id
-        };
     }
 }

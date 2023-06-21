@@ -1,5 +1,5 @@
 body {
-    background: url('../svg/auth_bg.svg') no-repeat fixed top center;
+    background: url('auth_bg.svg') no-repeat fixed top center;
     background-size: cover;
     overflow-y: scroll;
 }

@@ -19,7 +19,7 @@ function authorize() {
             if (statusCode === 200) {
                 localStorage['token'] = response;
                 localStorage['way'] = currentTab === 0 ? 'user' : 'company'; // ToDo: нах way, давай из jwt
-                redirectTo('../html/swipe.html');
+                redirectTo('swipe.html');
             } else {
                 startWrongPasswordAnimation();
             }

@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <link rel="stylesheet" href="../styles/all.css">
-    <link rel="stylesheet" href="../styles/styleguide.css">
+    <link rel="stylesheet" href="all.css">
+    <link rel="stylesheet" href="styleguide.css">
 
     <style>
         body {
@@ -134,14 +134,14 @@
 </form>
 
 
-<script src="../scripts/utils.js"></script>
-<script src="../scripts/inputsValidity.js"></script>
+<script src="utils.js"></script>
+<script src="inputsValidity.js"></script>
 <script>
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
     fetchFrom(Controllers.GRADES, (statusCode, json) => {
         if (statusCode === 401)
-            redirectTo('../html/authorization.html');
+            redirectTo('authorization.html');
 
         grades = json.container;
 

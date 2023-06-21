@@ -28,6 +28,7 @@ services.AddCors(options =>
             policy.WithOrigins("http://localhost:63343");
             policy.WithOrigins("http://localhost:63342");
             policy.WithOrigins("http://127.0.0.1:8080");
+            policy.WithOrigins("http://localhost:8080");
             policy.AllowAnyHeader();
         });
 });

@@ -1,5 +1,5 @@
-// const HOME = 'http://localhost:5003';
-const HOME = 'http://localhost:80'; // Для контейнера
+const HOME = 'http://localhost:5003';
+// const HOME = 'http://localhost:80'; // Для контейнера
 
 const Controllers = {
     AUTH: {USER: `${HOME}/auth/user`, COMPANY: `${HOME}/auth/company`},
@@ -84,4 +84,8 @@ function encodeImage(file) {
         console.log(avatarBytes);
     }
     reader.readAsDataURL(file);
+}
+
+function redirectTo(location) {
+    window.location.href = location;
 }

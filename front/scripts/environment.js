@@ -20,7 +20,7 @@ class UserEnvironment extends Environment {
     }
 
     redirectToSettings() {
-        window.location.href = "settings/applicant/profile.html";
+        redirectTo("../html/developer_profile.html");
     }
 }
 
@@ -37,6 +37,6 @@ class CompanyEnvironment extends Environment {
     }
 
     redirectToSettings() {
-        window.location.href = "settings/hr/profile.html";
+        redirectTo("../html/hr_profile.html");
     }
 }

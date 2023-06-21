@@ -26,8 +26,8 @@ services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins("http://localhost:63343");
-            policy.WithOrigins("http://localhost:62243");
-            policy.WithOrigins("http://localhost:52979");
+            policy.WithOrigins("http://localhost:49277");
+            policy.WithOrigins("http://localhost:65522");
             policy.WithOrigins("http://localhost:63342");
             policy.WithOrigins("http://127.0.0.1:8080");
             policy.AllowAnyHeader();

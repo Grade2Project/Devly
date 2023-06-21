@@ -45,7 +45,7 @@ function registerHR() {
         if (statusCode === 200) {
             localStorage['token'] = response;
             localStorage['company_name'] = dataRaw['reg_company_name'];
-            location.href = '../html/settings/hr/create_vacancy.html'
+            redirectTo('../html/create_vacancy.html');
         }
         else {
             startWrongEmailAnimation()

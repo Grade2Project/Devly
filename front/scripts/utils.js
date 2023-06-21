@@ -85,3 +85,7 @@ function encodeImage(file) {
     }
     reader.readAsDataURL(file);
 }
+
+function redirectTo(location) {
+    window.location.href = location;
+}

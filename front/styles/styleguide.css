@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'Roboto Flex', sans-serif;
+    src: url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100;200;300;400;500;600;700;800;900;1000&display=swap');
+}
+
+:root{
+    --color-white: rgba(255, 255, 255);
+    --color-black: #3C3C3C;
+    --color-light-black: #807D7D;
+    --color-background: #F5F5F5;
+    --color-acsent-red: #FF5A5F;
+    --color-acsent-green: #087E8B;
+
+    --font-family-roboto: 'Roboto Flex', sans-serif;
+}

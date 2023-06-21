@@ -1,0 +1,21 @@
+body {
+    background: url('../svg/auth_bg.svg') no-repeat fixed top center;
+    background-size: cover;
+    overflow-y: scroll;
+}
+
+@keyframes shake {
+    0%, 20%, 40%, 60%, 80% {
+        transform: translateX(8px);
+    }
+    10%, 30%, 50%, 70%,
+    90% {
+        transform: translateX(-8px);
+    }
+}
+
+@keyframes glow-red {
+    50% {
+        border-color: indianred;
+    }
+}

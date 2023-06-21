@@ -1,7 +1,3 @@
-function redirectTo(location) {
-    window.location.href = location;
-}
-
 function fillSideMenu(controller, additionalFilling) {
     fetchFrom(controller, (statusCode, json) => {
         // if (statusCode === 403)

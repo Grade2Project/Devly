@@ -1,0 +1,21 @@
+{
+    "serviceName": "signup-application",
+    "containers": {
+        "front": {
+            "image": ":signup-application.latest.2",
+            "ports": {
+                "8080": "HTTP"
+            }
+        },
+        "back": {
+            "image": ":signup-application.latest.5",
+            "ports": {
+                "80": "HTTP"
+            }
+        }
+    },
+    "publicEndpoint": {
+        "containerName": "front",
+        "containerPort": 8080
+    }
+}

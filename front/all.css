@@ -327,7 +327,9 @@ button {
     border: none;
 
     margin-top: 40px;
-    transition: box-shadow 100ms linear;
+    transition: box-shadow 200ms linear;
+
+    cursor: pointer;
 }
 
 .confirm:hover {

@@ -12,8 +12,11 @@ class VacancyElement {
         vcard.getElementById('vacancy__language').innerText = vacancyObj['programmingLanguage'];
         vcard.getElementById('vacancy__salary').innerText = vacancyObj['salary'];
 
-        vcard.querySelector('.remove__button').onclick = () => {
-            console.log(vacancyObj['id']);
+        vcard.querySelector('.remove__button').onclick = (e) => {
+            e.target.parentElement.classList.add('removed');
+            e.target.parentElement.onanimationend = (e) => {
+                e.target.remove();
+            }
         }
 
         __holder.appendChild(vcard);

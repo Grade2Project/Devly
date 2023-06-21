@@ -141,7 +141,7 @@
     let grades;
     fetchFrom(Controllers.GRADES, (statusCode, json) => {
         if (statusCode === 401)
-            redirectTo('../html/authorization.html');
+            redirectTo('authorization.html');
 
         grades = json.container;
 

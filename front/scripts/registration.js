@@ -13,7 +13,7 @@ function registerClient() {
         (statusCode, response) => {
         if (statusCode === 200) {
             localStorage['token'] = response;
-            window.location.href = '../html/developer.html';
+            redirectTo('developer.html');
         }
         else {
             startWrongEmailAnimation();
@@ -45,7 +45,7 @@ function registerHR() {
         if (statusCode === 200) {
             localStorage['token'] = response;
             localStorage['company_name'] = dataRaw['reg_company_name'];
-            redirectTo('../html/create_vacancy.html');
+            redirectTo('create_vacancy.html');
         }
         else {
             startWrongEmailAnimation()

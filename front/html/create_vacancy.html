@@ -89,14 +89,14 @@
 <script>
     fetchFrom(Controllers.GRADES, (statusCode, json) => {
         if (statusCode === 401)
-            redirectTo('../html/authorization.html');
+            redirectTo('authorization.html');
 
         fillSelect(document.getElementById('user_prog_grade'), json.container);
     }, localStorage['token']);
 
     fetchFrom(Controllers.LANGS, (status, json) => {
         if (status === 401)
-            redirectTo('../html/authorization.html');
+            redirectTo('authorization.html');
 
         fillSelect(document.getElementById('user_language'), json.container);
     }, localStorage['token']);

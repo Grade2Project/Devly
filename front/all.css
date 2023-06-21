@@ -336,10 +336,10 @@ button {
 
 input[type="text"] {
     font-family: var(--font-family-roboto); /* 1 */
-    font-size: inherit; /* 1 */
-    line-height: inherit; /* 1 */
-    margin: 0 0 0 0; /* 2 */
-    padding: 0 0 0 0;
+    /*font-size: inherit; !* 1 *!*/
+    /*line-height: inherit; !* 1 *!*/
+    /*margin: 0 0 0 0; !* 2 *!*/
+    /*padding: 0 0 0 0;*/
 }
 
 .text-input {

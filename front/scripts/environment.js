@@ -4,14 +4,23 @@ class Environment {
         this.filtersHandler = filtersHandler;
         this.settingsHandler = settingsHandler;
     }
+
+    redirectToSettings() {}
 }
 
 class UserEnvironment extends Environment {
     constructor() {
         super(
             new CardCreator(new VacancyCardHandler()),
-            new Filters()
+            new UserFilters(
+                new GradesFilter(),
+                new LanguagesFilter()
+            )
         );
+    }
+
+    redirectToSettings() {
+        window.location.href = "settings/applicant/profile.html";
     }
 }
 
@@ -25,5 +34,9 @@ class CompanyEnvironment extends Environment {
                 new CitiesFilter()
             )
         );
+    }
+
+    redirectToSettings() {
+        window.location.href = "settings/hr/profile.html";
     }
 }

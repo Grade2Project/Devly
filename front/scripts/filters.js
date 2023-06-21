@@ -129,6 +129,12 @@ class Filters {
     applyFilters() {}
 }
 
+class UserFilters extends Filters {
+    applyFilters() {
+        //TODO
+    }
+}
+
 class CompanyFilters extends Filters {
     applyFilters() {
         let filter = this.isEmpty()

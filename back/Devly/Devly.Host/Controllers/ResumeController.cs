@@ -53,9 +53,13 @@ public class ResumeController : Controller
 
     [Authorize(Policy = "CompanyPolicy")]
     [HttpPost, Route("vacancy/delete")]
-    public async Task<IActionResult> DeleteVacancy()
+    public async Task<IActionResult> DeleteVacancy([FromBody] int vacancyId)
     {
-        //TODO
+        var companyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
+        var vacancy = await _vacancyRepository.FindVacancyByIdAsync(vacancyId);
+        if (vacancy == null || vacancy.Company.CompanyEmail != companyEmail)
+            return StatusCode(403);
+        _vacancyRepository.DeleteAsync(vacancy);
         return Ok();
     }
     

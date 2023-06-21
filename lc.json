@@ -6,6 +6,12 @@
             "ports": {
                 "8080": "HTTP"
             }
+        },
+        "back": {
+            "image": ":signup-application.latest.5",
+            "ports": {
+                "80": "HTTP"
+            }
         }
     },
     "publicEndpoint": {

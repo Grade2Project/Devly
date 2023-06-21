@@ -149,8 +149,12 @@
 
     fillSideMenu(
         localStorage['way'] === 'user' ? Controllers.ABOUTME.USER : Controllers.ABOUTME.COMPANY,
+        //TODO для компании и юзера разное
         (json, info) => {
-            document.getElementById('name').innerText = json['name'].split(' ').slice(0, 2).join(' ');
+            document.getElementById('name').innerText = (json['name'] || json['companyName'])
+                .split(' ')
+                .slice(0, 2)
+                .join(' ');
             document.getElementById('image').src = json['photo'];
         },
     )

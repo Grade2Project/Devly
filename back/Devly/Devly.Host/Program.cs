@@ -33,6 +33,8 @@ services.AddCors(options =>
             policy.WithOrigins("http://localhost:8080");
             policy.WithOrigins("https://signup-application.8kerlk9kt0tio.eu-north-1.cs.amazonlightsail.com:8080");
             policy.WithOrigins("https://signup-application.8kerlk9kt0tio.eu-north-1.cs.amazonlightsail.com");
+            policy.WithOrigins("http://172.23.0.1:80");
+            policy.WithOrigins("http://172.23.0.3:80");
             policy.AllowAnyHeader();
         });
 });

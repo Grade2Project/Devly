@@ -78,6 +78,22 @@
     border-radius: 15px;
 }
 
+.vacancy__card.removed {
+    animation: removed-animation 250ms cubic-bezier(.55,-0.04,.91,.94) forwards;
+}
+
+@keyframes removed-animation {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
 .vacancy__card .remove__button {
     position: absolute;
     right: -5px;

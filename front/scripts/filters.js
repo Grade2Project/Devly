@@ -89,7 +89,7 @@ class CitiesFilter extends Filter {
         citiesFilter.init();
 
         citiesFilterE.oninput = () => {
-            fetchFrom(`${Controllers.CITIES}?pattern=${citiesFilterE.value}`, (statusCode, response) => {
+            fetchFrom(`${Controllers.CITIES.SIMILAR}?pattern=${citiesFilterE.value}`, (statusCode, response) => {
                 citiesFilter.refresh(response.container);
             });
         }
@@ -131,7 +131,14 @@ class Filters {
 
 class UserFilters extends Filters {
     applyFilters() {
-        //TODO
+        let filter = this.isEmpty()
+        ? null
+        : {
+            grades: this.__filters.grades.values.length !== 0 ? this.__filters.grades.values : null,
+            languages: this.__filters.languages.values.length !== 0 ? this.__filters.languages.values : null
+        };
+
+        environment.cardHandler.applyFilters(filter);
     }
 }
 
@@ -145,33 +152,10 @@ class CompanyFilters extends Filters {
             cities: this.__filters.cities.values.length !== 0 ? this.__filters.cities.values : null,
             experienceFrom: 0,
             userName: null
-        }
+        };
 
         environment.cardHandler.applyFilters(filter);
     }
 }
 
 let token = localStorage.getItem('token');
-
-// let changeHandler = {
-//     set: function (target, key, value) {
-//         target[key] = value;
-//
-//         if (!isFiltersEmpty()) {
-//             btnApplyFilters.disabled = false;
-//             return true;
-//         }
-//
-//         btnApplyFilters.disabled = true;
-//         cardHandler.applyFilters(null);
-//
-//         return true;
-//     }
-// }
-//
-// const filters = new Proxy({
-//     grades: [],
-//     languages: [],
-//     city: [],
-//     experienceFrom: 0
-// }, changeHandler);

@@ -23,9 +23,9 @@ services:
       - local-network
     ports:
       - "8080:8080"
-#    volumes:
-#      - ./front/nginx.conf:./etc/nginx/conf.d/default.conf
-#      - ./front:./usr/share/nginx/app
+    volumes:
+      - ./front/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./front:/usr/share/nginx/app
     platform: linux/amd64
 
   back:

@@ -14,7 +14,7 @@
             }
         },
         "db": {
-            "image" :":signup-application.db.8",
+            "image" :":signup-application.db.9",
             "ports": {
                 "5432": "HTTP"
             }

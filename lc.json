@@ -8,7 +8,7 @@
             }
         },
         "back": {
-            "image": ":signup-application.back.6",
+            "image": ":signup-application.back.13",
             "ports": {
                 "80": "HTTP"
             }

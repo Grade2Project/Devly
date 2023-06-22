@@ -1,10 +1,17 @@
+button {
+    appearance: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
 .button__w100__r10__green {
     padding: 14px 0;
 
     width: 100%;
     height: fit-content;
 
-    background: var(--color-acsent-green);
+    background: var(--color-accent-green);
     border-radius: 10px;
     border: none;
 
@@ -20,4 +27,52 @@
 .button__w100__r10__green:disabled {
     background-color: var(--color-light-black);
     cursor: auto;
+}
+
+.button__w80__r10 {
+    position: relative;
+    padding: 14px 0;
+
+    width: 90%;
+    height: fit-content;
+
+    border-radius: 10px;
+    border: none;
+
+    cursor: pointer;
+
+    transition: background-color 100ms linear;
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+
+    font-family: var(--font-family-roboto);
+    color: var(--color-black);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.bg__color__red {
+    background-color: #FF5A5F;
+}
+
+
+.flex-bt {
+    margin-top: auto;
+}
+
+.relative {
+    position: relative;
+}
+
+.w-fit {
+    width: fit-content;
+}
+
+.font-18 {
+    font-size: 18px;
+}
+
+.bt-80px {
+    bottom: 80px;
 }

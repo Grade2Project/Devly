@@ -90,8 +90,9 @@ class CitiesFilter extends Filter {
 
         citiesFilterE.oninput = () => {
             fetchFrom(`${Controllers.CITIES.SIMILAR}?pattern=${citiesFilterE.value}`, (statusCode, response) => {
+                console.log(statusCode, response.container);
                 citiesFilter.refresh(response.container);
-            });
+            }, localStorage['token']);
         }
     }
 }

@@ -101,7 +101,7 @@ textarea {
 }
 
 .right-menu-button:hover {
-    color: var(--color-acsent-red);
+    color: var(--color-accent-red);
 }
 
 .right-menu-container {
@@ -141,7 +141,7 @@ textarea {
 
 
 .cc-h1:first-letter {
-    color: var(--color-acsent-green);
+    color: var(--color-accent-green);
 }
 
 .cc-h2 {
@@ -192,11 +192,11 @@ textarea {
 }
 
 .color-green {
-    background-color: var(--color-acsent-green);
+    background-color: var(--color-accent-green);
 }
 
 .color-red {
-    background-color: var(--color-acsent-red);
+    background-color: var(--color-accent-red);
 }
 
 .popup__container {
@@ -269,7 +269,7 @@ textarea {
 }
 
 .popup__container .close:hover {
-    color: var(--color-acsent-red);
+    color: var(--color-accent-red);
 }
 
 .popup__container .h {
@@ -361,7 +361,7 @@ input[type="text"] {
 }
 
 .invalid {
-    border-color: var(--color-acsent-red) !important;
+    border-color: var(--color-accent-red) !important;
 }
 
 .text-input::placeholder {
@@ -424,7 +424,7 @@ input[type="text"] {
 }
 
 .additions .i:hover {
-    color: var(--color-acsent-green);
+    color: var(--color-accent-green);
 }
 
 .c-form  {
@@ -605,7 +605,7 @@ input[type=radio] {
 }
 
 .form__body__FS .button__confirm:focus {
-    border: solid var(--color-acsent-green) 10px 10px;
+    border: solid var(--color-accent-green) 10px 10px;
 }
 
 .button__confirm:hover {
@@ -692,7 +692,7 @@ input[type=radio] {
 }
 
 .form__input__wide .text__input:focus {
-    border-color: var(--color-acsent-green) !important;
+    border-color: var(--color-accent-green) !important;
     outline: 0;
 }
 
@@ -701,7 +701,7 @@ input[type=radio] {
     box-sizing: border-box;
     padding: 0;
     right: 0;
-    left: 400px;
+    left: 350px;
     top: 0;
     bottom: 0;
     margin: auto 0;
@@ -788,7 +788,7 @@ input[type=radio] {
         width: 20px;
         border-radius: 13px;
         background-color: transparent;
-        color: red;
+        color: var(--color-accent-red);
         background-clip: border-box;
         border: 8px solid transparent;
     }
@@ -870,26 +870,38 @@ input[type=radio] {
     width: 60px;
     height: 60px;
     border: 0;
-    background: var(--color-black);
+    background: #ffffff;
     display: inline-block;
     margin: 0 8px;
+
+    transition: background-color 200ms linear;
+    box-shadow: 0 7px 30px rgba(255, 183, 108, 0.5);
+    cursor: pointer;
+}
+
+.tinder--buttons button:hover[id='love'] {
+    background-color: #cafbff;
+}
+
+.tinder--buttons button:hover[id='nope'] {
+    background-color: #ffd8c7;
 }
 
 .swipe__cards .tinder--buttons button:focus {
     outline: 0;
 }
 
-.swipe__cards .tinder--buttons i {
-    font-size: 32px;
+.swipe__cards .tinder--buttons span {
+    font-size: 36px;
     vertical-align: middle;
 }
 
-.swipe__cards .fa-heart {
-    background-color: var(--color-acsent-green);
+.swipe__cards .fa-heart.fa-heart.fa-heart {
+    color: var(--color-accent-green);
 }
 
-.swipe__cards .fa-remove {
-    background-color: var(--color-acsent-red);
+.swipe__cards .fa-remove.fa-remove.fa-remove {
+    color: var(--color-accent-red);
 }
 
 .tinder__card .information__holder {
@@ -990,7 +1002,7 @@ input[type=radio] {
 
     transform: translate(-50%, 50%);
 
-    background-color: var(--color-acsent-red);
+    background-color: var(--color-accent-red);
     border-radius: 50px;
     width: 50px;
     height: 50px;

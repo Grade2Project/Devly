@@ -1,7 +1,7 @@
 // const HOME = 'http://localhost:5003';
 // const HOME = 'http://localhost:80'; // Для контейнера
-// const HOME = 'http://localhost:8080/back';
-const HOME = 'https://signup-application.8kerlk9kt0tio.eu-north-1.cs.amazonlightsail.com/back';
+const HOME = 'http://localhost:8080/back';
+// const HOME = 'https://signup-application.8kerlk9kt0tio.eu-north-1.cs.amazonlightsail.com/back';
 
 const Controllers = {
     AUTH: {USER: `${HOME}/auth/user`, COMPANY: `${HOME}/auth/company`},
@@ -57,7 +57,8 @@ async function sendJSON(data, controller, responseType, processResponse, authori
 }
 
 async function fetchFrom(controller, processResponse, authorizationToken, responseType = 'json', async= true) {
-    const xhr = new XMLHttpRequest()
+    const xhr = new XMLHttpRequest();
+
     xhr.open(HTTPMethods.GET, controller, async);
 
     if (authorizationToken !== undefined) {

@@ -187,7 +187,7 @@ public class ServiceController : Controller
                 {
                     GradeIds = companyVacancies.Select(x => x.GradeId).ToArray(),
                     LanguageIds = companyVacancies.Select(x => x.ProgrammingLanguageId).ToArray(),
-                }, alreadyLiked)?.Result;
+                }, alreadyLiked?.Select(x => x.Login))?.Result;
                 
                 if (users == null)
                     return GetNextUserRandom().Result;
@@ -217,7 +217,7 @@ public class ServiceController : Controller
                 {
                     GradeIds = new[] { user.GradeId },
                     LanguageIds = userLanguages.ToArray()
-                }, alreadyLiked)
+                }, alreadyLiked?.Select(x => x.Id))
                     ?.Result;
                 if (vacancies is null)
                     return GetNextVacancyRandom().Result;

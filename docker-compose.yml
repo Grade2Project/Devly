@@ -41,11 +41,7 @@ services:
       - "80:80"
     depends_on:
       - db
-<<<<<<< Updated upstream
-#   platform: linux/amd64
-=======
 #    platform: linux/amd64
->>>>>>> Stashed changes
 
 networks:
   local-network:

@@ -137,7 +137,7 @@
         sendJSON(data, Controllers.VACANCY.UPDATE, HTTPResponseType.TEXT,
             (statusCode) => {
                 if (statusCode === 200) {
-                    redirectTo("../html/vacancies.html");
+                    redirectTo("vacancies.html");
                 }
             }, localStorage['token']);
     }

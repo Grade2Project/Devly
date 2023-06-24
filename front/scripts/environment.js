@@ -20,7 +20,7 @@ class UserEnvironment extends Environment {
     }
 
     redirectToSettings() {
-        redirectTo("../html/developer_profile.html");
+        redirectTo("developer_profile.html");
     }
 }
 
@@ -37,6 +37,6 @@ class CompanyEnvironment extends Environment {
     }
 
     redirectToSettings() {
-        redirectTo("../html/hr_profile.html");
+        redirectTo("hr_profile.html");
     }
 }

@@ -6,6 +6,7 @@ class Environment {
     }
 
     redirectToSettings() {}
+    like(card) {}
 }
 
 class UserEnvironment extends Environment {
@@ -21,6 +22,15 @@ class UserEnvironment extends Environment {
 
     redirectToSettings() {
         redirectTo("developer_profile.html");
+    }
+
+    like(card) {
+        let id = card.getElementById('__vid').getAttribute('data-id');
+        sendJSON({},
+            `${Controllers.LIKE.VACANCY}?vacancyId=${id}`,
+            HTTPResponseType.JSON, (status, json) => {
+                console.log(json);
+            }, localStorage['token']);
     }
 }
 
@@ -38,5 +48,14 @@ class CompanyEnvironment extends Environment {
 
     redirectToSettings() {
         redirectTo("hr_profile.html");
+    }
+
+    like(card) {
+        let ul = card.getElementById('__uid').getAttribute('data-id');
+        sendJSON({},
+            `${Controllers.LIKE.USER}?userLogin=${ul}`,
+            HTTPResponseType.JSON, (status, json) => {
+                console.log(json);
+            }, localStorage['token']);
     }
 }

@@ -76,8 +76,8 @@ function setHammerOnSingleCard(el) {
             let endX = Math.max(Math.abs(event.velocityX) * moveOutWidth, moveOutWidth);
             let toX = event.deltaX > 0 ? endX : -endX;
 
-            if (event.deltaX > 0) suggestLike();
-            else suggestDislike();
+            if (event.deltaX > 0) environment.like(event.target);
+            else environment.like(event.target);
             environment.cardHandler.appendCardToDoc();
 
             let endY = Math.abs(event.velocityY) * moveOutWidth;
@@ -106,24 +106,16 @@ function createButtonListener(love) {
 
         if (love) {
             card.style.transform = 'translate(' + moveOutWidth + 'px, -100px) rotate(-30deg)';
-            suggestLike();
+            environment.like(card);
         } else {
             card.style.transform = 'translate(-' + moveOutWidth + 'px, -100px) rotate(30deg)';
-            suggestDislike();
+            environment.like(card);
         }
 
         environment.cardHandler.appendCardToDoc();
 
         event.preventDefault();
     };
-}
-
-function suggestLike() {
-    console.log('like');
-}
-
-function suggestDislike() {
-    console.log('dislike');
 }
 
 const nopeListener = createButtonListener(false);

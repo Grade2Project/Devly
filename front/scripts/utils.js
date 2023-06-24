@@ -18,6 +18,10 @@ const Controllers = {
     ABOUTME: {
         USER: `${HOME}/aboutMe/user`,
         COMPANY: `${HOME}/aboutMe/company`
+    },
+    LIKE: {
+        USER: `${HOME}/like/user`,
+        VACANCY: `${HOME}/like/vacancy`
     }
 };
 

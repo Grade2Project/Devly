@@ -1,3 +1,10 @@
+const modal = document.getElementById('__match__dialog');
+
+function setModal(tel) {
+    modal.showModal();
+    document.getElementById('__match__telephone').innerText = tel;
+}
+
 class Environment {
     constructor(cardHandler, filtersHandler, settingsHandler = null) {
         this.cardHandler = cardHandler;
@@ -7,6 +14,9 @@ class Environment {
 
     redirectToSettings() {}
     like(card) {}
+    dislike(card) {
+        removeCardFromDocWithDelay(card);
+    }
 }
 
 class UserEnvironment extends Environment {
@@ -25,11 +35,13 @@ class UserEnvironment extends Environment {
     }
 
     like(card) {
-        let id = card.getElementById('__vid').getAttribute('data-id');
-        sendJSON({},
-            `${Controllers.LIKE.VACANCY}?vacancyId=${id}`,
+        sendJSON(card.dataset['id'],
+            Controllers.LIKE.VACANCY,
             HTTPResponseType.JSON, (status, json) => {
-                console.log(json);
+                if (json['isMutual']) {
+                    setModal(json['data']['tel']);
+                }
+                removeCardFromDocWithDelay(card);
             }, localStorage['token']);
     }
 }
@@ -51,11 +63,13 @@ class CompanyEnvironment extends Environment {
     }
 
     like(card) {
-        let ul = card.getElementById('__uid').getAttribute('data-id');
-        sendJSON({},
-            `${Controllers.LIKE.USER}?userLogin=${ul}`,
+        sendJSON(card.dataset['id'],
+            Controllers.LIKE.USER,
             HTTPResponseType.JSON, (status, json) => {
-                console.log(json);
+                if (json['isMutual']) {
+                    setModal(json['data']['phone']);
+                }
+                removeCardFromDocWithDelay(card);
             }, localStorage['token']);
     }
 }

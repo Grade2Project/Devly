@@ -30,7 +30,7 @@ public class LikeController : Controller
     [HttpPost]
     [Authorize(Policy = "UserPolicy")]
     [Route("like/vacancy")]
-    public async Task<MutualityLikeDto<CompanyAboutDto>> VacancyLike([FromBody] int vacancyId)
+    public async Task<MutualityLikeDto<CompanyAboutDto?>> VacancyLike([FromBody] int vacancyId)
     {
         var userLogin = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         var vacancy = await _vacancyRepository.FindVacancyByIdAsync(vacancyId);
@@ -49,10 +49,10 @@ public class LikeController : Controller
         var allUsersCompanyLiked = await _favoriteUsersRepository.GetAllUsersCompanyLiked(vacancy.CompanyId)!;
         var isMutual = allUsersCompanyLiked.FirstOrDefault(user => user.Login == userLogin) is not null;
 
-        return new MutualityLikeDto<CompanyAboutDto>()
+        return new MutualityLikeDto<CompanyAboutDto?>
         {
             IsMutual = isMutual,
-            Data = vacancy.Company.MapToCompanyAboutDto()
+            Data = isMutual ? vacancy.Company.MapToCompanyAboutDto() : null
         };
     }
 
@@ -81,7 +81,7 @@ public class LikeController : Controller
     [HttpPost]
     [Authorize(Policy = "CompanyPolicy")]
     [Route("like/user")]
-    public async Task<MutualityLikeDto<ResumeDto>> UserLike([FromBody] string userLogin)
+    public async Task<MutualityLikeDto<ResumeDto?>> UserLike([FromBody] string userLogin)
     {
         var companyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         var company = await _companiesRepository.GetCompanyByEmail(companyEmail);
@@ -99,10 +99,10 @@ public class LikeController : Controller
         var usersFavoriteVacancies = await _favoriteVacanciesRepository.GetAllVacanciesUserLiked(user.Login)!;
         var isMutual = usersFavoriteVacancies?.FirstOrDefault(vac => vac.CompanyId == company.Id) is not null;
 
-        return new MutualityLikeDto<ResumeDto>()
+        return new MutualityLikeDto<ResumeDto?>
         {
             IsMutual = isMutual,
-            Data = user.MapToResumeDto()
+            Data = isMutual ? user.MapToResumeDto() : null
         };
     }
 

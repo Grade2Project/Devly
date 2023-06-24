@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="buttons.css">
     <link rel="stylesheet" href="rangeSlider.css">
     <link rel="stylesheet" href="side-menu.css">
+    <link rel="stylesheet" href="dialog.css">
 
     <style>
         body {
@@ -105,17 +106,25 @@
         <label class="label__16B_500">Применить</label>
     </button>
 </template>
-
+    <dialog id="__match__dialog">
+        <div class="__icon__wrapper">
+            <img src="match_icon.svg" class="__icon">
+        </div>
+        <div class="__wrapper">
+            <button class="x" onclick="modal.close()">✖</button>
+            <h1>У вас мэтч!</h1>
+            <div class="__inner">
+                <h3>Телефон для связи:</h3>
+                <h2 id="__match__telephone"></h2>
+            </div>
+        </div>
+    </dialog>
     <div class="left__menu__container">
         <div class="left__menu__header__container">
             <img id="image" class="profile__image" src="" onclick="environment.redirectToSettings()">
             <span id="name" class="label__20B_600">Оля Контур</span>
         </div>
         <div class="content__container">
-<!--            <div class="range-slider">-->
-<!--                <input class="range-slider__range" type="range" value="0" min="0" max="7" step="1">-->
-<!--                <span class="range-slider__value">0</span>-->
-<!--            </div>-->
         </div>
     </div>
     <div class="swipe__cards">

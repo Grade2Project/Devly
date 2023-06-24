@@ -248,6 +248,6 @@ public class ServiceController : Controller
             return null;
         var path = vacancy.Company.ImagePath ?? "../photos/companies/default.txt";
         var photo = await _photoHelper.LoadFrom(path);
-        return vacancy.MapToVacancyDto( photo);
+        return vacancy.MapToVacancyDto(photo);
     }
 }

@@ -71,13 +71,12 @@ function setHammerOnSingleCard(el) {
         if (keep) {
             event.target.style.transform = '';
         } else {
-            removeCardFromDocWithDelay(event.target);
-
             let endX = Math.max(Math.abs(event.velocityX) * moveOutWidth, moveOutWidth);
             let toX = event.deltaX > 0 ? endX : -endX;
 
             if (event.deltaX > 0) environment.like(event.target);
-            else environment.like(event.target);
+            else environment.dislike(event.target);
+
             environment.cardHandler.appendCardToDoc();
 
             let endY = Math.abs(event.velocityY) * moveOutWidth;
@@ -102,14 +101,13 @@ function createButtonListener(love) {
         let card = cards[0];
 
         card.classList.add('removed');
-        removeCardFromDocWithDelay(card);
 
         if (love) {
             card.style.transform = 'translate(' + moveOutWidth + 'px, -100px) rotate(-30deg)';
             environment.like(card);
         } else {
             card.style.transform = 'translate(-' + moveOutWidth + 'px, -100px) rotate(30deg)';
-            environment.like(card);
+            environment.dislike(card);
         }
 
         environment.cardHandler.appendCardToDoc();

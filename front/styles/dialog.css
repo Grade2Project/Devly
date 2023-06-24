@@ -1,0 +1,125 @@
+dialog {
+    background-color: transparent;
+
+    width: 700px;
+    min-width: 300px;
+    min-height: 500px;
+
+    border: 0;
+
+    animation: fadeIn 100ms ease both;
+}
+
+dialog:focus {
+    border: 0;
+}
+
+dialog .x {
+    border: none;
+    background: none;
+    position: absolute;
+    top: 100px;
+    right: 25px;
+    transition: ease filter, transform 0.3s;
+    cursor: pointer;
+    transform-origin: center;
+
+    font-size: 18px;
+}
+
+dialog .__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    background-color: #ffe0ca;
+
+    height: fit-content;
+
+    gap: 50px;
+
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 5px 30px 0 rgb(0 0 0 / 10%);
+
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.__wrapper .__inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+dialog .__wrapper h1 {
+    font-family: var(--font-family-roboto);
+    font-size: 48px;
+    font-weight: 600;
+
+    color: var(--color-black);
+
+    padding: 0;
+    margin: 0;
+}
+
+dialog .__wrapper h3 {
+    font-family: var(--font-family-roboto);
+    font-size: 18px;
+    font-weight: 500;
+
+    color: var(--color-light-black);
+
+    padding: 0;
+    margin: 0;
+}
+
+dialog .__wrapper h2 {
+    font-family: var(--font-family-roboto);
+    font-size: 24px;
+    font-weight: 500;
+
+    color: var(--color-black);
+
+    padding: 0;
+    margin: 0;
+}
+
+dialog .__icon__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: -50px;
+}
+
+.__icon__wrapper .__icon {
+    width: 128px;
+    height: 128px;
+}
+
+dialog::-webkit-backdrop {
+    -webkit-animation: fadeIn 100ms ease both;
+    animation: fadeIn 100ms ease both;
+    background: rgba(190, 190, 190, 0.7);
+    z-index: 2;
+}
+
+dialog::backdrop {
+    -webkit-animation: fadeIn 100ms ease both;
+    animation: fadeIn 100ms ease both;
+    background: rgba(190, 190, 190, 0.7);
+    z-index: 2;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

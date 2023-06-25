@@ -22,7 +22,7 @@ class VacancyCardHandler extends CardHandler {
 
             content.getElementById('company_photo').setAttribute(
                 'src',
-                'https://placeimg.com/640/480/tech'
+                `data:image/jpg/png/jpeg;base64,${response['photo']}`
             );
 
             card.setAttribute('data-id', response['login']);

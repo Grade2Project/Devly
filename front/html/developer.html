@@ -46,12 +46,14 @@
 
         <div class="form__input__wide">
             <label for="user_tel" class="label__18B_500">Телефон</label>
-            <input class="text__input" type="tel" minlength="11" maxlength="12" id="user_tel" placeholder="+7" required>
+            <input class="text__input" type="tel" minlength="11" maxlength="12" id="user_tel" placeholder="+7" onkeydown="return checkPhoneKey(event.key)" required>
         </div>
 
         <div class="form__input__wide">
             <label for="user_city" class="label__18B_500">Город</label>
-            <input class="text__input" type="text" id="user_city" required>
+            <select class="text__input" id="user_city"
+                    style="height: fit-content; padding: 0.55rem 0.75rem; margin-left: -11px" required>
+            </select>
         </div>
 
         <div class="form__input__wide">
@@ -98,7 +100,7 @@
 
         <div class="form__input__wide">
             <label for="user_work_exp" class="label__18B_500">Стаж работы</label>
-            <input class="text__input" type="number" maxlength="3" id="user_work_exp" required>
+            <input class="text__input" type="number" maxlength="3" min="0" max="100" id="user_work_exp" required>
         </div>
 
         <div class="form__input__wide">
@@ -146,6 +148,8 @@
 <script src="utils.js"></script>
 <script src="inputsValidity.js"></script>
 <script src="sellect.js"></script>
+<script src="registration.js"></script>
+<script src="baseSelectExtensions.js"></script>
 <script>
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
@@ -164,70 +168,39 @@
         }
     }, localStorage['token']);
 
-    let v = [];
+    let filtersContainer = [];
     fetchFrom(Controllers.LANGS, (statusCode, response) => {
         let langs = response.container;
         let langsFilter = sellect(document.getElementById('user_languages'), {
             originList: langs,
             onInsert: () => {
                 this.values = [...langsFilter.getSelected()];
-                v = [...langsFilter.getSelected()];
+                filtersContainer = [...langsFilter.getSelected()];
             }
         });
 
         langsFilter.init();
     }, localStorage['token']);
 
+    fetchFrom(Controllers.CITIES.ALL, (status, json) => {
+        fillSelect(document.getElementById('user_city'), json.container);
+    }, localStorage['token']);
+
 
     const reader = new FileReader();
     let avatarBytes;
-
-    function SendResume() {
-        const grade = document.querySelector('select[id="user_prog_grade"]').value;
-        const dataRaw = getObjectFromIterable(
-            document.querySelectorAll('input[id^="user_"]'),
-            ti => [ti.id, ti.value]);
-        dataRaw['user_birthdate'] += 'T00:00:00Z'
-        const info = {
-            'edu_grad': dataRaw['user_grad_level'],
-            'edu_name': dataRaw['user_institution'],
-            'edu_program': dataRaw['user_faculty'],
-            'edu_release': dataRaw['user_year_of_grad'],
-            'position': dataRaw['user_position'],
-            'salary': dataRaw['user_salary'],
-            'schedule': dataRaw['user_word_schedule'],
-            'ext_info': dataRaw['user_ext_info'],
-        }
-
-        const data = {
-            login: 'kek',
-            name: dataRaw['user_initials'],
-            birthDate: dataRaw['user_birthdate'],
-            city: dataRaw['user_city'],
-            info: JSON.stringify(info),
-            grade: grade,
-            experience: dataRaw['user_work_exp'],
-            photo: avatarBytes,
-            email: 'lol',
-            phone: dataRaw['user_tel'],
-            favoriteLanguages: v
-        }
-
-        sendJSON(data, Controllers.RESUME.UPDATE, HTTPResponseType.TEXT,
-            (statusCode) => {
-                if (statusCode === 200) {
-                    redirectTo("swipe.html");
-                }
-                if (statusCode === 400) {
-                    alert('BadKekus');
-                }
-            }, localStorage['token']);
-    }
 
     document.getElementById("resume_form").addEventListener("submit", (e) => {
         e.preventDefault();
         SendResume();
     });
+</script>
+
+<script>
+    function checkPhoneKey(key) {
+        return (key >= '0' && key <= '9') || key == '+' || key == '(' || key == ')' || key == '-' ||
+            key == 'ArrowLeft' || key == 'ArrowRight' || key == 'Delete' || key == 'Backspace';
+    }
 </script>
 </body>
 </html>

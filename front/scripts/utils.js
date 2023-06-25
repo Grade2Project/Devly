@@ -1,5 +1,6 @@
-const HOME = 'http://localhost:8080/back';
-// const HOME = 'https://signup-application.8kerlk9kt0tio.eu-north-1.cs.amazonlightsail.com/back';
+// const HOME = 'http://localhost:8080/back';
+// const HOME = 'http://localhost:5003';
+const HOME = 'https://signup-application.8kerlk9kt0tio.eu-north-1.cs.amazonlightsail.com/back';
 
 const Controllers = {
     AUTH: {USER: `${HOME}/auth/user`, COMPANY: `${HOME}/auth/company`},
@@ -36,7 +37,9 @@ const HTTPResponseType = {
 }
 
 function forceAuthorize(status) {
-    if (status !== 200) {
+    if (location.href.endsWith('authorization.html') || location.href.endsWith('register.html'))
+        return;
+    if (Math.floor(status / 100) !== 2) {
         redirectTo('authorization.html');
     }
 }
@@ -66,7 +69,7 @@ async function sendJSON(data, controller, responseType, processResponse, authori
     xhr.responseType = responseType;
     xhr.onload = () => {
         forceAuthorize(xhr.status);
-        processResponse(xhr.status, xhr.response)
+        processResponse(xhr.status, xhr.response);
     };
 
     xhr.send(json);

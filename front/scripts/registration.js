@@ -16,7 +16,10 @@ function registerClient() {
             redirectTo('developer.html');
         }
         else {
-            startWrongEmailAnimation();
+            let emailField = document.querySelector('input[id=reg_user_email]');
+            let passwordField = document.querySelector('input[id=reg_user_password]');
+            incorrectInputAnimation(emailField);
+            incorrectInputAnimation(passwordField);
         }
     });
 }
@@ -48,12 +51,10 @@ function registerHR() {
             redirectTo('create_vacancy.html');
         }
         else {
-            startWrongEmailAnimation()
+            let emailField = document.querySelector('input[id=reg_company_email]');
+            let passwordField = document.querySelector('input[id=reg_company_password]');
+            incorrectInputAnimation(emailField);
+            incorrectInputAnimation(passwordField);
         }
     });
     }
-
-function startWrongEmailAnimation() {
-    let emailField = document.querySelector('input[id=reg_user_email]');
-    incorrectInputAnimation(emailField);
-}

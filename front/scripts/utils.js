@@ -1,5 +1,3 @@
-// const HOME = 'http://localhost:5003';
-// const HOME = 'http://localhost:80'; // Для контейнера
 const HOME = 'http://localhost:8080/back';
 // const HOME = 'https://signup-application.8kerlk9kt0tio.eu-north-1.cs.amazonlightsail.com/back';
 

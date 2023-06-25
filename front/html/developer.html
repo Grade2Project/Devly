@@ -9,10 +9,12 @@
     <link rel="stylesheet" href="forms.css">
     <link rel="stylesheet" href="inputs.css">
     <link rel="stylesheet" href="buttons.css">
+    <link rel="stylesheet" href="sellect.css">
 
     <style>
         body {
             background: var(--color-background);
+            font-family: var(--font-family-roboto);
         }
     </style>
 </head>
@@ -123,7 +125,7 @@
         <label class="fbl">О себе</label>
         <div class="form__input__wide">
             <label for="user_languages" class="label__18B_500">Языки, которыми владеете</label>
-            <input class="text__input" type="text" id="user_languages">
+            <input type="text" id="user_languages">
         </div>
 
         <div class="form__input__wide">
@@ -139,6 +141,7 @@
 
 <script src="utils.js"></script>
 <script src="inputsValidity.js"></script>
+<script src="sellect.js"></script>
 <script>
     const gradeSelect = document.getElementById('user_prog_grade');
     let grades;
@@ -156,6 +159,21 @@
             gradeSelect.appendChild(opt);
         }
     }, localStorage['token']);
+
+    let v = [];
+    fetchFrom(Controllers.LANGS, (statusCode, response) => {
+        let langs = response.container;
+        let langsFilter = sellect(document.getElementById('user_languages'), {
+            originList: langs,
+            onInsert: () => {
+                this.values = [...langsFilter.getSelected()];
+                v = [...langsFilter.getSelected()];
+            }
+        });
+
+        langsFilter.init();
+    }, localStorage['token']);
+
 
     const reader = new FileReader();
     let avatarBytes;
@@ -188,7 +206,7 @@
             photo: avatarBytes,
             email: 'lol',
             phone: dataRaw['user_tel'],
-            favoriteLanguages: dataRaw['user_languages'].split(' ')
+            favoriteLanguages: v
         }
 
         sendJSON(data, Controllers.RESUME.UPDATE, HTTPResponseType.TEXT,

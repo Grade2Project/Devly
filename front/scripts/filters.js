@@ -89,7 +89,8 @@ class CitiesFilter extends Filter {
         citiesFilter.init();
 
         citiesFilterE.oninput = () => {
-            fetchFrom(`${Controllers.CITIES.SIMILAR}?pattern=${citiesFilterE.value}`, (statusCode, response) => {
+            let cp = citiesFilterE.value.charAt(0).toUpperCase() + citiesFilterE.value.slice(1);
+            fetchFrom(`${Controllers.CITIES.SIMILAR}?pattern=${cp}`, (statusCode, response) => {
                 console.log(statusCode, response.container);
                 citiesFilter.refresh(response.container);
             }, localStorage['token']);

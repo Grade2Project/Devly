@@ -76,3 +76,27 @@ button {
 .bt-80px {
     bottom: 80px;
 }
+
+button {
+    appearance: none;
+}
+
+.confirm {
+    padding: 18px 45px;
+
+    width: fit-content;
+    height: fit-content;
+
+    background: #FF5A5F;
+    border-radius: 50px;
+    border: none;
+
+    margin-top: 40px;
+    transition: box-shadow 200ms linear;
+
+    cursor: pointer;
+}
+
+.confirm:hover {
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}

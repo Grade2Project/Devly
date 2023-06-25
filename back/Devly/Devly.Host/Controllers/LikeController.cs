@@ -42,9 +42,7 @@ public class LikeController : Controller
             await _favoriteVacanciesRepository.InsertLikePair(userLogin, vacancyId);
         }
         catch (Exception e)
-        {
-            return null;
-        }
+        { }
 
         var allUsersCompanyLiked = await _favoriteUsersRepository.GetAllUsersCompanyLiked(vacancy.CompanyId)!;
         var isMutual = allUsersCompanyLiked.FirstOrDefault(user => user.Login == userLogin) is not null;

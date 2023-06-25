@@ -25,7 +25,7 @@ class VacancyCardHandler extends CardHandler {
                 `data:image/jpg/png/jpeg;base64,${response['photo']}`
             );
 
-            card.setAttribute('data-id', response['login']);
+            card.setAttribute('data-id', response['id']);
             content.getElementById('company_name').innerText = response['companyName'];
             content.getElementById('vacancy_city').innerText = 'г. Екатеринбург';
             content.getElementById('vacancy_language').innerText = response['programmingLanguage'];

@@ -35,11 +35,11 @@ class UserEnvironment extends Environment {
     }
 
     like(card) {
-        sendJSON(card.dataset['id'],
+        sendJSON(+card.dataset['id'],
             Controllers.LIKE.VACANCY,
             HTTPResponseType.JSON, (status, json) => {
                 if (json['isMutual']) {
-                    setModal(json['data']['tel']);
+                    setModal(JSON.parse(json['data']['info'])['tel']);
                 }
                 removeCardFromDocWithDelay(card);
             }, localStorage['token']);
@@ -66,6 +66,7 @@ class CompanyEnvironment extends Environment {
         sendJSON(card.dataset['id'],
             Controllers.LIKE.USER,
             HTTPResponseType.JSON, (status, json) => {
+            console.log(json);
                 if (json['isMutual']) {
                     setModal(json['data']['phone']);
                 }

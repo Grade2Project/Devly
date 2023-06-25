@@ -35,6 +35,17 @@ const HTTPResponseType = {
     JSON: 'json'
 }
 
+function forceAuthorize(status) {
+    if (status !== 200) {
+        redirectTo('authorization.html');
+    }
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    redirectTo('index.html');
+}
+
 const XHR = new XMLHttpRequest();
 XHR.addEventListener('error', function (event) {
     console.log(event.target);
@@ -53,7 +64,10 @@ async function sendJSON(data, controller, responseType, processResponse, authori
     }
 
     xhr.responseType = responseType;
-    xhr.onload = () => processResponse(xhr.status, xhr.response);
+    xhr.onload = () => {
+        forceAuthorize(xhr.status);
+        processResponse(xhr.status, xhr.response)
+    };
 
     xhr.send(json);
 }

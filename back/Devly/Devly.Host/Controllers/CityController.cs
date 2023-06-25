@@ -9,10 +9,12 @@ namespace Devly.Controllers;
 public class CityController : Controller
 {
     private readonly ICitiesRepository _cities;
+    private readonly ILogger<CityController> _logger;
 
-    public CityController(ICitiesRepository cities)
+    public CityController(ICitiesRepository cities, ILogger<CityController> logger)
     {
         _cities = cities;
+        _logger = logger;
     }
     
     [Authorize]
@@ -20,6 +22,7 @@ public class CityController : Controller
     [HttpGet]
     public async Task<ArrayDto<string>> CitiesSimilarTo(string pattern)
     {
+        _logger.LogInformation(pattern);
         var cities = await _cities.GetCitiesByPattern(pattern);
         return new ArrayDto<string>(cities.Select(x => x.Name).ToList());
     }

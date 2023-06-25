@@ -14,11 +14,11 @@ internal class FavoriteVacanciesRepository : IFavoriteVacanciesRepository
         _repository = repository;
     }
 
-    public async Task<IReadOnlyList<int>> GetAllVacanciesUserLiked(string userLogin)
+    public async Task<IReadOnlyList<Vacancy>> GetAllVacanciesUserLiked(string userLogin)
     {
         var result = await _repository.FindAllAsync<UsersFavoriteVacancy>
-            (x => x.UserLogin == userLogin).ConfigureAwait(false);
-        return result.Select(x => x.VacancyId).ToList();
+            (x => x.UserLogin == userLogin, CancellationToken.None, v => v.Vacancy).ConfigureAwait(false);
+        return result.Select(x => x.Vacancy).ToList();
     }
 
     public async Task<IReadOnlyList<string>> GetAllUsersLikedVacancy(int vacancyId)

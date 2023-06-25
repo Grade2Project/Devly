@@ -5,14 +5,14 @@ namespace Devly.Extensions;
 
 public static class CompanyExtensions
 {
-    public static CompanyAboutDto MapToCompanyAboutDto(this Company company, IReadOnlyList<Vacancy> vacancies, byte[]? photo = null)
+    public static CompanyAboutDto MapToCompanyAboutDto(this Company company, byte[]? photo = null)
     {
         return new CompanyAboutDto
         {
             CompanyName = company.CompanyName,
             Info = company.Info,
             Photo = photo,
-            Vacancies = vacancies.Select(v => v.MapToVacancyDto()).ToArray()
+            Vacancies = company.Vacancies.Select(x => x.MapToVacancyDto()).ToArray()
         };
     }
 }

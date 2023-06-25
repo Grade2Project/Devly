@@ -1,0 +1,88 @@
+.letter__17B_500 {
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+
+    height: fit-content;
+    text-align: center;
+
+    color: var(--color-black);
+    text-decoration: none;
+
+    transition: color 100ms linear;
+}
+
+.letter__17B_500:hover {
+    color: var(--color-light-black);
+}
+
+.label__28B_600 {
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+
+    color: #eeeeee;
+    text-align: left;
+
+    pointer-events: none;
+}
+
+.label__24B_600 {
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+
+    color: #eeeeee;
+    text-align: left;
+
+    pointer-events: none;
+}
+
+.label__20B_600 {
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+
+    color: #eeeeee;
+    text-align: left;
+
+    pointer-events: none;
+}
+
+.label__16B_500 {
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+
+    color: #eeeeee;
+    text-align: left;
+
+    pointer-events: none;
+}
+
+.label__18B_500_GREY {
+    height: fit-content;
+
+    font-family: var(--font-family-roboto);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+
+    color: #cccccc;
+    text-align: left;
+
+    pointer-events: none;
+}

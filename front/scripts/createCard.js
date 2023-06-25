@@ -22,9 +22,10 @@ class VacancyCardHandler extends CardHandler {
 
             content.getElementById('company_photo').setAttribute(
                 'src',
-                'https://placeimg.com/640/480/tech'
+                `data:image/jpg/png/jpeg;base64,${response['photo']}`
             );
 
+            card.setAttribute('data-id', response['id']);
             content.getElementById('company_name').innerText = response['companyName'];
             content.getElementById('vacancy_city').innerText = 'г. Екатеринбург';
             content.getElementById('vacancy_language').innerText = response['programmingLanguage'];
@@ -62,6 +63,8 @@ class UserCardHandler extends CardHandler {
                 'src',
                 `data:image/jpg/png/jpeg;base64,${response['photo']}`
             );
+
+            card.setAttribute('data-id', response['login']);
             content.getElementById('user_name').innerText = `${response['name'].split(' ').splice(0, 2).join(' ')}, ${response['age']}`;
             content.getElementById('user_city').innerText = response['city'];
             content.getElementById('user_languages').innerText = response['favoriteLanguages'].join(', ');
@@ -83,6 +86,7 @@ class UserCardHandler extends CardHandler {
             });
 
             card.append(content);
+
             return Promise.resolve(card);
 
         }, token).then(() => card);

@@ -5,13 +5,16 @@
     flex-flow: column;
 
     background-color: var(--color-white);
-    border-right: 2px solid var(--color-light-black);
+    /*border-right: 2px solid var(--color-light-black);*/
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.25);
 
     margin: 0;
     width: 360px;
     min-height: 100%;
     top: 0;
     left: 0;
+
+    z-index: 999;
 }
 
 .left__menu__container .left__menu__header__container {
@@ -33,7 +36,7 @@
     background: #4F4F4F;
     opacity: 0.9;
     box-shadow: 0 7px 20px rgba(0, 0, 0, 0.25);
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 10px 0;
 }
 
 .profile__image {

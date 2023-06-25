@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Создание резюме</title>
 
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet" href="styleguide.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="inputs.css">
+    <link rel="stylesheet" href="buttons.css">
 
     <style>
         body {
@@ -58,10 +61,14 @@
 
     <div class="c-form-block">
         <label class="fbl">Образование</label>
-        <!-- Должен быть выпадающим списком, но пока так-->
         <div class="form__input__wide">
             <label for="user_grad_level" class="label__18B_500">Уровень образования</label>
-            <input class="text__input" type="text" id="user_grad_level" required>
+            <select class="text__input" id="user_grad_level"
+                    style="height: fit-content; padding: 0.55rem 0.75rem; margin-left: -11px" required>
+                <option value="Среднее">Среднее</option>
+                <option value="Высшее — бакалавриат">Высшее — бакалавриат</option>
+                <option value="Высшее — магистратура">Высшее — магистратура</option>
+            </select>
         </div>
 
         <div class="form__input__wide">
@@ -119,7 +126,7 @@
     <div class="c-form-block">
         <label class="fbl">О себе</label>
         <div class="form__input__wide">
-            <label for="user_languages" class="label__18B_500">Языки, которыми владеете</label>
+            <label for="user_languages" class="label__18B_500">Языки программирования, которыми владеете</label>
             <input class="text__input" type="text" id="user_languages">
         </div>
 
@@ -191,8 +198,7 @@
         sendJSON(data, Controllers.RESUME.UPDATE, HTTPResponseType.TEXT,
             (statusCode) => {
                 if (statusCode === 200) {
-                    alert('Резюме создано, вы восхитительны');
-                    redirectTo("../html/swipe.html");
+                    redirectTo("swipe.html");
                 }
                 if (statusCode === 400) {
                     alert('BadKekus');

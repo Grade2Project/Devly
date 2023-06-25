@@ -54,7 +54,7 @@ public class RegController : Controller
     [Route("company/reg")]
     public async Task<IActionResult> RegisterCompany([FromBody] CompanyDto companyDto)
     {
-        if (await _companiesRepository.GetCompanyByName(companyDto.CompanyName) != null) return StatusCode(400);
+        if (await _companiesRepository.GetCompanyByEmail(companyDto.CompanyEmail) != null) return StatusCode(400);
 
         var company = new Company
         {

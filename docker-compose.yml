@@ -24,8 +24,8 @@ services:
     ports:
       - "8080:8080"
 #    volumes:
-#      - ./front/nginx.conf:./etc/nginx/conf.d/default.conf
-#      - ./front:./usr/share/nginx/app
+#      - ./front/nginx.conf:/etc/nginx/conf.d/default.conf
+#      - ./front:/usr/share/nginx/app
     platform: linux/amd64
 
   back:
@@ -36,12 +36,12 @@ services:
     networks:
       - local-network
     environment:
-      "ConnectionStrings__Postgres" : "Host=localhost;Port=5432;User Id=devly;Password=devly123;Database=postgres;"
+      "ConnectionStrings__Postgres" : "Host=db;Port=5432;User Id=devly;Password=devly123;Database=postgres;"
     ports:
       - "80:80"
     depends_on:
-      - postgres
-    platform: linux/amd64
+      - db
+#    platform: linux/amd64
 
 networks:
   local-network:

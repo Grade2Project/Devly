@@ -1,3 +1,3 @@
 FROM postgres:14-alpine
 
-# Запустить last_*.sql
+COPY /back/Devly/Devly.Database/Schemas/last_dump_2.sql /docker-entrypoint-initdb.d/

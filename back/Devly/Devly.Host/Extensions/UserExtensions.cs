@@ -15,6 +15,8 @@ public static class UserExtensions
             BirthDate = user.BirthDate,
             City = user.City.Name,
             Photo = photo,
+            Phone = user.Contact.Phone,
+            Email = user.Contact.Email,
             Info = user.Info,
             Name = user.Name,
             Grade = user.Grade.Value,

@@ -21,7 +21,7 @@ public class CityController : Controller
     public async Task<ArrayDto<string>> CitiesSimilarTo(string pattern)
     {
         var cities = await _cities.GetCitiesByPattern(pattern);
-        return new ArrayDto<string>(cities.Select(x => x.Name).ToArray());
+        return new ArrayDto<string>(cities.Select(x => x.Name).ToList());
     }
     
     [Authorize]

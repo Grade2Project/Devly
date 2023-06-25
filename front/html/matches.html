@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ваши мэтчи</title>
+
+    <link rel="stylesheet" href="all.css">
+    <link rel="stylesheet" href="styleguide.css">
+    <link rel="stylesheet" href="side-menu.css">
+    <link rel="stylesheet" href="alignment.css">
+    <link rel="stylesheet" href="vacancies.css">
+    <link rel="stylesheet" href="buttons.css">
+    <link rel="stylesheet" href="labels.css">
+</head>
+<body>
+<div class="h__split__container">
+    <div class="__inner__left">
+        <div class="settings__container">
+            <div class="header__container">
+                <img id="image_mini" class="profile__image" src="" alt="">
+                <div class="text__container">
+                    <h1 id="name__side"></h1>
+                    <h2>Ваш аккаунт компании</h2>
+                </div>
+            </div>
+            <div class="buttons__container">
+                <div class="__button" id="button__profile" onclick="redirectTo('hr_profile.html')">
+                    <img src="profile_icon.svg"><span>Профиль</span>
+                </div>
+                <div class="__button" id="button__vacancies" onclick="redirectTo('vacancies.html')">
+                    <img src="vacancy_list_icon.svg"><span>Ваши вакансии</span>
+                </div>
+                <div class="__button" id="button__matches" onclick="redirectTo('matches.html')">
+                    <img src="like_icon.svg"><span>Мэтчи</span>
+                </div>
+            </div>
+
+            <a class="letter__17B_500 font-18 w-fit relative flex-bt bt-80px" href="swipe.html">ᐸ Назад</a>
+        </div>
+    </div>
+    <div class="__inner__right">
+        <div class="__holder">
+            <h1>Ваши совпадения</h1>
+            <div class="__wrapper">
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="utils.js"></script>
+<script src="sideMenu.js"></script>
+<script>
+    document.getElementById('button__matches').classList.add('hovered');
+
+
+    fillSideMenu(Controllers.ABOUTME.COMPANY, (json) => {
+        document.getElementById('name__side').innerText = json['companyName'].length > 22
+            ? json['companyName'].slice(0, 22) + '...'
+            : json['companyName'];
+        document.getElementById('image_mini').src = json['photo'];
+    });
+</script>
+
+</html>

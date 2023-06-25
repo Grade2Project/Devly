@@ -38,8 +38,8 @@ body {
 
     gap: 25px;
 
-    min-width: 100dvmax;
-    min-height: 100dvmax;
+    min-width: 100vw;
+    min-height: 100vh;
 }
 
 .h__split__container .__inner__right {

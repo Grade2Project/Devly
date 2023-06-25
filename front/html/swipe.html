@@ -2,17 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Подбор</title>
     <link rel="stylesheet" href="all.css">
     <link rel="stylesheet" href="styleguide.css">
     <link rel="stylesheet" href="sellect.css">
     <link rel="stylesheet" href="buttons.css">
     <link rel="stylesheet" href="rangeSlider.css">
     <link rel="stylesheet" href="side-menu.css">
+    <link rel="stylesheet" href="dialog.css">
+    <link rel="stylesheet" href="swipes.css">
+    <link rel="stylesheet" href="labels.css">
 
     <style>
         body {
-            background: var(--color-background);
+            background: url("bg_gradient.svg");
             font-family: var(--font-family-roboto);
         }
     </style>
@@ -22,7 +25,7 @@
         <div class="center-cropped">
             <img src="" alt="Image Here" id="user_photo">
         </div>
-        <div class="information__holder">
+        <div class="information__holder" data-id="" id="__uid">
             <div class="inner__holder">
                 <span class="label__24B_600" id="user_name"></span>
                 <span class="label__18B_500_GREY" id="user_city"></span>
@@ -66,7 +69,7 @@
     <div class="center-cropped">
         <img src="" alt="Image Here" id="company_photo">
     </div>
-    <div class="information__holder">
+    <div class="information__holder" data-id="" id="__vid">
         <div class="inner__holder">
             <span class="label__28B_600" id="company_name"></span>
             <span class="label__18B_500_GREY" id="vacancy_city"></span>
@@ -105,17 +108,25 @@
         <label class="label__16B_500">Применить</label>
     </button>
 </template>
-
+    <dialog id="__match__dialog">
+        <div class="__icon__wrapper">
+            <img src="match_icon.svg" class="__icon">
+        </div>
+        <div class="__wrapper">
+            <button class="x" onclick="modal.close()">✖</button>
+            <h1>У вас мэтч!</h1>
+            <div class="__inner">
+                <h3>Телефон для связи:</h3>
+                <h2 id="__match__telephone"></h2>
+            </div>
+        </div>
+    </dialog>
     <div class="left__menu__container">
         <div class="left__menu__header__container">
             <img id="image" class="profile__image" src="" onclick="environment.redirectToSettings()">
             <span id="name" class="label__20B_600">Оля Контур</span>
         </div>
         <div class="content__container">
-<!--            <div class="range-slider">-->
-<!--                <input class="range-slider__range" type="range" value="0" min="0" max="7" step="1">-->
-<!--                <span class="range-slider__value">0</span>-->
-<!--            </div>-->
         </div>
     </div>
     <div class="swipe__cards">
@@ -127,9 +138,9 @@
                 <div class="tinder__cards">
             </div>
 
-            <div class="tinder--buttons">
-                <button id="nope"><i class="fa fa-remove"></i></button>
-                <button id="love"><i class="fa fa-heart"></i></button>
+            <div class="tinder--buttons noselect">
+                <button id="nope"><span class="fa-remove noselect">✖</span></button>
+                <button id="love"><span class="fa-heart noselect">❤</span></button>
             </div>
         </div>
     </div>

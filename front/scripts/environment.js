@@ -1,3 +1,10 @@
+const modal = document.getElementById('__match__dialog');
+
+function setModal(tel) {
+    modal.showModal();
+    document.getElementById('__match__telephone').innerText = tel;
+}
+
 class Environment {
     constructor(cardHandler, filtersHandler, settingsHandler = null) {
         this.cardHandler = cardHandler;
@@ -6,6 +13,10 @@ class Environment {
     }
 
     redirectToSettings() {}
+    like(card) {}
+    dislike(card) {
+        removeCardFromDocWithDelay(card);
+    }
 }
 
 class UserEnvironment extends Environment {
@@ -20,7 +31,18 @@ class UserEnvironment extends Environment {
     }
 
     redirectToSettings() {
-        redirectTo("../html/developer_profile.html");
+        redirectTo("developer_profile.html");
+    }
+
+    like(card) {
+        sendJSON(+card.dataset['id'],
+            Controllers.LIKE.VACANCY,
+            HTTPResponseType.JSON, (status, json) => {
+                if (json['isMutual']) {
+                    setModal(JSON.parse(json['data']['info'])['tel']);
+                }
+                removeCardFromDocWithDelay(card);
+            }, localStorage['token']);
     }
 }
 
@@ -37,6 +59,18 @@ class CompanyEnvironment extends Environment {
     }
 
     redirectToSettings() {
-        redirectTo("../html/hr_profile.html");
+        redirectTo("hr_profile.html");
+    }
+
+    like(card) {
+        sendJSON(card.dataset['id'],
+            Controllers.LIKE.USER,
+            HTTPResponseType.JSON, (status, json) => {
+            console.log(json);
+                if (json['isMutual']) {
+                    setModal(json['data']['phone']);
+                }
+                removeCardFromDocWithDelay(card);
+            }, localStorage['token']);
     }
 }

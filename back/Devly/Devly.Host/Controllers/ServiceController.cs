@@ -187,7 +187,7 @@ public class ServiceController : Controller
                 {
                     GradeIds = companyVacancies.Select(x => x.GradeId).ToArray(),
                     LanguageIds = companyVacancies.Select(x => x.ProgrammingLanguageId).ToArray(),
-                }, alreadyLiked)?.Result;
+                }, alreadyLiked?.Select(x => x.Login))?.Result;
                 
                 if (users == null)
                     return GetNextUserRandom().Result;
@@ -217,7 +217,7 @@ public class ServiceController : Controller
                 {
                     GradeIds = new[] { user.GradeId },
                     LanguageIds = userLanguages.ToArray()
-                }, alreadyLiked)
+                }, alreadyLiked?.Select(x => x.Id))
                     ?.Result;
                 if (vacancies is null)
                     return GetNextVacancyRandom().Result;
@@ -248,6 +248,6 @@ public class ServiceController : Controller
             return null;
         var path = vacancy.Company.ImagePath ?? "../photos/companies/default.txt";
         var photo = await _photoHelper.LoadFrom(path);
-        return vacancy.MapToVacancyDto( photo);
+        return vacancy.MapToVacancyDto(photo);
     }
 }

@@ -50,5 +50,8 @@ public class DevlyDbContext : EfDbContext
         modelBuilder.Entity<UsersFavoriteLanguage>().Navigation(fl => fl.ProgrammingLanguage).AutoInclude();
         modelBuilder.Entity<User>().Navigation(u => u.City).AutoInclude();
         modelBuilder.Entity<Vacancy>().Navigation(u => u.City).AutoInclude();
+        
+        modelBuilder.Entity<Vacancy>().Navigation(u => u.Grade).AutoInclude();
+        modelBuilder.Entity<Vacancy>().Navigation(u => u.ProgrammingLanguage).AutoInclude();
     }
 }

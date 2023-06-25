@@ -1,4 +1,5 @@
 using Devly.Database.Repositories.Abstract;
+using Devly.Extensions;
 using Devly.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,23 +30,28 @@ public class LikeController : Controller
     [HttpPost]
     [Authorize(Policy = "UserPolicy")]
     [Route("like/vacancy")]
-    public async Task<IActionResult> VacancyLike([FromBody] int vacancyId)
+    public async Task<MutualityLikeDto<CompanyAboutDto?>> VacancyLike([FromBody] int vacancyId)
     {
         var userLogin = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
-        if (await _userRepository.FindUserByLoginAsync(userLogin) == null ||
-            await _vacancyRepository.FindVacancyByIdAsync(vacancyId) == null)
-            return StatusCode(400, "Login or vacancy doesn't exists");
+        var vacancy = await _vacancyRepository.FindVacancyByIdAsync(vacancyId);
+        if (await _userRepository.FindUserByLoginAsync(userLogin) == null || vacancy is null)
+            return null;
 
         try
         {
             await _favoriteVacanciesRepository.InsertLikePair(userLogin, vacancyId);
         }
         catch (Exception e)
-        {
-            return StatusCode(400, "Relation exists");
-        }
+        { }
 
-        return Ok();
+        var allUsersCompanyLiked = await _favoriteUsersRepository.GetAllUsersCompanyLiked(vacancy.CompanyId)!;
+        var isMutual = allUsersCompanyLiked.FirstOrDefault(user => user.Login == userLogin) is not null;
+
+        return new MutualityLikeDto<CompanyAboutDto?>
+        {
+            IsMutual = isMutual,
+            Data = isMutual ? vacancy.Company.MapToCompanyAboutDto() : null
+        };
     }
 
     [HttpPost]
@@ -73,23 +79,29 @@ public class LikeController : Controller
     [HttpPost]
     [Authorize(Policy = "CompanyPolicy")]
     [Route("like/user")]
-    public async Task<IActionResult> UserLike([FromBody] string userLogin)
+    public async Task<MutualityLikeDto<ResumeDto?>> UserLike([FromBody] string userLogin)
     {
         var companyEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")!.Value;
         var company = await _companiesRepository.GetCompanyByEmail(companyEmail);
-        if (await _userRepository.FindUserByLoginAsync(userLogin) == null || company == null)
-            return StatusCode(400, "Company or user doesn't exists");
+        var user = await _userRepository.FindUserByLoginAsync(userLogin);
+        if (user == null || company == null)
+            return null;
 
         try
         {
             await _favoriteUsersRepository.InsertLikePair(company.Id, userLogin);
         }
         catch (Exception e)
-        {
-            return StatusCode(400, "Relation exists");
-        }
+        { }
 
-        return Ok();
+        var usersFavoriteVacancies = await _favoriteVacanciesRepository.GetAllVacanciesUserLiked(user.Login)!;
+        var isMutual = usersFavoriteVacancies?.FirstOrDefault(vac => vac.CompanyId == company.Id) is not null;
+
+        return new MutualityLikeDto<ResumeDto?>
+        {
+            IsMutual = isMutual,
+            Data = isMutual ? user.MapToResumeDto() : null
+        };
     }
 
     [HttpPost]

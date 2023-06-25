@@ -2,7 +2,7 @@
     "serviceName": "signup-application",
     "containers": {
         "front": {
-            "image": ":signup-application.front.20",
+            "image": ":signup-application.front.22",
             "ports": {
                 "8080": "HTTP"
             }
